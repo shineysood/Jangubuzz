@@ -1,0 +1,105 @@
+<div class="container">
+    <form [formGroup]="space_book_form" (ngSubmit)="request_booking()">
+      <!-- start Date -->
+      <div class="booking-form">
+      <div class="form-group">
+        <label for="startDate">Start date</label>
+        <input
+          type="text"
+          class="form-control"
+          #dp="bsDatepicker"
+          bsDatepicker
+          [bsValue]="bsValue"
+          id="startDate"
+          formControlName="startDate"
+          placeholder="Enter start date..."
+        />
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="dp.toggle()"
+          [attr.aria-expanded]="dp.isOpen"
+        >
+          <i class="fa fa-calendar"></i>
+        </button>
+      </div>
+  
+      <!-- start time -->
+      <div class="form-group">
+        <label for="startTime">Start time</label>
+        <input
+          id="startTime"
+          atp-time-picker
+          value="19:00"
+          formControlName="startTime"
+          placeholder="e.g. 17:00"
+        />
+      </div>
+  
+      <!-- end Date -->
+      <div class="form-group">
+        <label for="endDate">End date</label>
+        <input
+          id="endDate"
+          type="text"
+          class="form-control"
+          #dp="bsDatepicker"
+          bsDatepicker
+          [bsValue]="bsValue"
+          formControlName="endDate"
+          placeholder="Enter end date..."
+        />
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="dp.toggle()"
+          [attr.aria-expanded]="dp.isOpen"
+        >
+          <i class="fa fa-calendar"></i>
+        </button>
+      </div>
+  
+      <!-- end time -->
+      <div class="form-group">
+        <label for="endTime"> End time</label>
+        <input
+          atp-time-picker
+          id="endTime"
+          value="19:00"
+          formControlName="endTime"
+          placeholder="e.g. 17:00"
+        />
+      </div>
+  
+      <!-- Booking details time -->
+      <div class="form-group">
+        <label for="bookingDetails"> Provide booking details </label>
+        <textarea
+          id="bookingDetails"
+          placeholder="lorem ispem"
+          formControlName="bookingDetails"
+        ></textarea>
+      </div>
+  
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email"> Provide booking details </label>
+        <input
+          type="text"
+          id="email"
+          placeholder="e.g. abc@gmail.com"
+          formControlName="email"
+        />
+      </div>
+  
+      <!-- submit button -->
+      <div class="form-group">
+        <button class="btn btn-primary btn-sm" type="submit">
+          Request Booking
+        </button>
+      </div>
+
+    </div>
+    </form>
+  </div>
+  

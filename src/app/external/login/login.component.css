@@ -1,0 +1,97 @@
+* {
+  font-size: 14px;
+}
+
+.modal-title {
+  font-size: 18px !important;
+}
+
+#close-button {
+  font-size: 25px !important;
+}
+
+.login-btn {
+  width: 35%;
+  margin-left: -4.35%;
+  background-color: #ff5b8d;
+  color: white;
+  font-weight: 600;
+  border-radius: 0px;
+}
+button.guest-login-btn {
+  background-color: #ff5b8d;
+  color: white;
+  font-weight: 600;
+  border-radius: 0px;
+  border: none;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+#close-button:hover,
+#close-button:active {
+  outline: none;
+  box-shadow: none;
+}
+
+#close-button:active {
+  color: #a46565;
+}
+
+.container ngx-spinner {
+  margin-top: 5%;
+}
+
+.container ngx-spinner p {
+  margin-top: -150px;
+  color: #fff;
+  font-size: 25px;
+}
+
+.close {
+  outline: none;
+}
+
+.forgot-password {
+  color: #e3195b;
+  margin: 5px 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.forgot-password:hover {
+  color: #ff0037;
+}
+
+.register-btn {
+  border: 1px solid #d51278;
+  color: #e3195b;
+}
+
+.register-btn {
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-footer {
+  display: block;
+}
+.modal-footer {
+  margin-top: 7px;
+}
+.modal-footer {
+  padding: 15px 30px 30px;
+}
+.modal-footer button {
+  align-self: flex-end;
+}
+.modal-footer span {
+  align-self: baseline;
+}
+.modal-footer {
+  display: flex !important;
+  flex-direction: column;
+  width: 100%;
+}
+

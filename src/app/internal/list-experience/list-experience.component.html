@@ -1,0 +1,228 @@
+<form [formGroup]="experience_form" (ngSubmit)="addExperience()">
+  <div class="form-area">
+    <h3>Basic Information</h3>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input
+            id="title"
+            type="text"
+            class="form-control"
+            placeholder="Title ..."
+            formControlName="title"
+          />
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="desc">Description</label>
+          <textarea
+            id="desc"
+            class="form-control"
+            placeholder="Description ..."
+            formControlName="description"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="policy">Policy</label>
+          <select formControlName="policy">
+            <option value="no" selected>Free cancellation</option>
+            <option value="oneDay">1 day cancellation policy</option>
+            <option value="sevenDay">7 Days cancellation policy</option>
+            <option value="thirtyDay">30 days cancellation policy</option>
+          </select>
+        </div>
+        <div class="policy_desc">
+          <p
+            *ngIf="experience_form.controls['policy'].value === 'sevenDay'"
+            id="cancel_policy"
+          >
+            Cancellation is free if done within 7 days of booking confirmation.
+            <br />
+            N.B. Service charges are non-refundable.
+          </p>
+          <p
+            *ngIf="experience_form.controls['policy'].value === 'no'"
+            id="cancel_policy"
+          >
+            Cancellation is free and exempt from all applicable cancellation
+            charges.<br />
+            N.B. Service charges are non-refundable.
+          </p>
+          <p
+            *ngIf="experience_form.controls['policy'].value === 'oneDay'"
+            id="cancel_policy"
+          >
+            Cancellation is free if done within one day of booking confirmation.
+            <br />
+            N.B. Service charges are non-refundable.
+          </p>
+          <p
+            *ngIf="experience_form.controls['policy'].value === 'thirtyDay'"
+            id="cancel_policy"
+          >
+            Cancellation is free if done within 30 days of booking confirmation.
+            <br />
+            N.B. Service charges are non-refundable.
+          </p>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="currency">Currency</label>
+          <select id="currency" class="form-control" formControlName="currency">
+            <option value="cad" selected>CAD</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-area">
+    <h3>Upload a listing image</h3>
+    <div class="form-group">
+      <div class="upload-img">
+        <img *ngIf="listing_event_image_url" [src]="listing_event_image_url" />
+        <img
+          *ngIf="!listing_event_image_url"
+          src="assets/images/imagePlaceholder.png"
+        />
+        <input
+          id="listing_image"
+          (change)="updateSpaceImage($event)"
+          type="file"
+          class="form-control"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="form-area">
+    <h3>Categories</h3>
+    <div class="form-group">
+      <ng-multiselect-dropdown
+        [placeholder]="'Choose Categories'"
+        [data]="dropdownList"
+        [settings]="dropdownSettings"
+        (onSelect)="onItemSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+  </div>
+  <div class="form-area">
+    <h3>Location information</h3>
+    <h5>Which city will you host your experience in?</h5>
+    <div class="form-group">
+      <input
+        type="text"
+        placeholder="e.g. John dior"
+        formControlName="locationName"
+      />
+    </div>
+    <div>
+      <div class="form-group">
+        <label for="location_address">Location address</label>
+        <input
+          (blur)="setCurrentPosition()"
+          placeholder="Location address"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="off"
+          type="text"
+          formControlName="locationAddress"
+          id="location_address"
+          class="form-control"
+          #search
+        />
+      </div>
+      <agm-map
+        [latitude]="latitude"
+        [longitude]="longitude"
+        [scrollwheel]="false"
+        [zoom]="zoom"
+      >
+        <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+      </agm-map>
+    </div>
+  </div>
+  <div class="form-area">
+    <h3>Set Date(s)</h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <!-- start Date -->
+        <label>Start date</label>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            #dp="bsDatepicker"
+            bsDatepicker
+            [bsValue]="bsValue"
+            formControlName="startDate"
+            placeholder="Enter start date..."
+          />
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="dp.toggle()"
+            [attr.aria-expanded]="dp.isOpen"
+          >
+            <i class="fa fa-calendar"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <!-- start time -->
+        <div class="form-group">
+          <label>Start time</label>
+          <input atp-time-picker value="19:00" formControlName="startTime" />
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <!-- end Date -->
+        <label>End date</label>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            #dp="bsDatepicker"
+            bsDatepicker
+            [bsValue]="bsValue"
+            formControlName="endDate"
+            placeholder="Enter end date..."
+          />
+          <button
+            type="button"
+            class="btn btn-success col-4"
+            (click)="dp.toggle()"
+            [attr.aria-expanded]="dp.isOpen"
+          >
+            <i class="fa fa-calendar"></i>
+          </button>
+        </div>
+      </div>
+      <!-- end time -->
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label> End time</label>
+          <input atp-time-picker value="19:00" formControlName="endTime" />
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label>Recurrence</label>
+          <select formControlName="recurrence">
+            <option value="recurrenceOnce"> One time </option>
+            <option value="recurrenceDaily"> Daily (+24 hours) </option>
+            <option value="recurrenceWeekly"> Weekly (+1 week) </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary btn-sm" type="submit">Save</button>
+  </div>
+</form>

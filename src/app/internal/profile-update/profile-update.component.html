@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="modal-header">
+    <h3>Edit Profile</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span id="close-button" aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form
+      [formGroup]="updateProfileForm"
+      autocomplete="off"
+      (ngSubmit)="updateProfile()"
+      class="edit_profile_form"
+    >
+      <div class="pro-pop-flex">
+        <div class="pro-pop-left">
+          <div class="pro_img_wrap">
+            <img
+              *ngIf="pic_loader"
+              class="e_loader_gif"
+              style="filter:brightness(2)"
+              src="assets/images/loader.gif"
+            />
+            <img *ngIf="!pic_loader" class="e_pro_img" src="{{ photoURL }}" />
+            <label
+              ><input
+                type="file"
+                name="profile_pic"
+                id="profile_pic"
+                (change)="updateProfileImage($event)"/><span
+                ><i class="fa fa-pencil"></i></span
+            ></label>
+          </div>
+        </div>
+        <div class="pro-pop-right">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Enter name ..."
+              formControlName="name"
+            />
+          </div>
+
+          <div class="row">
+            <div class="col-12 form-group">
+              <input
+                type="text"
+                class="form-control"
+                #dp="bsDatepicker"
+                bsDatepicker
+                [bsValue]="bsValue"
+                formControlName="dob"
+                placeholder="Enter date of birth..."
+              />
+              <button
+                type="button"
+                class="btn btn-success date-picker-btn profile-date"
+                (click)="dp.toggle()"
+                [attr.aria-expanded]="dp.isOpen"
+              >
+                <i class="fa fa-calendar"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <textarea
+              type="text"
+              class="form-control"
+              id="bio"
+              placeholder="Enter bio ..."
+              formControlName="bio"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>

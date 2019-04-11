@@ -1,0 +1,254 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre,
+ul,
+ol,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #444444;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+p,
+li {
+  color: #676767;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.service_div {
+  margin-top: 100px;
+  min-height: 80vh;
+}
+.pb-2 {
+  font-weight: 500;
+}
+.loader_list {
+  text-align: center;
+}
+.loader_list img {
+  width: 50%;
+  height: auto;
+  filter: brightness(4);
+}
+.list_img {
+  height: 460px;
+  width: 100%;
+  object-fit: cover;
+}
+.info_part {
+  /*height: 460px;
+  overflow-y: auto;*/
+}
+ul.event_info li {
+  margin-bottom: 8px;
+}
+ul.event_info li i.fa {
+  width: 30px;
+  text-align: center;
+  padding-right: 10px;
+}
+
+.service_cat {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  position: relative;
+  padding-left: 35px;
+  /* color: #421a3c; */
+}
+.service_cat:before {
+  position: absolute;
+  content: "";
+  background-color: #421a3c;
+  width: 30px;
+  height: 3px;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.about_host pre {
+  margin-bottom: 8px;
+}
+
+.damage,
+.cleaning {
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-family: poppins;
+  color: #676767;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  font-size: 14px;
+}
+
+.event_info li {
+  font-weight: 400;
+}
+
+#description {
+  white-space: pre-wrap;
+  margin-bottom: 8px;
+  font-family: poppins;
+  color: #676767;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  font-size: 14px;
+}
+
+.amenities pre {
+  letter-spacing: 0.05em;
+  white-space: pre-line !important;
+  font-family: poppins !important;
+}
+p {
+  font-size: 16px !important;
+}
+p pre {
+  font-size: 16px !important;
+  letter-spacing: 0.05em !important;
+  color: #676767 !important;
+}
+h1.mb-3 small {
+  display: block;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.comment-left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    margin-right: 20px;
+    background: #ddd;
+}
+.input-comment {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+.comment-right h4 {
+    font-size: 16px;
+    color: #444;
+}
+.comment-right h5 {
+    font-size: 12px;
+    color: #999;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.comment-right {
+    flex: 1;
+}
+
+.comment-right textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 15px;
+}
+.comment-right pre {
+    font-family: "Poppins", sans-serif !important;
+    background: #f9f9f9;
+    padding: 10px;
+    width: 100% !important;
+    white-space: pre-wrap;
+    color: #8e8e8e;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+.comment-right button {
+    background: #ff5b8d;
+    text-transform: uppercase;
+    padding: 8px 26px !important;
+    border: none;
+    color: #fff;
+    border-radius: 3px;
+    margin: 10px 0px;
+    font-size: 16px;
+}
+.comments {
+    height: 355px;
+    overflow-y: scroll;
+}
+
+.fixed_img_wrap{
+  position: relative;
+}
+.fixed_img img{
+  position: sticky;
+  top: 40px;
+  left: 0px;
+}
+
+element.style {
+}
+button.btn.btn-primary.btn-sm {
+    background: #ff5b8d;
+    text-transform: uppercase;
+    padding: 8px 26px !important;
+    border: none;
+    color: #fff;
+    border-radius: 3px;
+    margin: 10px 0px;
+    font-size: 16px;
+}
+@media screen and (max-width: 991px) {
+
+.list_img {
+    height: 250px;}
+    .pb-5, .py-5 {
+    padding-bottom: 1rem !important;
+        padding-top: 1rem!important;
+}
+.mt-5, .my-5 {
+    margin-top: 1rem!important;
+}
+.service_div h3 {
+    font-size: 24px;
+}
+}
+  @media screen and (max-width:767px) {
+    p.service_cat {
+    margin-top: 25px;
+}
+.about_host h2, .service_div h3 {
+    margin-bottom: 10px !important;
+    font-size: 18px;
+}
+.info_part h1 {
+    font-size: 20px;
+}
+p{
+    font-size: 13px !important;
+}
+ul.list-unstyled.mb-5.event_info li {
+    font-size: 12px;
+}
+.list_img{
+    height: auto;
+}
+.comments {
+    height: auto;
+    overflow-y: auto;
+}
+  }

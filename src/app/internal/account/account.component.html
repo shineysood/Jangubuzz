@@ -1,0 +1,161 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-header">
+          <h2>Reset Password</h2>
+        </div>
+
+        <div class="card-body">
+          <!-- form for resetting password -->
+          <form
+            [formGroup]="resetPassForm"
+            (ngSubmit)="resetPassword()"
+            autocomplete="off"
+          >
+            <div class="form-group">
+              <input
+                type="password"
+                class="form-control"
+                id="currPass"
+                placeholder="Enter current password ..."
+                formControlName="currentPass"
+              />
+            </div>
+            <div
+              *ngIf="
+                resetPassForm.controls['currentPass'].hasError('required') &&
+                resetPassForm.controls['currentPass'].touched
+              "
+              class="text-danger"
+            >
+              Please enter current password
+            </div>
+
+            <div class="form-group">
+              <input
+                type="password"
+                class="form-control"
+                id="newPass"
+                placeholder="Enter new password ..."
+                formControlName="newPass"
+              />
+            </div>
+            <div
+              *ngIf="
+                resetPassForm.controls['newPass'].hasError('required') &&
+                resetPassForm.controls['newPass'].touched
+              "
+              class="text-danger"
+            >
+              Please enter new password
+            </div>
+            <div class="form-group confirm-password">
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPass"
+                (keyup)="confirmPass()"
+                placeholder="Confirm new password ..."
+                formControlName="confirmPass"
+              />
+              <span *ngIf="matched" class="fa fa-check"></span>
+              <span *ngIf="!matched" class="fa fa-times"></span>
+            </div>
+            <div
+              *ngIf="
+                resetPassForm.controls['confirmPass'].hasError('required') &&
+                resetPassForm.controls['confirmPass'].touched
+              "
+              class="text-danger"
+            >
+              Please confirm your new password
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          <!-- end of password resetting form -->
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-header">
+          <h2>Change Email</h2>
+        </div>
+        <div class="card-body">
+          <!-- change Email form -->
+          <form autocomplete="off" [formGroup]="changeEmailForm">
+            <div class="form-group">
+              <input
+                type="email"
+                class="form-control"
+                id="newEmail"
+                placeholder="Enter new e-mail ..."
+                formControlName="newEmail"
+              />
+            </div>
+            <div
+              *ngIf="
+                changeEmailForm.controls['newEmail'].hasError('required') &&
+                changeEmailForm.controls['newEmail'].touched
+              "
+              class="text-danger"
+            >
+              Please enter your new e-mail address
+            </div>
+            <br />
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="openModal(authenticate)"
+            >
+              Submit
+            </button>
+          </form>
+          <!-- end of change email form -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- password authentication template -->
+<ng-template #authenticate>
+  <div class="modal-header">
+    <h3 class="modal-title popup-tittle">Authenticate</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form
+      [formGroup]="authenticateForm"
+      autocomplete="off"
+      (ngSubmit)="changeEmail()"
+    >
+      <input
+        type="password"
+        formControlName="authenticatePassword"
+        placeholder="Password"
+      />
+      <div
+        *ngIf="
+          authenticateForm.controls['authenticatePassword'].hasError(
+            'required'
+          ) && authenticateForm.controls['authenticatePassword'].touched
+        "
+        class="text-danger"
+      >
+        Please enter password
+      </div>
+      <button type="submit" class="popup-btn-design">Confirm</button>
+    </form>
+  </div>
+</ng-template>

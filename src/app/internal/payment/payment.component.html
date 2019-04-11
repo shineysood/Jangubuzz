@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h4>Saved cards</h4>
+    </div>
+    <div class="card-div">
+      <input type="radio" value="4242" name="pay-radio" checked />
+      <div class="card-body">
+        <span>xxxx xxxx xxxx 4242</span>
+        <span class="brand">VISA</span>
+      </div>
+      <i class="fa fa-trash"></i>
+    </div>
+    <div class="card-div">
+      <input type="radio" value="4242" name="pay-radio" />
+      <div class="card-body">
+        <span>xxxx xxxx xxxx 2424</span>
+        <span class="brand">MAESTRO</span>
+      </div>
+      <i class="fa fa-trash"></i>
+    </div>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="openModal(addCard)"
+    >
+      ADD NEW CARD
+    </button>
+  </div>
+</div>
+
+<ng-template #addCard>
+  <app-card-info [modalRef]="modalRef"></app-card-info>
+</ng-template>

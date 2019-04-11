@@ -1,0 +1,123 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Sign up</h4>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="modalRef.hide()"
+  >
+    <span id="close-button" aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="container">
+    <form
+      autocomplete="off"
+      [formGroup]="registerForm"
+      (ngSubmit)="register($event)"
+    >
+      <div class="form-group">
+        <input
+          type="email"
+          class="form-control"
+          id="Email"
+          placeholder="Enter email..."
+          formControlName="email"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            registerForm.controls['email'].hasError('required') &&
+            registerForm.controls['email'].touched
+          "
+        >
+          Please enter email
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            registerForm.controls['email'].hasError('pattern') &&
+            registerForm.controls['email'].touched
+          "
+        >
+          Please enter valid email
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          class="form-control"
+          id="pwd"
+          placeholder="Enter password..."
+          formControlName="password"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            registerForm.controls['password'].hasError('required') &&
+            registerForm.controls['password'].touched
+          "
+        >
+          Please enter password
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          placeholder="Enter name..."
+          formControlName="name"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            registerForm.controls['name'].hasError('required') &&
+            registerForm.controls['name'].touched
+          "
+        >
+          Please enter name
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 form-group">
+          <input
+            type="text"
+            class="form-control"
+            #dp="bsDatepicker"
+            bsDatepicker
+            [bsValue]="bsValue"
+            formControlName="dob"
+            placeholder="Enter date of birth..."
+          />
+          <button
+            type="button"
+            class="btn btn-success date-picker-btn profile-date"
+            (click)="dp.toggle()"
+            [attr.aria-expanded]="dp.isOpen"
+          >
+            <i class="fa fa-calendar"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group form-check">
+        <button type="submit" class="login-btn btn btn-sm">
+          Submit
+        </button>
+
+        <button
+          type="button"
+          class="register-btn btn btn-sm pull-right"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

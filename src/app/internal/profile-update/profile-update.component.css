@@ -1,0 +1,116 @@
+.close {
+  outline: none;
+}
+
+#close-button:hover,
+#close-button:active {
+  outline: none;
+  box-shadow: none;
+}
+
+#close-button:active {
+  color: #a46565;
+}
+.modal-body .btn.btn-primary {
+  background: #ff5b8d;
+  text-transform: uppercase;
+  padding: 12px 26px !important;
+  border: none;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 3px;
+}
+.modal-header h3 {
+  font-size: 20px;
+}
+.pro-pop-left img {
+  background: #ddd;
+  width: 100px;
+  margin-right: 15px;
+}
+.pro-pop-left {
+  margin-bottom: 15px;
+}
+button.btn.btn-success.date-picker-btn.profile-date {
+  position: absolute;
+  top: 8px;
+  right: 25px;
+  color: #ff5b8d;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  padding: 0px;
+}
+
+
+.pro_img_wrap {
+    height: 160px;
+    width: 160px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    margin: 0 auto 20px;
+    position: relative;
+}
+.pro_img_wrap .e_pro_img {
+    height: 100%;
+    width: 100%!important;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    text-align: center;
+}
+.e_loader_gif{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.pro_img_wrap input#profile_pic {
+    display: none;
+}
+.pro_img_wrap label {
+    position: absolute;
+    bottom: 0;
+    height: 30px;
+    width: 30px;
+    background: #ff5b8d;
+    right: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    margin: 0;
+    text-align: center;
+    color: #fff;
+    padding: 5px 0;
+}
+.pro-pop-right textarea.form-control {
+    height: 150px;
+}
+form.edit_profile_form button[type="submit"].btn {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 150px;
+    display: block;
+    font-size: 14px!important;
+}
+
+
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 750px;
+    border-radius: 0px !important;
+    margin: 1.75rem auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 90%;
+  }
+}

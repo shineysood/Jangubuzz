@@ -1,0 +1,89 @@
+.card {
+  border-radius: 0px;
+  border: none;
+  background: #f9f9f9;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+.card-header h2 {
+  font-size: 19px;
+}
+.card-header {
+  background: transparent;
+  border-bottom: 0px;
+}
+.card input {
+  border: 1px solid #ececec;
+  border-radius: 0px;
+  padding: 15px;
+  height: 45px;
+  font-weight: 300 !important;
+}
+.card button {
+  background: #ff5b8d;
+  text-transform: uppercase;
+  padding: 12px 26px !important;
+  border: none;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 0px;
+}
+.card-body {
+  flex: 1 1 auto;
+  padding: 0px 15px 15px;
+}
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 91, 141, 0.1) !important;
+}
+.modal-header h3 {
+  font-size: 20px;
+}
+button.popup-btn-design {
+  background: #ff5b8d;
+  text-transform: uppercase;
+  padding: 12px 26px !important;
+  border: none;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 0px;
+}
+
+.modal-body input {
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-bottom: 20px;
+}
+
+.text-danger {
+  margin: -14px 0px 15px 5px;
+}
+
+.fa.fa-check {
+  color: green;
+  font-weight: 400;
+}
+
+.fa.fa-times {
+  font-weight: 400;
+  color: red;
+}
+.form-group.confirm-password span {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.form-group.confirm-password {
+  position: relative;
+}

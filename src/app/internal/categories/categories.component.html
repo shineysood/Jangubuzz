@@ -1,0 +1,35 @@
+<div class="modal-body">
+  <span class="cross" (click)="hide_modal()">&times;</span>
+  <ul>
+    <li (click)="create_listing('eventServiceListingType')">
+      <div class="content">
+        <h4>Services</h4>
+        <h5>List your service</h5>
+        <!-- <p>Earn up to $22 a month hosting in Newyork</p>
+        <h6>Learn about hosting your home</h6> -->
+      </div>
+      <img class="icons1" src="assets/images/service_icon.png" />
+    </li>
+
+    <li (click)="create_listing('eventSpaceListingType')">
+      <div class="content">
+        <h4>Spaces</h4>
+        <h5>List your place</h5>
+        <!-- <p>Earn up to $22 a month hosting in Newyork</p> -->
+        <!-- <h6>Learn about hosting your home</h6> -->
+      </div>
+      <img class="icons2" src="assets/images/space_icon.png" />
+    </li>
+
+    <li (click)="create_listing('eventListingType')">
+      <div class="content">
+        <h4>Experiences</h4>
+        <h5>Host an experience</h5>
+        <!-- <p>Earn up to $22 a month hosting in Newyork</p>
+        <h6>Learn about hosting your home</h6> -->
+      </div>
+      <img class="icons3" src="assets/images/exp.png" />
+    </li>
+  </ul>
+</div>
+<!-- <div class="modal-footer"></div> -->

@@ -1,0 +1,77 @@
+.modal-dialog {
+  max-width: 350px;
+  height: auto;
+  min-height: 300px;
+  background: #fff;
+  top: 50% !important;
+  position: absolute;
+  width: 90%;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+.modal-content {
+  border-radius: 0px !important;
+  border: none !important;
+}
+img.icons2,
+img.icons1 {
+  filter: brightness(0);
+}
+.modal-body ul {
+  padding: 0px;
+}
+
+.modal-body ul li {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 5px 10px;
+  justify-content: space-between;
+}
+.modal-body ul li:hover {
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
+.modal-body ul li img {
+  width: 28px;
+}
+.content h6 {
+  font-size: 14px;
+  color: #666;
+}
+
+.content p {
+  font-size: 12px;
+  color: #8a8a8a;
+}
+.content h5 {
+  font-size: 14px;
+  color: #666;
+}
+
+.content h4 {
+  text-transform: uppercase;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+span.cross {
+  position: absolute;
+  right: 0px;
+  width: 30px;
+  height: 30px;
+  font-size: 22px;
+  text-align: center;
+  z-index: 9;
+  cursor: pointer;
+  top: 0px;
+  border-top-right-radius: 5px;
+}
+.modal-content {
+  border-radius: 0px !important;
+}
+.modal-body ul li:last-child {
+  border: none !important;
+}

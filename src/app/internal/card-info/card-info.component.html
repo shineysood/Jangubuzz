@@ -1,0 +1,121 @@
+<div class="container">
+  <div class="modal-header">
+    <h3>Add Card Information</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span id="close-button" aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- form to save card infomation -->
+    <form [formGroup]="cardInfoForm" autocomplete="off" (ngSubmit)="addCard()">
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="cardName"
+          placeholder="Name"
+        />
+      </div>
+      <div
+        *ngIf="
+          cardInfoForm.controls['cardName'].hasError('required') &&
+          cardInfoForm.controls['cardName'].touched
+        "
+        class="text-danger"
+      >
+        Please enter card name
+      </div>
+      <div class="form-group">
+        <input
+          type="text"
+          formControlName="cardNumber"
+          class="form-control"
+          placeholder="Number"
+        />
+      </div>
+      <div
+        *ngIf="
+          cardInfoForm.controls['cardNumber'].hasError('required') &&
+          cardInfoForm.controls['cardNumber'].touched
+        "
+        class="text-danger"
+      >
+        Please enter card number
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="cardCvc"
+              placeholder="CVC"
+            />
+          </div>
+          <div
+            *ngIf="
+              cardInfoForm.controls['cardCvc'].hasError('required') &&
+              cardInfoForm.controls['cardCvc'].touched
+            "
+            class="text-danger"
+          >
+            Please enter card CVC
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="expMonth"
+              placeholder="Exp. month"
+            />
+          </div>
+          <div
+            *ngIf="
+              cardInfoForm.controls['expMonth'].hasError('required') &&
+              cardInfoForm.controls['expMonth'].touched
+            "
+            class="text-danger"
+          >
+            Please enter expiry month
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="expYear"
+              placeholder="Exp. year"
+            />
+          </div>
+          <div
+            *ngIf="
+              cardInfoForm.controls['expYear'].hasError('required') &&
+              cardInfoForm.controls['expYear'].touched
+            "
+            class="text-danger"
+          >
+            Please enter expiry year
+          </div>
+        </div>
+      </div>
+
+      <p>
+        Payment information you provide above will be saved as your default
+        future payment method for tickets and services
+      </p>
+
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+    <!-- end of card information form -->
+  </div>
+</div>

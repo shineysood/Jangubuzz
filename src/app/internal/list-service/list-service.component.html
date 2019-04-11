@@ -1,0 +1,191 @@
+<form [formGroup]="service_form" (ngSubmit)="addService()">
+  <div class="form-area">
+    <h3>Basic Information</h3>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input
+            id="title"
+            type="text"
+            class="form-control"
+            placeholder="Title ..."
+            formControlName="title"
+          />
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="desc">Description</label>
+          <textarea
+            id="desc"
+            class="form-control"
+            placeholder="Description ..."
+            formControlName="description"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="policy">Policy</label>
+          <select formControlName="policy">
+            <option value="no" selected>Free cancellation</option>
+            <option value="oneDay">1 day cancellation policy</option>
+            <option value="sevenDay">7 Days cancellation policy</option>
+            <option value="thirtyDay">30 days cancellation policy</option>
+          </select>
+        </div>
+        <div class="policy_desc">
+          <p
+            *ngIf="service_form.controls['policy'].value === 'sevenDay'"
+            id="cancel_policy"
+          >
+            Cancellation is free if done within 7 days of booking confirmation.
+            <br />
+            N.B. Service charges are non-refundable.
+          </p>
+          <p
+            *ngIf="service_form.controls['policy'].value === 'no'"
+            id="cancel_policy"
+          >
+            Cancellation is free and exempt from all applicable cancellation
+            charges.<br />
+            N.B. Service charges are non-refundable.
+          </p>
+          <p
+            *ngIf="service_form.controls['policy'].value === 'oneDay'"
+            id="cancel_policy"
+          >
+            Cancellation is free if done within one day of booking confirmation.
+            <br />
+            N.B. Service charges are non-refundable.
+          </p>
+          <p
+            *ngIf="service_form.controls['policy'].value === 'thirtyDay'"
+            id="cancel_policy"
+          >
+            Cancellation is free if done within 30 days of booking confirmation.
+            <br />
+            N.B. Service charges are non-refundable.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="currency">Currency</label>
+          <select id="currency" class="form-control" formControlName="currency">
+            <option value="cad" selected>CAD</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-area">
+    <h3>Upload a listing image</h3>
+    <div class="form-group">
+       <div class="upload-img">
+      <img *ngIf="listing_event_image_url" [src]="listing_event_image_url" />
+      <img *ngIf="!listing_event_image_url" src="assets/images/imagePlaceholder.png" />
+      <input
+        id="listing_image"
+        (change)="updateSpaceImage($event)"
+        type="file"
+        class="form-control"
+      />
+    </div>
+  </div>
+  </div>
+
+  <div class="form-area">
+    <h3>Service</h3>
+    <div class="form-group">
+      <select formControlName="service">
+        <ng-container *ngFor="let item of services">
+          <option value="{{ item.payload.doc.id }}">
+            {{ item.payload.doc.id }}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+  </div>
+  <div class="form-area">
+    <h3>Location information</h3>
+    <h5>Which city will you host your experience in?</h5>
+    <div>
+      <div class="form-group">
+        <label for="location_address">Location address</label>
+        <input
+          (blur)="setCurrentPosition()"
+          placeholder="Location address"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="off"
+          type="text"
+          formControlName="locationAddress"
+          id="location_address"
+          class="form-control"
+          #search
+        />
+      </div>
+      <agm-map
+        [latitude]="latitude"
+        [longitude]="longitude"
+        [scrollwheel]="false"
+        [zoom]="zoom"
+      >
+        <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+      </agm-map>
+    </div>
+  </div>
+  <div class="form-area">
+    <h3>Set Daily Availability</h3>
+    <!-- start time -->
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label> Daily start time</label>
+          <input atp-time-picker value="19:00" formControlName="startDate" />
+        </div>
+      </div>
+      <!-- end time -->
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label> Daily end time</label>
+          <input atp-time-picker value="19:00" formControlName="endDate" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-area">
+    <h3>Pricing information</h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="price_per_hour">Price per hour</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="perHourPrice"
+            id="price_per_hour"
+          />
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="min_hour">Min hours per booking</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="minHour"
+            id="min_hours"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary btn-sm" type="submit">Save</button>
+  </div>
+</form>

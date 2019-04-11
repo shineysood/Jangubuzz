@@ -1,0 +1,48 @@
+<div class="explore-section">
+  <div class="container">
+    <h3>Explore Spaces & Services</h3>
+
+    <div *ngIf="loading" style="text-align: -webkit-center;">
+      <img class="loader" src="assets/images/loader.gif" />
+    </div>
+
+    <ng-container *ngIf="!loading">
+      <ngx-slick-carousel
+        class="carousel"
+        #slickModal="slick-carousel"
+        [config]="slideConfig"
+        (init)="slickInit($event)"
+        (breakpoint)="breakpoint($event)"
+        (afterChange)="afterChange($event)"
+        (beforeChange)="beforeChange($event)"
+      >
+        <div
+          ngxSlickItem
+          *ngFor="let slide of spacesAndServices | sort:'time'; let i = index"
+          class="slide"
+        >
+          <img
+            class="clickable"
+            (click)="open_listing(slide)"
+            src="{{ slide.payload.listingImageUrl }}"
+            alt=""
+            width="100%"
+            height="100%"
+          />
+          <h3
+            *ngIf="slide.payload.listingType === 'eventServiceListingType'"
+            class="clickable"
+          >
+            {{ slide.payload.title }}
+          </h3>
+          <h3
+            *ngIf="slide.payload.listingType === 'eventSpaceListingType'"
+            class="clickable"
+          >
+            {{ slide.payload.locationName }}
+          </h3>
+        </div>
+      </ngx-slick-carousel>
+    </ng-container>
+  </div>
+</div>

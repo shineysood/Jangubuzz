@@ -1,0 +1,141 @@
+.service_div {
+  margin-top: 100px;
+  min-height: 80vh;
+}
+
+.loader_list {
+  text-align: center;
+}
+
+.loader_list img {
+  filter: brightness(4);
+}
+
+.experiences-section h3 {
+  font-size: 24px;
+
+  color: #444444;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+.experiences-section {
+  padding: 30px 0px 0px;
+}
+
+.list_images {
+  height: 400px;
+  width: 350px;
+}
+
+h4 {
+  text-transform: uppercase;
+}
+
+.experiences-section h4 {
+  position: absolute;
+  top: 49%;
+  color: #fff;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  text-align: center;
+  width: 100%;
+}
+
+.experiences-section img {
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 30px;
+  filter: brightness(80%);
+  object-fit: cover;
+}
+.experiences-section h4::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin: 0px auto;
+  background: #fff;
+  margin-top: 10px;
+  width: 50px;
+}
+.exp-header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 25px;
+}
+.exp-header button {
+  background: #ff5b8d;
+  text-transform: uppercase;
+  padding: 8px 26px !important;
+  border: navajowhite;
+  color: #fff;
+  font-size: 12px;
+}
+
+.loader {
+  filter: brightness(3) !important;
+  height: 200px;
+  width: 200px !important;
+}
+
+.row {
+  justify-content: center;
+}
+.exp-box:hover img {
+  filter: brightness(40%) !important;
+}
+.exp-box {
+  cursor: pointer;
+}
+.content-box.row {
+  justify-content: left;
+}
+.card-header h5 {
+    color: #252525;
+    font-size: 20px;
+}
+.card-header, .card-footer {
+    background: #fff;
+}
+.card-header p {
+    font-size: 13px;
+    color: #ff5b8d;
+    margin: 0px;
+}
+.card-body, .card-body img {
+    padding: 0px;
+    border-radius: 0px !important;
+      margin: 0px;
+}
+.card {
+    border-radius: 0px;
+    border: 1px solid #f1f0f0;
+        margin-bottom: 40px;
+}
+.card-footer p {
+    color: #666;
+    font-size: 14px;
+    margin: 0px;
+}
+.card-footer small {
+    color: #000;
+    font-size: 11px;
+}
+@media (max-width: 991px) {
+  .experiences-section h4 {
+    font-size: 18px;
+  }
+}
+@media (max-width: 767px) {
+  .experiences-section h3 {
+    font-size: 20px;
+  }
+  .list_images {
+    height: 200px;
+  }
+  .experiences-section[_ngcontent-c4] {
+    padding: 0px 0px 0px;
+}
+}

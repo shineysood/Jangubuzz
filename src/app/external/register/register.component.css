@@ -1,0 +1,72 @@
+* {
+  font-size: 14px;
+}
+
+.date-picker-btn:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+
+.modal-title {
+  font-size: 18px !important;
+}
+
+#close-button {
+  font-size: 25px !important;
+}
+
+.login-btn {
+  width: 25%;
+  margin-left: -5%;
+  background-color: #ff5b8d;
+  color: white;
+  font-weight: 600;
+  border-radius: 0px;
+}
+
+#close-button:hover,
+#close-button:active {
+  outline: none;
+  box-shadow: none;
+}
+
+#close-button:active {
+  color: #a46565;
+}
+
+.close {
+  outline: none;
+}
+
+.forgot-password {
+  color: #e3195b;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.forgot-password:hover {
+  color: #ff0037;
+}
+
+.register-btn {
+  border: 1px solid #d51278;
+  color: #e3195b;
+}
+
+.register-btn {
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+button.btn.btn-success.date-picker-btn.profile-date {
+    position: absolute;
+    top: 8px;
+    right: 25px;
+    color: #ff5b8d;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    padding: 0px;
+}
+.form-group.form-check {
+    margin-top: 20px;
+}

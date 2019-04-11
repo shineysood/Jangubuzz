@@ -1,0 +1,155 @@
+.dashboard-header .navbar-expand-lg .navbar-collapse {
+
+  justify-content: flex-end;
+  flex-basis: auto;
+}
+
+.dashboard-header button.navbar-brand img {
+  background: transparent;
+  height: 35px;
+  width: auto;
+}
+
+.profile-drop img {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  object-fit: cover;
+  margin-left: 10px;
+}
+
+.dashboard-header {
+  background: #421a3c;
+}
+a#navbarDropdown::after {
+  display: inline-block;
+  margin-left: 0.255em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}
+
+.dashboard-header ul.navbar-nav li button {
+  color: #fff;
+  background: transparent;
+  border: 0;
+  font-size: 16px;
+  margin-left: 25px;
+  font-weight: 400;
+}
+
+.dashboard-header ul.navbar-nav li button:hover {
+  outline: none;
+  border: 0;
+  cursor: pointer;
+}
+.fa.fa-wrench,
+.fa.fa-sign-out {
+  margin: 0 15px 0 0;
+}
+
+.dashboard-header ul.navbar-nav li button:active {
+  outline: none;
+  border: 0;
+  cursor: pointer;
+  color: red;
+}
+
+.profile-drop .dropdown-toggle::after {
+  display: none;
+}
+
+a#navbarDropdown {
+  color: #fff !important;
+  font-size: 16px !important;
+  margin-left: 25px !important;
+}
+
+.dashboard-header .profile-drop button {
+  color: #000;
+  margin: 0px !important;
+  font-size: 14px !important;
+}
+.dashboard-header nav {
+  padding: 10px 0px;
+}
+.sticky {
+  position: fixed !important;
+  top: 0px;
+  background: #421a3c;
+  padding: 10px 0px !important;
+  width: 100%;
+  left: 0px;
+  z-index: 99;
+}
+.dropdown-menu.show button {
+  color: #000 !important;
+}
+button.navbar-toggler {
+    background: transparent;
+    width: 38px;
+    padding: 3px;
+    outline: none;
+    margin-right: 10px;
+}
+
+button.navbar-toggler img {
+    width: 30px;
+    filter: grayscale(100%)brightness(200%);
+}
+button.navbar-toggler:hover img {
+    width: 30px;
+    filter: initial;
+}
+.nav-item.dropdown.profile-drop.phone-show{display: none;}
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    position: absolute;
+    right: 0px;
+    max-width: fit-content;
+    left: auto;
+}
+button:hover {
+    background: transparent!important;
+    color: #ff5b8d !important;
+    border: transparent !important;
+}
+.dropdown-menu.show {
+    right: 0px;
+    left: auto !important;
+}
+  
+@media screen and (max-width: 991px) {
+.dashboard-header .navbar-expand-lg .navbar-collapse {
+
+    width: 100%;
+}
+.nav-item.dropdown.profile-drop{display: none;}
+.nav-item.dropdown.profile-drop.phone-show{
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
+.dashboard-header ul.navbar-nav li button {
+    color: #fff;
+    background: transparent;
+    border: 0;
+    font-size: 16px;
+    margin-left: 0px;
+    font-weight: 400;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+    text-align: left;
+}
+}
+@media screen and (max-width: 767px) {
+a#navbarDropdown {
+    color: #fff !important;
+    font-size: 12px !important;
+    margin-left: 25px !important;
+}
+button.navbar-toggler img {
+    width: 20px;}
+}

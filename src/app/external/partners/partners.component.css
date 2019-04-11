@@ -1,0 +1,29 @@
+.our-partners-section {
+  padding: 60px 0px;
+  text-align: center;
+}
+.our-partners-section h3 {
+  margin-bottom: 5%;
+  font-size: 24px;
+  text-transform: uppercase;
+  color: #444;
+  font-weight: 600;
+}
+
+img {
+  height: 200px;
+}
+.our-partners-section img {
+  max-width: 50%;
+  height: auto;
+}
+.our-partners-section div {
+  align-items: center;
+}
+
+@media (max-width: 767px) {
+  .our-partners-section img {
+    max-width: 25%;
+    height: auto;
+  }
+}

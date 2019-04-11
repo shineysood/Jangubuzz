@@ -1,0 +1,105 @@
+<div *ngIf="user_logged" class="profile-page">
+  <div class="">
+    <div class="row">
+      <div class="profile-main">
+        <div class="pro-pic">
+          <img
+            *ngIf="user_logged.photoURL"
+            class="profile-img"
+            src="{{ user_logged.photoURL }}"
+          />
+          <img
+            *ngIf="!user_logged.photoURL"
+            src="assets/images/user.png"
+          />
+          <h4>{{ verifications.name }} Provided</h4>
+          <h5 *ngIf="verifications.emailVerified">
+            <img src="assets/images/tick.png" alt="img" />
+            Email Address
+          </h5>
+          <h5 *ngIf="!verifications.emailVerified">
+            <img src="assets/images/cross.png" alt="img" />
+            Email Address
+          </h5>
+          <br /><br />
+          <button
+            type="button"
+            class="btn btn-primary edit-profile-button"
+            (click)="openModal(template)"
+          >
+            <i class="fa fa-pencil" aria-hidden="true"></i>Edit Profile
+          </button>
+        </div>
+
+        <div class="profile-content">
+          <h3>Hi, I’m {{ user_logged.displayName }}</h3>
+          <div class="sub-detail">
+            <h6>
+              <i class="fa fa-birthday-cake" aria-hidden="true"></i>
+              {{ user_logged.dob.seconds * 1000 | date }}
+            </h6>
+          </div>
+          <h4>About</h4>
+          <h5 class="pre_tag">
+            <pre>
+                {{ user_logged.bio }}
+              </pre
+            >
+          </h5>
+          <h4>Event Lists</h4>
+
+          <ng-container>
+            NO LISTINGS
+          </ng-container>
+
+          <!-- <ng-container>
+            <ul class="event-lists">
+              <li>
+                <h5>Lorem ipsum dolor</h5>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Quis ipsum suspendisse ultrices gravida.
+                </p>
+              </li>
+              <li>
+                <h5>Lorem ipsum dolor</h5>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Quis ipsum suspendisse ultrices gravida.
+                </p>
+              </li>
+              <li>
+                <h5>Lorem ipsum dolor</h5>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Quis ipsum suspendisse ultrices gravida.
+                </p>
+              </li>
+              <li>
+                <h5>Lorem ipsum dolor</h5>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Quis ipsum suspendisse ultrices gravida.
+                </p>
+              </li>
+            </ul>
+          </ng-container> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <app-profile-update
+    [name]="name"
+    [photoURL]="photoURL"
+    [modalRef]="modalRef"
+    [bio]="bio"
+    [dob]="dob"
+  ></app-profile-update>
+</ng-template>

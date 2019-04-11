@@ -1,0 +1,25 @@
+<!-- -------------------------------------------------------------------------------------------------------------- -->
+<!-- for space type listing -->
+<!-- -------------------------------------------------------------------------------------------------------------- -->
+<div *ngIf="listingType === 'eventSpaceListingType'" class="container">
+  <app-list-space [listingType]="listingType" [userId]="userId">
+  </app-list-space>
+</div>
+
+<!-- -------------------------------------------------------------------------------------------------------------- -->
+<!-- for service type listing -->
+<!-- -------------------------------------------------------------------------------------------------------------- -->
+
+<div *ngIf="listingType === 'eventServiceListingType'" class="container">
+  <app-list-service [listingType]="listingType" [userId]="userId">
+  </app-list-service>
+</div>
+
+<!-- -------------------------------------------------------------------------------------------------------------- -->
+<!-- for experience type listing -->
+<!-- -------------------------------------------------------------------------------------------------------------- -->
+
+<div *ngIf="listingType === 'eventListingType'" class="container">
+  <app-list-experience [listingType]="listingType" [userId]="userId">
+  </app-list-experience>
+</div>

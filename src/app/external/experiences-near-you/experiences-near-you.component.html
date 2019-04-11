@@ -1,0 +1,33 @@
+<div class="experiences-section">
+  <div class="container">
+    <div class="exp-header">
+      <h3>Experiences Near You</h3>
+      <button type="button" routerLink="/experiences" class="btn-sm">
+        View All
+      </button>
+    </div>
+    <div class="row rxp-content">
+      <div *ngIf="loading">
+        <img class="loader" src="assets/images/loader.gif" />
+      </div>
+
+      <ng-container *ngIf="!loading">
+        <div class="content-box row">
+          <div
+            *ngFor="let item of experiences | sort:'time'; let i = index"
+            class="col-md-4 exp-box"
+          >
+            <ng-container *ngIf="i < 3">
+              <img
+                (click)="open_experience(item.id)"
+                class="list_images"
+                src="{{ item.payload.listingImageUrl }}"
+              />
+              <h4>{{ item.payload.title }}</h4>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

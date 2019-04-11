@@ -1,0 +1,117 @@
+.service-bar {
+  min-height: 100vh;
+  height: 700px;
+  width: 100%;
+  background-size: 100% 100% !important;
+  background: url("/assets/images/home-background.jpg");
+  float: left;
+  position: relative;
+  background-repeat: no-repeat !important;
+}
+.services {
+  width: 100%;
+  padding: 50px 0px;
+  float: left;
+}
+.services img {
+  display: block;
+  height: 40px;
+  margin-bottom: 30px;
+}
+.service-box1,
+.service-box2,
+.service-box3 {
+  padding: 20px;
+  min-height: 390px;
+}
+
+.services {
+  float: left;
+  width: 100%;
+  padding: 60px 0px;
+}
+.services div h3 {
+  font-size: 24px;
+}
+.service-box1 {
+  background-color: #ff5b8d !important;
+  color: #fff;
+  background-image: url(/assets/images/service01.png);
+  background-repeat: no-repeat;
+  background-position: right;
+}
+.service-box2 {
+  background-color: #f2c967 !important;
+  color: #fff;
+  background-image: url(/assets/images/service02.png);
+  background-repeat: no-repeat;
+  background-position: right;
+}
+.service-box3 {
+  background-color: #fbf3ea !important;
+  background-image: url(/assets/images/service03.png);
+  background-repeat: no-repeat;
+  background-position: right;
+}
+.service-box1 p {
+  max-width: 240px;
+}
+.services button {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 13px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: normal;
+  cursor: pointer;
+}
+.service-box3 button {
+  color: #000;
+  border: 1px solid #000;
+}
+.services p {
+  font-weight: normal;
+  margin: 50px 0px 60px;
+}
+.service-bar::before {
+  content: "";
+  background: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+
+@media(max-width:991px) {
+
+.service-bar {
+    min-height: auto;
+    height: 700px;
+    width: 100%;
+    background-size: cover !important;
+    background: url(/assets/images/home-background.jpg);
+    float: left;
+    position: relative;
+    background-repeat: no-repeat !important;
+}
+.service-box2, .service-box3 {
+    margin-top: 20px;
+    background-size: cover;
+}
+.service-box1 {
+    background-size: cover;
+}
+
+}
+
+@media(max-width:767px) {
+.service-bar{
+    min-height: auto;
+    height: 530px;
+    }
+  }

@@ -1,0 +1,114 @@
+<div *ngIf="active === 'login'">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Login</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span id="close-button" aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form autocomplete="off" [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class="form-group">
+          <input
+            type="email"
+            class="form-control"
+            id="E-mail"
+            placeholder="Enter email..."
+            formControlName="email"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              loginForm.controls['email'].hasError('required') &&
+              loginForm.controls['email'].touched
+            "
+          >
+            Please enter email
+          </div>
+          <div
+            class="text-danger"
+            *ngIf="
+              loginForm.controls['email'].hasError('pattern') &&
+              loginForm.controls['email'].touched
+            "
+          >
+            Please enter valid email
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            id="pwd"
+            placeholder="Enter password..."
+            formControlName="password"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              loginForm.controls['password'].hasError('required') &&
+              loginForm.controls['password'].touched
+            "
+          >
+            Please enter password
+          </div>
+        </div>
+        <div class="form-group form-check">
+          <button
+            [disabled]="loggingIn"
+            type="submit"
+            class="login-btn btn btn-sm"
+          >
+            <span *ngIf="!loggingIn">Login</span>
+            <span *ngIf="loggingIn">
+              <i
+                class="fa fa-spinner fa-spin"
+                style="font-size:24px"
+              ></i> 
+            </span>
+          </button>
+          <span class="forgot-password pull-right" (click)="forgotPassword()"
+            >Forgot password ?</span
+          >
+        </div>
+      </form>
+      <hr />
+
+      <span>New user ?</span>
+      <button
+        type="button"
+        class="register-btn btn btn-sm pull-right"
+        (click)="registerClicked()"
+      >
+        Register here
+      </button>
+      <button
+        type="button"
+        class="register-btn btn btn-sm pull-right"
+        (click)="googleLogin()"
+      >
+        Login with Google
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="active === 'register'">
+  <app-register
+    [modalRef]="modalRef"
+    (cancelRegistration)="cancelRegistration()"
+  ></app-register>
+</div>
+
+<div *ngIf="active === 'forgotPassword'">
+  <app-forgot-password
+    [modalRef]="modalRef"
+    (cancelRegistration)="cancelRegistration()"
+  ></app-forgot-password>
+</div>
