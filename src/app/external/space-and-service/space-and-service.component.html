@@ -99,14 +99,19 @@
     </div>
     <div class="col-md-8">
       <!-- comments div, please make it scrollable -->
-      <div class="input-comment d-flex">
+      <div *ngIf="online_user" class="input-comment d-flex">
         <div class="comment-left">
-          <img src="assets/images/user.png" />
+          <img src="{{ online_user.profileImageUrl }}" />
         </div>
         <div class="comment-right">
-          <h4>Donnel Albert</h4>
-          <textarea type="text" placeholder="Enter Your Comment"></textarea>
-          <button>Send</button>
+          <h4>{{ online_user.name }}</h4>
+          <textarea
+            type="text"
+            name="comment"
+            [(ngModel)]="comment"
+            placeholder="Enter Your Comment"
+          ></textarea>
+          <button (click)="comments()">Send</button>
         </div>
       </div>
 
@@ -116,6 +121,8 @@
             <div class="comment-left">
               <img src="assets/images/user.png" />
             </div>
+
+            <!-- comments part -->
             <div class="comment-right">
               <h4>Donnel Albert</h4>
               <h5>
@@ -125,34 +132,7 @@
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </pre
               >
             </div>
-          </li>
-          <li class="d-flex">
-            <div class="comment-left">
-              <img src="assets/images/user.png" />
-            </div>
-            <div class="comment-right">
-              <h4>Donnel Albert</h4>
-              <h5>
-                <i class="fa fa-clock-o" aria-hidden="true"></i> 22 Dec 2018
-              </h5>
-              <pre>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </pre
-              >
-            </div>
-          </li>
-          <li class="d-flex">
-            <div class="comment-left">
-              <img src="assets/images/user.png" />
-            </div>
-            <div class="comment-right">
-              <h4>Donnel Albert</h4>
-              <h5>
-                <i class="fa fa-clock-o" aria-hidden="true"></i> 22 Dec 2018
-              </h5>
-              <pre>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </pre
-              >
-            </div>
+            <!-- end -->
           </li>
         </ul>
       </div>

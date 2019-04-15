@@ -115,7 +115,7 @@ export class LoginComponent implements OnInit {
               );
             }
             this.modalRef.hide();
-            this.router.navigateByUrl("/settings");
+            this.router.navigateByUrl("/");
           });
       })
       .catch(err => {
@@ -138,7 +138,7 @@ export class LoginComponent implements OnInit {
         .signInWithEmailAndPassword(email, password)
         .then(result => {
           this.modalRef.hide();
-          this.router.navigateByUrl("/settings");
+          this.router.navigateByUrl("/");
           this.loggingIn = false;
         })
         .catch(err => {

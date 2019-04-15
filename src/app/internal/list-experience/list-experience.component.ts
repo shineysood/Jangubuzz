@@ -230,19 +230,19 @@ export class ListExperienceComponent implements OnInit {
     }
     var short_add = ci + ", " + st + ", " + co;
 
-    var sd = new Date(
-      this.experience_form.controls["startDate"].value
-    ).toDateString();
-    var st = this.experience_form.controls["startTime"].value;
-    var startDate = moment(sd + " " + st).toDate();
+    // var sd = new Date(
+    //   this.experience_form.controls["startDate"].value
+    // ).toDateString();
+    // var st = this.experience_form.controls["startTime"].value;
+    // var startDate = moment(sd + " " + st).toDate();
 
-    var ed = new Date(
-      this.experience_form.controls["endDate"].value
-    ).toDateString();
-    var et = this.experience_form.controls["endTime"].value;
-    var endDate = moment(ed + " " + et).toDate();
+    // var ed = new Date(
+    //   this.experience_form.controls["endDate"].value
+    // ).toDateString();
+    // var et = this.experience_form.controls["endTime"].value;
+    // var endDate = moment(ed + " " + et).toDate();
 
-    console.log(startDate, endDate);
+    // console.log(startDate, endDate);
 
     listingDoc
       .set(
@@ -251,7 +251,7 @@ export class ListExperienceComponent implements OnInit {
           currency: this.experience_form.controls["currency"].value,
           dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
           description: this.experience_form.controls["description"].value,
-          endDate: endDate.toString(),
+          endDate: firebase.firestore.Timestamp.fromDate(this.experience_form.controls["endDate"].value),
           endDay: this.experience_form.controls["endDate"].value
             .toString()
             .split(" ")[0],
@@ -270,7 +270,7 @@ export class ListExperienceComponent implements OnInit {
           locationName: this.experience_form.controls["locationName"].value,
           locationShortAddress: short_add,
           policy: this.experience_form.controls["policy"].value,
-          startDate: startDate.toString(),
+          startDate: firebase.firestore.Timestamp.fromDate(this.experience_form.controls["startDate"].value),
           startDay: this.experience_form.controls["startDate"].value
             .toString()
             .split(" ")[0],
@@ -312,5 +312,10 @@ export class ListExperienceComponent implements OnInit {
       });
   }
 
-  set() {}
+  set() {
+    var d = firebase.firestore.Timestamp.fromDate(
+      this.experience_form.controls["endDate"].value
+    );
+    console.log(d);
+  }
 }

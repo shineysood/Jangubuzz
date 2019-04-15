@@ -7,7 +7,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
 import { AngularFireFunctions } from "@angular/fire/functions";
-import { BsModalService } from "ngx-bootstrap/modal";
+import * as firebase from "firebase/app";
 
 @Component({
   selector: "app-space-and-service",
@@ -20,6 +20,8 @@ export class SpaceAndServiceComponent implements OnInit {
   loading = true;
   listing_user;
   listing_id;
+  online_user;
+  comment;
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
@@ -31,8 +33,19 @@ export class SpaceAndServiceComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.afAuth.auth.currentUser) {
+      var online_user_doc: AngularFirestoreDocument = this.afs.doc(
+        "user/" + this.afAuth.auth.currentUser.uid
+      );
+      online_user_doc.snapshotChanges().subscribe(data => {
+        this.online_user = data.payload.data();
+      });
+    }
+
     this.route.params.subscribe(data => {
       this.listing_id = data.id;
+      this.getBookings(this.listing_id);
+      this.get_comments();
       this.getServiceListing(data.id);
     });
   }
@@ -70,6 +83,64 @@ export class SpaceAndServiceComponent implements OnInit {
         );
         listing_user.snapshotChanges().subscribe(user => {
           this.listing_user = user.payload.data().name;
+        });
+      });
+  }
+
+  comments() {
+    if (this.afAuth.auth.currentUser) {
+      var comment_id = this.afs.createId();
+      const comment_doc: AngularFirestoreDocument = this.afs.doc(
+        "user/" +
+          this.afAuth.auth.currentUser.uid +
+          "/listing/" +
+          this.listing_id +
+          "/comment/" +
+          comment_id
+      );
+
+      comment_doc
+        .set(
+          {
+            message: this.comment,
+            listingId: this.listing_id,
+            dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+            dateModified: firebase.firestore.Timestamp.fromDate(new Date()),
+            userId: this.afAuth.auth.currentUser.uid,
+            baseUserId: this.listing.userId
+          },
+          { merge: true }
+        )
+        .then(data => {
+          comment_doc.snapshotChanges().subscribe(res => {
+            console.log("comment: ", res.payload.data());
+          });
+        });
+    }
+  }
+
+  getBookings(id) {
+    if (this.afAuth.auth.currentUser) {
+      this.afs
+        .collection(
+          "user/" + this.afAuth.auth.currentUser.uid + "/listing/" + id + "/job"
+        )
+        .snapshotChanges()
+        .subscribe(data => {
+          data.forEach((item, i) => {
+            console.log(data[i].payload.doc.data());
+          });
+        });
+    }
+  }
+
+  get_comments() {
+    this.afs
+      .collection("comments/")
+      .snapshotChanges()
+      .subscribe(res => {
+        res.forEach((item, i) => {
+          console.log(res[i].payload.doc.data());
         });
       });
   }
