@@ -126,6 +126,7 @@ p pre {
   color: #676767 !important;
 }
 h1.mb-3 small {
+  letter-spacing: 1px;
   display: block;
   font-size: 14px;
   margin-top: 10px;

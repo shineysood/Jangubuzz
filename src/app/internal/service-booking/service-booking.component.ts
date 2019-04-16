@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFireFunctions } from "@angular/fire/functions";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import * as moment from "moment";
+import * as firebase from "firebase/app";
 
 @Component({
   selector: "app-service-booking",
@@ -116,12 +117,16 @@ export class ServiceBookingComponent implements OnInit {
                   listingId: this.listingId,
                   userId: this.userId,
                   hostId: this.listing.userId,
-                  startDate: body.startDate,
-                  endDate: body.endDate,
+                  startDate: firebase.firestore.Timestamp.fromDate(
+                    this.service_book_form.controls["startDate"].value
+                  ),
+                  endDate: firebase.firestore.Timestamp.fromDate(
+                    this.service_book_form.controls["endDate"].value
+                  ),
                   hours: hours,
                   perHourPrice: +this.listing.perHourPrice,
                   minHour: +this.listing.minHour,
-                  email: this.service_book_form.controls["startDate"].value.toString(),
+                  email: this.service_book_form.controls["email"].value,
                   currency: this.listing.currency,
                   policy: this.listing.policy,
                   description: this.listing.description,
@@ -142,11 +147,11 @@ export class ServiceBookingComponent implements OnInit {
               )
               .then(result => {
                 book_doc.snapshotChanges().subscribe(res => {
-                  // console.log("res: ", res.payload.data());
+                  console.log("res: ", res.payload.data());
                   if (res) {
-                    alert("Booking Made Successfully");
+                    console.log("Done");
                   } else {
-                    alert("Something went wrong");
+                    console.log("Something went wrong");
                     this.router.navigateByUrl("/");
                   }
                 });
@@ -158,47 +163,5 @@ export class ServiceBookingComponent implements OnInit {
     });
   }
 
-  set_temp() {
-    var h =
-      this.service_book_form.controls["endTime"].value
-        .toString()
-        .split(":")[0] -
-      this.service_book_form.controls["startTime"].value
-        .toString()
-        .split(":")[0];
-
-    console.log(h);
-    // {
-    //   listingId: this.listingId,
-    //   userId: this.userId,
-    //   hostId: listing.userId,
-    //   startDate: body.startDate,
-    //   endDate: body.endDate,
-    //   hours: "",
-    //   perHourPrice: "",
-    //   minHour: "",
-    //   perDayPrice: "",
-    //   minDay: "",
-    //   email: "",
-    //   currency: "",
-    //   policy: "",
-    //   description: "",
-    //   damageChargeDate: "",
-    //   damageDeposit: "",
-    //   cleaningFee: "",
-    //   dateCreated: "",
-    //   listingType: "",
-    //   isHostApproved: false,
-    //   isPaid: false,
-    //   isCanceled: false,
-    //   isDamagePaid: false,
-    //   isIssues: false,
-    //   hostCanceled: false,
-    //   isPaymentError: false,
-    //   isDamageError: false,
-    //   issues: "",
-    //   paymentError: "",
-    //   damageError: ""
-    // }
-  }
+  set_temp() {}
 }

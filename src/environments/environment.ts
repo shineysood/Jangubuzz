@@ -11,6 +11,10 @@ export const environment = {
     projectId: "jangubuzz-e67f1",
     storageBucket: "jangubuzz-e67f1.appspot.com",
     messagingSenderId: "250108841131"
+  },
+  baseUrl: {
+    domain: "192.168.1.24",
+    port: 4200
   }
 };
 

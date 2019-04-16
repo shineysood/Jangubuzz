@@ -8,18 +8,23 @@
             class="profile-img"
             src="{{ user_logged.photoURL }}"
           />
-          <img
-            *ngIf="!user_logged.photoURL"
-            src="assets/images/user.png"
-          />
+          <img *ngIf="!user_logged.photoURL" src="assets/images/user.png" />
           <h4>{{ verifications.name }} Provided</h4>
           <h5 *ngIf="verifications.emailVerified">
             <img src="assets/images/tick.png" alt="img" />
-            Email Address
+            Email address
           </h5>
           <h5 *ngIf="!verifications.emailVerified">
             <img src="assets/images/cross.png" alt="img" />
-            Email Address
+            Email address
+          </h5>
+          <h5 *ngIf="verifications.phoneNumber">
+            <img src="assets/images/tick.png" alt="img" />
+            Phone number
+          </h5>
+          <h5 *ngIf="!verifications.phoneNumber">
+            <img src="assets/images/cross.png" alt="img" />
+            Phone number
           </h5>
           <br /><br />
           <button
@@ -28,6 +33,13 @@
             (click)="openModal(template)"
           >
             <i class="fa fa-pencil" aria-hidden="true"></i>Edit Profile
+          </button>
+          <button
+            type="button"
+            (click)="shareProfile()"
+            class="btn btn-primary edit-profile-button"
+          >
+            <i class="fa fa-user" aria-hidden="true"></i>Share Profile
           </button>
         </div>
 
@@ -46,48 +58,53 @@
               </pre
             >
           </h5>
-          <h4>Event Lists</h4>
+          <!-- Event lists -->
+          <h4>Events List</h4>
 
-          <ng-container>
+          <div *ngIf="user_listings.length === 0">
             NO LISTINGS
-          </ng-container>
+          </div>
 
-          <!-- <ng-container>
-            <ul class="event-lists">
-              <li>
-                <h5>Lorem ipsum dolor</h5>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Quis ipsum suspendisse ultrices gravida.
-                </p>
-              </li>
-              <li>
-                <h5>Lorem ipsum dolor</h5>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Quis ipsum suspendisse ultrices gravida.
-                </p>
-              </li>
-              <li>
-                <h5>Lorem ipsum dolor</h5>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Quis ipsum suspendisse ultrices gravida.
-                </p>
-              </li>
-              <li>
-                <h5>Lorem ipsum dolor</h5>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Quis ipsum suspendisse ultrices gravida.
-                </p>
-              </li>
-            </ul>
-          </ng-container> -->
+          <div *ngIf="user_listings.length !== 0">
+            <div class="event-lists">
+              <ng-container *ngFor="let item of user_listings">
+                <div class="card">
+                  <div class="card-header">
+                    {{ item.payload.service }}
+                  </div>
+                  <div class="card-body">
+                    <img src="{{ item.payload.listingImageUrl }}" />
+                    <h3>{{ item.payload.title }}</h3>
+                  </div>
+                  <!-- <div class="card-footer">
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-sm"
+                      (click)="delete_listing(item.id)"
+                    >
+                      Delete
+                    </button>
+                  </div> -->
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Bookings List -->
+          <h4>Bookings List</h4>
+
+          <div *ngIf="user_bookings.length === 0">
+            NO BOOKINGS
+          </div>
+
+          <div *ngIf="user_bookings.length !== 0">
+            <div class="event-lists">
+              <ng-container *ngFor="let item of user_bookings">
+                <h3>{{ item.payload.description }}</h3>
+                <h4>{{ item.payload.dateCreated.seconds * 1000 | date:'medium' }}</h4>
+              </ng-container>
+            </div>
+          </div>
         </div>
       </div>
     </div>

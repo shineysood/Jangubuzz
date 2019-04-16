@@ -48,7 +48,7 @@ const routes: Routes = [
   },
   {
     path: "profile/:uid",
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     component: ShareProfileComponent
   },
   {

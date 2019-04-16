@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
 import { AngularFireFunctions } from "@angular/fire/functions";
 import * as firebase from "firebase/app";
+import { TimeFrameItem } from "../../../../../../Cedric/Cedric_Bitcef/src/assets/charting_library/charting_library.min.d";
 
 @Component({
   selector: "app-space-and-service",
@@ -44,7 +45,7 @@ export class SpaceAndServiceComponent implements OnInit {
 
     this.route.params.subscribe(data => {
       this.listing_id = data.id;
-      this.getBookings(this.listing_id);
+      this.getListingBookings(this.listing_id);
       this.get_comments();
       this.getServiceListing(data.id);
     });
@@ -119,7 +120,8 @@ export class SpaceAndServiceComponent implements OnInit {
     }
   }
 
-  getBookings(id) {
+  getListingBookings(id) {
+    console.log(this.afAuth.auth.currentUser.uid, id);
     if (this.afAuth.auth.currentUser) {
       this.afs
         .collection(
@@ -143,5 +145,40 @@ export class SpaceAndServiceComponent implements OnInit {
           console.log(res[i].payload.doc.data());
         });
       });
+  }
+
+  
+
+  reply_comments(listing_id, comment_id) {
+    if (this.afAuth.auth.currentUser) {
+      const reply_id = this.afs.createId();
+      const reply_doc: AngularFirestoreDocument = this.afs.doc(
+        "user/listing/" +
+          listing_id +
+          "comment/" +
+          comment_id +
+          "reply/" +
+          reply_id
+      );
+
+      reply_doc
+        .set(
+          {
+            message: "",
+            listingId: "",
+            commentId: "",
+            dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+            userId: "user id that makes the comment",
+            baseUserId: "uid of the user that created the listing"
+          },
+          { merge: true }
+        )
+        .then(res => {
+          console.log("res: ", res);
+          reply_doc.snapshotChanges().subscribe(data => {
+            console.log(data.payload.data());
+          });
+        });
+    }
   }
 }
