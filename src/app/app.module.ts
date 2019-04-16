@@ -8,7 +8,7 @@ import { ProfileComponent } from "./internal/profile/profile.component";
 import { DashboardComponent } from "./internal/dashboard/dashboard.component";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-
+import { Ng2OrderModule } from 'ng2-order-pipe';
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./external/home/home.component";
@@ -118,6 +118,7 @@ import { UserBookingsComponent } from './internal/user-bookings/user-bookings.co
     UserBookingsComponent
   ],
   imports: [
+    Ng2OrderModule,
     AngularFireFunctionsModule,
     AmazingTimePickerModule,
     NgxStripeModule.forRoot("pk_test_oJupeugAVMirroj6zdxZct70"),

@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
 import { AngularFireFunctions } from "@angular/fire/functions";
 import * as firebase from "firebase/app";
-import { TimeFrameItem } from "../../../../../../Cedric/Cedric_Bitcef/src/assets/charting_library/charting_library.min.d";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-space-and-service",
@@ -23,6 +23,14 @@ export class SpaceAndServiceComponent implements OnInit {
   listing_id;
   online_user;
   comment;
+  comments_list;
+  temp;
+  temp1;
+  reply_input_flag;
+  show_replies;
+  replies;
+  temp_replies;
+  reply;
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
@@ -45,9 +53,9 @@ export class SpaceAndServiceComponent implements OnInit {
 
     this.route.params.subscribe(data => {
       this.listing_id = data.id;
-      this.getListingBookings(this.listing_id);
-      this.get_comments();
+      // this.getListingBookings(this.listing_id);
       this.getServiceListing(data.id);
+      this.getComments(data.id);
     });
   }
 
@@ -66,9 +74,9 @@ export class SpaceAndServiceComponent implements OnInit {
   getServiceListing(id) {
     this.afs
       .doc("listing/" + id)
-      .get()
+      .snapshotChanges()
       .subscribe(res => {
-        this.listing = res.data();
+        this.listing = res.payload.data();
         this.loading = false;
         console.log(this.listing);
         this.listing.startDate = new Date(
@@ -88,88 +96,126 @@ export class SpaceAndServiceComponent implements OnInit {
       });
   }
 
-  comments() {
-    if (this.afAuth.auth.currentUser) {
-      var comment_id = this.afs.createId();
-      const comment_doc: AngularFirestoreDocument = this.afs.doc(
-        "user/" +
-          this.afAuth.auth.currentUser.uid +
-          "/listing/" +
-          this.listing_id +
-          "/comment/" +
-          comment_id
-      );
+  comments(id) {
+    var comment_id = this.afs.createId();
+    const comment_doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + id + "/listing/" + this.listing_id + "/comment/" + comment_id
+    );
 
-      comment_doc
-        .set(
-          {
-            message: this.comment,
-            listingId: this.listing_id,
-            dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-            dateModified: firebase.firestore.Timestamp.fromDate(new Date()),
-            userId: this.afAuth.auth.currentUser.uid,
-            baseUserId: this.listing.userId
-          },
-          { merge: true }
-        )
-        .then(data => {
-          comment_doc.snapshotChanges().subscribe(res => {
-            console.log("comment: ", res.payload.data());
-          });
-        });
-    }
-  }
-
-  getListingBookings(id) {
-    console.log(this.afAuth.auth.currentUser.uid, id);
-    if (this.afAuth.auth.currentUser) {
-      this.afs
-        .collection(
-          "user/" + this.afAuth.auth.currentUser.uid + "/listing/" + id + "/job"
-        )
-        .snapshotChanges()
-        .subscribe(data => {
-          data.forEach((item, i) => {
-            console.log(data[i].payload.doc.data());
-          });
-        });
-    }
-  }
-
-  get_comments() {
-    this.afs
-      .collection("comments/")
-      .snapshotChanges()
-      .subscribe(res => {
-        res.forEach((item, i) => {
-          console.log(res[i].payload.doc.data());
+    comment_doc
+      .set(
+        {
+          message: this.comment,
+          listingId: this.listing_id,
+          dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+          dateModified: firebase.firestore.Timestamp.fromDate(new Date()),
+          userId: this.afAuth.auth.currentUser.uid,
+          baseUserId: id
+        },
+        { merge: true }
+      )
+      .then(data => {
+        this.comment = "";
+        comment_doc.snapshotChanges().subscribe(res => {
+          console.log("comment: ", res.payload.data());
         });
       });
   }
 
-  
+  // getListingBookings(id) {
+  //   // console.log(this.afAuth.auth.currentUser.uid, id);
+  //   if (this.afAuth.auth.currentUser) {
+  //     this.afs
+  //       .collection(
+  //         "user/" + this.afAuth.auth.currentUser.uid + "/listing/" + id + "/job"
+  //       )
+  //       .snapshotChanges()
+  //       .subscribe(data => {
+  //         data.forEach((item, i) => {
+  //           console.log(data[i].payload.doc.data());
+  //         });
+  //       });
+  //   }
+  // }
 
-  reply_comments(listing_id, comment_id) {
+  getComments(id) {
+    console.log("getComments");
+    this.afs
+      .doc("listing/" + id)
+      .snapshotChanges()
+      .subscribe(data => {
+        this.temp = data.payload.data();
+        this.afs
+          .collection(
+            "user/" + this.temp.userId + "/listing/" + id + "/comment"
+          )
+          .snapshotChanges()
+          .subscribe(comments => {
+            this.comments_list = [];
+            this.temp1 = comments;
+            this.temp1.forEach((item, i) => {
+              var user: AngularFirestoreDocument = this.afs.doc(
+                "user/" + this.temp1[i].payload.doc.data().userId
+              );
+              user.snapshotChanges().subscribe(user => {
+                var comment = {
+                  id: this.temp1[i].payload.doc.id,
+                  comment: this.temp1[i].payload.doc.data(),
+                  userName: user.payload.data().name,
+                  imageUrl: user.payload.data().profileImageUrl
+                };
+                this.comments_list.push(comment);
+              });
+            });
+            console.log("comments: ", this.comments_list);
+          });
+      });
+  }
+
+  view_previous_replies(hostId, commentId) {
+    this.replies = [];
+    this.show_replies = commentId;
+    this.getReplies(hostId, commentId);
+  }
+
+  reply_clicked(id) {
+    if (this.reply_input_flag === "") {
+      this.reply_input_flag = id;
+    } else {
+      this.reply_input_flag = "";
+    }
+  }
+
+  hide_previous_replies() {
+    this.show_replies = "";
+  }
+
+  comment_reply(comment_id, userId, baseUserId) {
+    console.log(comment_id, userId, baseUserId);
     if (this.afAuth.auth.currentUser) {
       const reply_id = this.afs.createId();
       const reply_doc: AngularFirestoreDocument = this.afs.doc(
-        "user/listing/" +
-          listing_id +
-          "comment/" +
+        "user/" +
+          baseUserId +
+          "/listing/" +
+          this.listing_id +
+          "/comment/" +
           comment_id +
-          "reply/" +
+          "/reply/" +
           reply_id
       );
+
+      this.reply_input_flag = "";
 
       reply_doc
         .set(
           {
-            message: "",
-            listingId: "",
-            commentId: "",
+            message: this.reply,
+            listingId: this.listing_id,
+            commentId: comment_id,
             dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-            userId: "user id that makes the comment",
-            baseUserId: "uid of the user that created the listing"
+            userId: userId,
+            baseUserId: baseUserId
           },
           { merge: true }
         )
@@ -178,7 +224,42 @@ export class SpaceAndServiceComponent implements OnInit {
           reply_doc.snapshotChanges().subscribe(data => {
             console.log(data.payload.data());
           });
+        })
+        .catch(err => {
+          console.log(err);
         });
     }
+  }
+
+  getReplies(hostId, commentId) {
+    this.afs
+      .collection(
+        "user/" +
+          hostId +
+          "/listing/" +
+          this.listing_id +
+          "/comment/" +
+          commentId +
+          "/reply"
+      )
+      .snapshotChanges()
+      .subscribe(replies => {
+        this.replies = [];
+        replies.forEach((item, i) => {
+          var user: AngularFirestoreDocument = this.afs.doc(
+            "user/" + this.temp1[i].payload.doc.data().userId
+          );
+          user.snapshotChanges().subscribe(user => {
+            var reply = {
+              id: item.payload.doc.id,
+              reply: item.payload.doc.data(),
+              name: user.payload.data().name,
+              imageUrl: user.payload.data().profileImageUrl
+            };
+            this.replies.push(reply);
+          });
+          console.log(this.replies);
+        });
+      });
   }
 }
