@@ -23,7 +23,7 @@ export class SpaceAndServiceComponent implements OnInit {
   listing_id;
   online_user;
   comment;
-  comments_list;
+  comments_list = [];
   temp;
   temp1;
   reply_input_flag;
