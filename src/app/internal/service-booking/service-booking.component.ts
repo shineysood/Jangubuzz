@@ -57,26 +57,34 @@ export class ServiceBookingComponent implements OnInit {
   }
 
   request_booking() {
+    // var d = new Date(
+    //   this.service_book_form.controls["startDate"].value
+    // ).toDateString();
+    // var t = this.service_book_form.controls["startTime"].value;
+    // var dt = moment(d + " " + t + ":00");
+    // console.log(firebase.firestore.Timestamp.fromDate(dt.toDate()));
+
     // start date and time
     var sd = new Date(
       this.service_book_form.controls["startDate"].value
     ).toDateString();
     var st = this.service_book_form.controls["startTime"].value;
-    var startDate = moment(sd + " " + st).toDate();
+    var startDate = moment(sd + " " + st + ":00").toDate();
 
     // end date and time
     var ed = new Date(
       this.service_book_form.controls["endDate"].value
     ).toDateString();
     var et = this.service_book_form.controls["endTime"].value;
-    var endDate = moment(ed + " " + et).toDate();
+    var endDate = moment(sd + " " + st + ":00").toDate();
 
+    console.log(startDate);
     var body = {
       userId: this.userId,
       listingId: this.listingId,
       isApproval: false,
-      startDate: startDate.toDateString(),
-      endDate: endDate.toDateString()
+      startDate: firebase.firestore.Timestamp.fromDate(startDate),
+      endDate: firebase.firestore.Timestamp.fromDate(endDate)
     };
     console.log(body);
     // creating callable for the cloud functions
@@ -110,6 +118,17 @@ export class ServiceBookingComponent implements OnInit {
                 .toString()
                 .split(":")[0];
 
+            if (hours < 0) {
+              hours = -1 * hours;
+            }
+
+            console.log("hours :", hours);
+
+            //starting date and time
+            // var stdt = new Date(this.service_book_form.controls['startDate'].value).to
+
+            // ending of the functions
+
             // write to the database
             book_doc
               .set(
@@ -117,12 +136,8 @@ export class ServiceBookingComponent implements OnInit {
                   listingId: this.listingId,
                   userId: this.userId,
                   hostId: this.listing.userId,
-                  startDate: firebase.firestore.Timestamp.fromDate(
-                    this.service_book_form.controls["startDate"].value
-                  ),
-                  endDate: firebase.firestore.Timestamp.fromDate(
-                    this.service_book_form.controls["endDate"].value
-                  ),
+                  startDate: body.startDate,
+                  endDate: body.endDate,
                   hours: hours,
                   perHourPrice: +this.listing.perHourPrice,
                   minHour: +this.listing.minHour,
