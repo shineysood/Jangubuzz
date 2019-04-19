@@ -36,11 +36,12 @@ export class ListSpaceComponent implements OnInit {
   amenities;
   public latitude: number;
   public longitude: number;
-  public space_form: FormGroup;
-  public experience_form: FormGroup;
+  public space_form_basic: FormGroup;
+  public space_form_additional: FormGroup;
   public zoom: number;
   pic_loader = false;
   @Input() userId: any;
+  step = "basic";
   listingId;
   listing_event_image_url;
   @Input() listingType: any;
@@ -66,21 +67,25 @@ export class ListSpaceComponent implements OnInit {
     public store: AngularFireStorage,
     private atp: AmazingTimePickerService
   ) {
-    this.space_form = this.fb.group({
+    this.space_form_basic = this.fb.group({
+      title: "",
+      description: "",
+      policy: "",
+      currency: ""
+    });
+
+    this.space_form_additional = this.fb.group({
       amenitiesOrRules: [""],
       capacity: [""],
       cleaningFee: [""],
-      currency: [""],
       damageDeposit: [""],
       dateCreated: [""],
-      description: [""],
       endDate: [""],
       geoPoint: [""],
       isCanceled: [""],
       isDraft: [""],
       isLive: [""],
       listingImageUrl: [""],
-      listingType: [""],
       locationAddress: [""],
       locationBrokenAddress: [""],
       locationName: [""],
@@ -88,18 +93,16 @@ export class ListSpaceComponent implements OnInit {
       minDay: [""],
       minHour: [""],
       perDayPrice: [""],
-      policy: [""],
       sQFT: [""],
       startDate: [""],
       state: [""],
-      title: [""],
-      userId: [""],
       perHourPrice: [""]
     });
   }
 
   ngOnInit() {
-    this.space_form.controls["policy"].patchValue("no");
+    this.space_form_basic.controls["policy"].patchValue("no");
+    this.space_form_basic.controls["currency"].patchValue("cad");
     this.afs
       .collection("amenities")
       .snapshotChanges()
@@ -131,7 +134,9 @@ export class ListSpaceComponent implements OnInit {
       this.userId = data.userId;
       this.listingType = data.listingType;
     });
+  }
 
+  loadGoogleMaps() {
     //set google maps defaults
     this.zoom = 4;
     this.latitude = 39.8282;
@@ -150,7 +155,7 @@ export class ListSpaceComponent implements OnInit {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          this.space_form.controls["locationAddress"].patchValue(
+          this.space_form_basic.controls["locationAddress"].patchValue(
             place.formatted_address
           );
 
@@ -177,26 +182,11 @@ export class ListSpaceComponent implements OnInit {
   onSelectAll(items: any) {
     console.log(items);
   }
+  onItemDeselect(item: any) {
+    var index = this.selectedItems.indexOf(item.value);
+    this.selectedItems.splice(index, 1);
+  }
   //end
-
-  open() {
-    const amazingTimePicker = this.atp.open();
-    amazingTimePicker.afterClose().subscribe(time => {
-      console.log(time);
-    });
-  }
-
-  showCheckboxes() {
-    console.log(this.ar);
-    var checkboxes = document.getElementById("checkboxes");
-    if (!this.expanded) {
-      checkboxes.style.display = "block";
-      this.expanded = true;
-    } else {
-      checkboxes.style.display = "none";
-      this.expanded = false;
-    }
-  }
 
   setCurrentPosition() {
     if ("geolocation" in navigator) {
@@ -213,7 +203,35 @@ export class ListSpaceComponent implements OnInit {
     console.log(this.geoPoint);
   }
 
-  addSpace() {
+  addSpaceBasic() {
+    this.listingId = this.afs.createId();
+    // get the firestore doc
+    const listingDoc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + this.userId + "/listing/" + this.listingId
+    );
+
+    listingDoc
+      .set({
+        title: this.space_form_basic.controls["title"].value,
+        currency: this.space_form_basic.controls["currency"].value,
+        userId: this.userId,
+        listingType: this.listingType,
+        description: this.space_form_basic.controls["description"].value,
+        policy: this.space_form_basic.controls["policy"].value
+      })
+      .then(res => {
+        listingDoc.snapshotChanges().subscribe(data => {
+          console.log(data.payload.data());
+        });
+        this.step = "additional";
+        this.loadGoogleMaps();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  addSpaceAdditional() {
     // get the firestore doc
     const listingDoc: AngularFirestoreDocument = this.afs.doc(
       "user/" + this.userId + "/listing/" + this.listingId
@@ -228,7 +246,7 @@ export class ListSpaceComponent implements OnInit {
       l.push(locationBrokenAddress[i].long_name);
     }
 
-    this.space_form.controls["locationBrokenAddress"].patchValue(l);
+    this.space_form_additional.controls["locationBrokenAddress"].patchValue(l);
 
     for (var i = 0; i < locationBrokenAddress.length; i++) {
       if (locationBrokenAddress[i].types[0] === "administrative_area_level_1") {
@@ -251,29 +269,35 @@ export class ListSpaceComponent implements OnInit {
     // converting startDate to timestamp
     var s = new Date().toDateString();
     var startDate = moment(
-      s + " " + this.space_form.controls["startDate"].value.toString() + ":00"
+      s +
+        " " +
+        this.space_form_additional.controls["startDate"].value.toString() +
+        ":00"
     ).toDate();
 
     // converting endDate to timestamp
     var e = new Date().toDateString();
     var endDate = moment(
-      e + " " + this.space_form.controls["endDate"].value.toString() + ":00"
+      e +
+        " " +
+        this.space_form_additional.controls["endDate"].value.toString() +
+        ":00"
     ).toDate();
 
     listingDoc
       .set(
         {
           amenitiesOrRules: this.selectedItems,
-          capacity: +this.space_form.controls["capacity"].value,
+          capacity: +this.space_form_additional.controls["capacity"].value,
           cleaningFee: parseFloat(
-            this.space_form.controls["cleaningFee"].value
+            this.space_form_additional.controls["cleaningFee"].value
           ),
-          currency: this.space_form.controls["currency"].value,
+          currency: this.space_form_additional.controls["currency"].value,
           damageDeposit: parseFloat(
-            this.space_form.controls["damageDeposit"].value
+            this.space_form_additional.controls["damageDeposit"].value
           ),
           dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-          description: this.space_form.controls["description"].value,
+          description: this.space_form_additional.controls["description"].value,
           endDate: endDate,
           geoPoint: this.geoPoint,
           isCanceled: false,
@@ -281,25 +305,28 @@ export class ListSpaceComponent implements OnInit {
           isLive: true,
           listingImageUrl: this.listing_event_image_url,
           listingType: this.listingType,
-          locationAddress: this.space_form.controls["locationAddress"].value,
-          locationBrokenAddress: this.space_form.controls[
+          locationAddress: this.space_form_additional.controls[
+            "locationAddress"
+          ].value,
+          locationBrokenAddress: this.space_form_additional.controls[
             "locationBrokenAddress"
           ].value,
-          locationName: this.space_form.controls["locationName"].value,
+          locationName: this.space_form_additional.controls["locationName"]
+            .value,
           locationShortAddress: short_add,
-          minDay: +this.space_form.controls["minDay"].value,
-          minHour: +this.space_form.controls["minHour"].value,
+          minDay: +this.space_form_additional.controls["minDay"].value,
+          minHour: +this.space_form_additional.controls["minHour"].value,
           perDayPrice: parseFloat(
-            this.space_form.controls["perDayPrice"].value
+            this.space_form_additional.controls["perDayPrice"].value
           ),
-          policy: this.space_form.controls["policy"].value,
-          sQFT: +this.space_form.controls["sQFT"].value,
+          policy: this.space_form_additional.controls["policy"].value,
+          sQFT: +this.space_form_additional.controls["sQFT"].value,
           startDate: startDate,
           state: state,
-          title: this.space_form.controls["title"].value,
+          title: this.space_form_additional.controls["title"].value,
           userId: this.userId,
           perHourPrice: parseFloat(
-            this.space_form.controls["perHourPrice"].value
+            this.space_form_additional.controls["perHourPrice"].value
           )
         },
         {
@@ -310,12 +337,13 @@ export class ListSpaceComponent implements OnInit {
         listingDoc.snapshotChanges().subscribe(data => {
           console.log(data.payload.data());
         });
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
   updateSpaceImage(event) {
-    // create a new id for the listing
-    this.listingId = this.afs.createId();
     this.pic_loader = true;
     this.store.storage
       .ref()

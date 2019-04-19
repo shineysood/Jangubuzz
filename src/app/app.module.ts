@@ -69,6 +69,8 @@ import { ServiceBookingComponent } from './internal/service-booking/service-book
 import { SpaceBookingComponent } from './internal/space-booking/space-booking.component';
 import { JobsComponent } from './internal/jobs/jobs.component';
 import { UserBookingsComponent } from './internal/user-bookings/user-bookings.component';
+import { CreateTicketComponent } from './internal/create-ticket/create-ticket.component';
+import { TicketsComponent } from './internal/tickets/tickets.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +117,9 @@ import { UserBookingsComponent } from './internal/user-bookings/user-bookings.co
     ServiceBookingComponent,
     SpaceBookingComponent,
     JobsComponent,
-    UserBookingsComponent
+    UserBookingsComponent,
+    CreateTicketComponent,
+    TicketsComponent
   ],
   imports: [
     Ng2OrderModule,

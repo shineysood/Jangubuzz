@@ -35,9 +35,11 @@ export class ListServiceComponent implements OnInit {
   ar = [];
   geoPoint: any;
   amenities;
+  step = "basic";
   public latitude: number;
   public longitude: number;
-  public service_form: FormGroup;
+  public service_form_basic: FormGroup;
+  public service_form_additional: FormGroup;
   public zoom: number;
   pic_loader = false;
   listingId;
@@ -67,11 +69,9 @@ export class ListServiceComponent implements OnInit {
         this.services = data;
       });
 
-    this.service_form = this.fb.group({
+    this.service_form_additional = this.fb.group({
       service: [""],
-      currency: [""],
       dateCreated: [""],
-      description: [""],
       endDate: [""],
       geoPoint: [""],
       isCanceled: [""],
@@ -84,17 +84,21 @@ export class ListServiceComponent implements OnInit {
       locationName: [""],
       locationShortAddress: [""],
       minHour: [""],
-      policy: [""],
       startDate: [""],
       state: [""],
-      title: [""],
-      userId: [""],
       perHourPrice: [""]
+    });
+
+    this.service_form_basic = this.fb.group({
+      title: [""],
+      currency: [""],
+      description: [""],
+      policy: [""]
     });
   }
 
   ngOnInit() {
-    this.service_form.controls["policy"].patchValue("no");
+    this.service_form_basic.controls["policy"].patchValue("no");
     this.afs
       .collection("amenities")
       .snapshotChanges()
@@ -106,7 +110,9 @@ export class ListServiceComponent implements OnInit {
       this.userId = data.userId;
       this.listingType = data.listingType;
     });
+  }
 
+  loadGoogleMaps() {
     //set google maps defaults
     this.zoom = 4;
     this.latitude = 39.8282;
@@ -125,7 +131,7 @@ export class ListServiceComponent implements OnInit {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          this.service_form.controls["locationAddress"].patchValue(
+          this.service_form_additional.controls["locationAddress"].patchValue(
             place.formatted_address
           );
 
@@ -160,7 +166,58 @@ export class ListServiceComponent implements OnInit {
     console.log(this.geoPoint);
   }
 
-  addService() {
+  updateSpaceImage(event) {
+    this.pic_loader = true;
+    this.store.storage
+      .ref()
+      .child("user")
+      .child(this.userId)
+      .child(this.listingId)
+      .child("image.jpg")
+      .put(event.target.files[0])
+      .then(uploadSnap => {
+        uploadSnap.ref.getDownloadURL().then(downloadURL => {
+          this.listing_event_image_url = downloadURL;
+          this.pic_loader = false;
+          console.log(this.listing_event_image_url, this.listingId);
+        });
+      });
+  }
+
+  addServiceBasic() {
+    // create a new id for the listing
+    this.listingId = this.afs.createId();
+
+    //   // get the firestore doc
+    const listingDoc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + this.userId + "/listing/" + this.listingId
+    );
+
+    listingDoc
+      .set(
+        {
+          title: this.service_form_basic.controls["title"].value,
+          description: this.service_form_basic.controls["description"].value,
+          policy: this.service_form_basic.controls["policy"].value,
+          listingType: this.listingType,
+          currency: this.service_form_basic.controls["currency"].value,
+          userId: this.userId
+        },
+        { merge: true }
+      )
+      .then(res => {
+        listingDoc.snapshotChanges().subscribe(data => {
+          console.log(data.payload.data());
+        });
+        this.step = "additional";
+        this.loadGoogleMaps();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  addServiceAdditional() {
     // get the firestore doc
     const listingDoc: AngularFirestoreDocument = this.afs.doc(
       "user/" + this.userId + "/listing/" + this.listingId
@@ -175,7 +232,9 @@ export class ListServiceComponent implements OnInit {
       l.push(locationBrokenAddress[i].long_name);
     }
 
-    this.service_form.controls["locationBrokenAddress"].patchValue(l);
+    this.service_form_additional.controls["locationBrokenAddress"].patchValue(
+      l
+    );
 
     for (var i = 0; i < locationBrokenAddress.length; i++) {
       if (locationBrokenAddress[i].types[0] === "administrative_area_level_1") {
@@ -198,43 +257,47 @@ export class ListServiceComponent implements OnInit {
     // converting startDate to timestamp
     var s = new Date().toDateString();
     var startDate = moment(
-      s + " " + this.service_form.controls["startDate"].value.toString() + ":00"
+      s +
+        " " +
+        this.service_form_additional.controls["startDate"].value.toString() +
+        ":00"
     ).toDate();
 
     // converting endDate to timestamp
     var e = new Date().toDateString();
     var endDate = moment(
-      e + " " + this.service_form.controls["endDate"].value.toString() + ":00"
+      e +
+        " " +
+        this.service_form_additional.controls["endDate"].value.toString() +
+        ":00"
     ).toDate();
 
     listingDoc
       .set(
         {
-          service: this.service_form.controls["service"].value,
-          currency: this.service_form.controls["currency"].value,
+          service: this.service_form_additional.controls["service"].value,
           dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-          description: this.service_form.controls["description"].value,
-          endDate: endDate,
+          endDate: firebase.firestore.Timestamp.fromDate(endDate),
           geoPoint: this.geoPoint,
           isCanceled: false,
           isDraft: false,
           isLive: true,
           listingImageUrl: this.listing_event_image_url,
-          listingType: this.listingType,
-          locationAddress: this.service_form.controls["locationAddress"].value,
-          locationBrokenAddress: this.service_form.controls[
+          locationAddress: this.service_form_additional.controls[
+            "locationAddress"
+          ].value,
+          locationBrokenAddress: this.service_form_additional.controls[
             "locationBrokenAddress"
           ].value,
-          locationName: this.service_form.controls["locationName"].value,
+          locationName: this.service_form_additional.controls["locationName"]
+            .value,
           locationShortAddress: short_add,
-          minHour: +this.service_form.controls["minHour"].value,
-          policy: this.service_form.controls["policy"].value,
-          startDate: startDate,
+          minHour: +this.service_form_additional.controls["minHour"].value,
+          startDate: firebase.firestore.Timestamp.fromDate(startDate),
           state: state,
-          title: this.service_form.controls["title"].value,
           userId: this.userId,
           perHourPrice: parseFloat(
-            this.service_form.controls["perHourPrice"].value
+            this.service_form_additional.controls["perHourPrice"].value
           )
         },
         {
@@ -248,26 +311,6 @@ export class ListServiceComponent implements OnInit {
       })
       .catch(err => {
         console.log(err);
-      });
-  }
-
-  updateSpaceImage(event) {
-    // create a new id for the listing
-    this.listingId = this.afs.createId();
-    this.pic_loader = true;
-    this.store.storage
-      .ref()
-      .child("user")
-      .child(this.userId)
-      .child(this.listingId)
-      .child("image.jpg")
-      .put(event.target.files[0])
-      .then(uploadSnap => {
-        uploadSnap.ref.getDownloadURL().then(downloadURL => {
-          this.listing_event_image_url = downloadURL;
-          this.pic_loader = false;
-          console.log(this.listing_event_image_url, this.listingId);
-        });
       });
   }
 }

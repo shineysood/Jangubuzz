@@ -1,0 +1,11 @@
+.form_ticket {
+    margin: 100px 0;
+    background-color: #f5f5f5;
+    padding: 20px 25px;
+    box-shadow: 0 5px 15px 0 rgba(00,0,0,0.2);
+}
+.btn-primary-custom {
+    background-color: #ff5b8d;
+    border-color: #ff5b8d;
+    color: #fff;
+}

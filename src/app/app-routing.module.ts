@@ -16,6 +16,8 @@ import { ViewAllExperiencesComponent } from "./external/view-all-experiences/vie
 import { CreateListingComponent } from "./internal/create-listing/create-listing.component";
 import { ServiceBookingComponent } from "./internal/service-booking/service-booking.component";
 import { SpaceBookingComponent } from "./internal/space-booking/space-booking.component";
+import { BuyTicketComponent } from './internal/buy-ticket/buy-ticket.component';
+import { CreateTicketComponent } from './internal/create-ticket/create-ticket.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -55,6 +57,16 @@ const routes: Routes = [
     path: "service/book/:userId/:listingId",
     // canActivate: [AuthGuard],
     component: ServiceBookingComponent
+  },
+  {
+    path: "experience/ticket/buy/:listingId",
+    // canActivate: [AuthGuard],
+    component: BuyTicketComponent
+  },
+  {
+    path: "ticket/create/:listingId/:userId",
+    // canActivate: [AuthGuard],
+    component: CreateTicketComponent
   },
   {
     path: "space/book/:userId/:listingId",

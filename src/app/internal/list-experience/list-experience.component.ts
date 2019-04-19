@@ -44,6 +44,7 @@ export class ListExperienceComponent implements OnInit {
   locationBrokenAddess_temp;
   temp;
   categories = [];
+  step = "basic";
 
   // for multiselect dropdown
   dropdownList: Array<any>;
@@ -53,7 +54,8 @@ export class ListExperienceComponent implements OnInit {
   @ViewChild("search")
   public searchElementRef: ElementRef;
 
-  public experience_form: FormGroup;
+  public experience_form_basic: FormGroup;
+  public experience_form_additional: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -66,16 +68,20 @@ export class ListExperienceComponent implements OnInit {
     public store: AngularFireStorage,
     private atp: AmazingTimePickerService
   ) {
-    this.experience_form = this.fb.group({
+    this.experience_form_basic = this.fb.group({
       currency: [""],
-      dateCreated: [""],
       description: [""],
-      endDate: [""],
-      geoPoint: [""],
-      isCanceled: [""],
-      isDraft: [""],
-      isLive: [""],
-      isFree: [""],
+      policy: [""],
+      title: [""]
+    });
+
+    this.experience_form_additional = this.fb.group({
+      dateCreated: [""],
+      endDay: [""],
+      recurrence: [""],
+      startDate: [""],
+      startDay: [""],
+      state: [""],
       listingImageUrl: [""],
       locationAddress: [""],
       locationBrokenAddress: [""],
@@ -83,13 +89,12 @@ export class ListExperienceComponent implements OnInit {
       locationShortAddress: [""],
       startTime: [""],
       endTime: [""],
-      policy: [""],
-      startDate: [""],
-      startDay: [""],
-      state: [""],
-      title: [""],
-      endDay: [""],
-      recurrence: [""]
+      endDate: [""],
+      geoPoint: [""],
+      isCanceled: [""],
+      isDraft: [""],
+      isLive: [""],
+      isFree: [""]
     });
   }
 
@@ -127,10 +132,14 @@ export class ListExperienceComponent implements OnInit {
 
     // end
 
-    this.experience_form.controls["currency"].patchValue("cad");
-    this.experience_form.controls["policy"].patchValue("no");
-    this.experience_form.controls["recurrence"].patchValue("recurrenceOnce");
+    this.experience_form_basic.controls["currency"].patchValue("cad");
+    this.experience_form_basic.controls["policy"].patchValue("no");
+    this.experience_form_additional.controls["recurrence"].patchValue(
+      "recurrenceOnce"
+    );
+  }
 
+  loadGoogleMaps() {
     //set google maps defaults
     this.zoom = 4;
     this.latitude = 39.8282;
@@ -149,9 +158,9 @@ export class ListExperienceComponent implements OnInit {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          this.experience_form.controls["locationAddress"].patchValue(
-            place.formatted_address
-          );
+          this.experience_form_additional.controls[
+            "locationAddress"
+          ].patchValue(place.formatted_address);
 
           this.locationBrokenAddess_temp = place.address_components;
 
@@ -169,14 +178,46 @@ export class ListExperienceComponent implements OnInit {
     });
   }
 
+  addExperienceBasic() {
+    this.listingId = this.afs.createId();
+    // get the firestore doc
+    const listingDoc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + this.userId + "/listing/" + this.listingId
+    );
+
+    listingDoc
+      .set(
+        {
+          title: this.experience_form_basic.controls["title"].value,
+          description: this.experience_form_basic.controls["description"].value,
+          policy: this.experience_form_basic.controls["policy"].value,
+          listingType: this.listingType,
+          currency: this.experience_form_basic.controls["currency"].value,
+          userId: this.afAuth.auth.currentUser.uid
+        },
+        { merge: true }
+      )
+      .then(res => {
+        listingDoc.snapshotChanges().subscribe(data => {
+          console.log(data.payload.data());
+        });
+        this.step = "additional";
+        this.loadGoogleMaps();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   // methods for dropdown list
   onItemSelect(item: any) {
     this.selectedItems.push(item.value);
   }
-  onSelectAll(items: any) {
-    // console.log(items);
+  onItemDeselect(item: any) {
+    var index = this.selectedItems.indexOf(item.value);
+    this.selectedItems.splice(index, 1);
   }
-  //end
+  // end of dropdown methods
 
   setCurrentPosition() {
     if ("geolocation" in navigator) {
@@ -193,7 +234,7 @@ export class ListExperienceComponent implements OnInit {
     console.log(this.geoPoint);
   }
 
-  addExperience() {
+  addExperienceAdditional() {
     // get the firestore doc
     const listingDoc: AngularFirestoreDocument = this.afs.doc(
       "user/" + this.userId + "/listing/" + this.listingId
@@ -208,7 +249,9 @@ export class ListExperienceComponent implements OnInit {
       l.push(locationBrokenAddress[i].long_name);
     }
 
-    this.experience_form.controls["locationBrokenAddress"].patchValue(l);
+    this.experience_form_additional.controls[
+      "locationBrokenAddress"
+    ].patchValue(l);
 
     for (var i = 0; i < locationBrokenAddress.length; i++) {
       if (locationBrokenAddress[i].types[0] === "administrative_area_level_1") {
@@ -248,11 +291,11 @@ export class ListExperienceComponent implements OnInit {
       .set(
         {
           categories: this.selectedItems,
-          currency: this.experience_form.controls["currency"].value,
           dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-          description: this.experience_form.controls["description"].value,
-          endDate: firebase.firestore.Timestamp.fromDate(this.experience_form.controls["endDate"].value),
-          endDay: this.experience_form.controls["endDate"].value
+          endDate: firebase.firestore.Timestamp.fromDate(
+            this.experience_form_additional.controls["endDate"].value
+          ),
+          endDay: this.experience_form_additional.controls["endDate"].value
             .toString()
             .split(" ")[0],
           geoPoint: this.geoPoint,
@@ -261,23 +304,24 @@ export class ListExperienceComponent implements OnInit {
           isLive: true,
           isFree: true,
           listingImageUrl: this.listing_event_image_url,
-          listingType: this.listingType,
-          locationAddress: this.experience_form.controls["locationAddress"]
-            .value,
-          locationBrokenAddress: this.experience_form.controls[
+          locationAddress: this.experience_form_additional.controls[
+            "locationAddress"
+          ].value,
+          locationBrokenAddress: this.experience_form_additional.controls[
             "locationBrokenAddress"
           ].value,
-          locationName: this.experience_form.controls["locationName"].value,
+          locationName: this.experience_form_additional.controls["locationName"]
+            .value,
           locationShortAddress: short_add,
-          policy: this.experience_form.controls["policy"].value,
-          startDate: firebase.firestore.Timestamp.fromDate(this.experience_form.controls["startDate"].value),
-          startDay: this.experience_form.controls["startDate"].value
+          startDate: firebase.firestore.Timestamp.fromDate(
+            this.experience_form_additional.controls["startDate"].value
+          ),
+          startDay: this.experience_form_additional.controls["startDate"].value
             .toString()
             .split(" ")[0],
           state: state,
-          title: this.experience_form.controls["title"].value,
-          userId: this.userId,
-          recurrence: this.experience_form.controls["recurrence"].value
+          recurrence: this.experience_form_additional.controls["recurrence"]
+            .value
         },
         {
           merge: true
@@ -294,8 +338,6 @@ export class ListExperienceComponent implements OnInit {
   }
 
   updateSpaceImage(event) {
-    // create a new id for the listing
-    this.listingId = this.afs.createId();
     this.pic_loader = true;
     this.store.storage
       .ref()
@@ -313,9 +355,9 @@ export class ListExperienceComponent implements OnInit {
   }
 
   set() {
-    var d = firebase.firestore.Timestamp.fromDate(
-      this.experience_form.controls["endDate"].value
-    );
-    console.log(d);
+    //   var d = firebase.firestore.Timestamp.fromDate(
+    //     this.experience_form.controls["endDate"].value
+    //   );
+    //   console.log(d);
   }
 }

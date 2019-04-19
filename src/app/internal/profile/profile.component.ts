@@ -3,7 +3,7 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestoreDocument } from "@angular/fire/firestore";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { environment } from "../../../environments/environment";
 
 @Component({
@@ -31,7 +31,8 @@ export class ProfileComponent implements OnInit {
     private modalService: BsModalService,
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -96,6 +97,10 @@ export class ProfileComponent implements OnInit {
         };
       });
     });
+  }
+
+  create_ticket(listingId, userId) {
+    this.router.navigate(["ticket/create", listingId, userId]);
   }
 
   openModal(template: TemplateRef<any>) {

@@ -4,7 +4,7 @@ import {
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { firebase } from "@firebase/app";
 import { HttpClient } from "@angular/common/http";
 import {
@@ -25,6 +25,7 @@ export class ExperienceComponent implements OnInit {
   startDate;
   loading = true;
   listing_user;
+  listingId;
 
   @ViewChild(StripeCardComponent) card: StripeCardComponent;
 
@@ -51,7 +52,8 @@ export class ExperienceComponent implements OnInit {
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
     private route: ActivatedRoute,
-    private stripeService: StripeService
+    private stripeService: StripeService,
+    private router: Router
   ) {
     window.scroll(0, 0);
   }
@@ -64,8 +66,29 @@ export class ExperienceComponent implements OnInit {
     }
 
     this.route.params.subscribe(data => {
+      this.listingId = data.id;
       this.getServiceListing(data.id);
+      if (this.afAuth.auth.currentUser) {
+        this.getTickets(data.id);
+      }
     });
+  }
+
+  getTickets(id) {
+    this.afs
+      .collection(
+        "user/" +
+          this.afAuth.auth.currentUser.uid +
+          "/listing/" +
+          id +
+          "/ticket"
+      )
+      .snapshotChanges()
+      .subscribe(tickets => {
+        if (tickets.length !== 0) {
+          console.log("tickets: ", tickets[0].payload.doc.data());
+        }
+      });
   }
 
   getServiceListing(id) {
@@ -98,10 +121,15 @@ export class ExperienceComponent implements OnInit {
   }
 
   buy_ticket() {
-    console.log("buy ticket method from experience component");
+    console.log(this.listingId);
+    if (this.listing.isFree) {
+      this.router.navigate(["experience/ticket/buy", this.listingId]);
+    } else {
+      console.log("hello paid");
+    }
   }
 
-  // book() {
+  // buy_ticket() {
   //   this.stripeService.createToken(this.card.getCard(), { name })
   //       .subscribe(result => {
 

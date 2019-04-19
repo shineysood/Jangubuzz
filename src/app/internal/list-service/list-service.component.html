@@ -1,4 +1,8 @@
-<form [formGroup]="service_form" (ngSubmit)="addService()">
+<form
+  *ngIf="step === 'basic'"
+  [formGroup]="service_form_basic"
+  (ngSubmit)="addServiceBasic()"
+>
   <div class="form-area">
     <h3>Basic Information</h3>
     <div class="row">
@@ -37,7 +41,7 @@
         </div>
         <div class="policy_desc">
           <p
-            *ngIf="service_form.controls['policy'].value === 'sevenDay'"
+            *ngIf="service_form_basic.controls['policy'].value === 'sevenDay'"
             id="cancel_policy"
           >
             Cancellation is free if done within 7 days of booking confirmation.
@@ -45,7 +49,7 @@
             N.B. Service charges are non-refundable.
           </p>
           <p
-            *ngIf="service_form.controls['policy'].value === 'no'"
+            *ngIf="service_form_basic.controls['policy'].value === 'no'"
             id="cancel_policy"
           >
             Cancellation is free and exempt from all applicable cancellation
@@ -53,7 +57,7 @@
             N.B. Service charges are non-refundable.
           </p>
           <p
-            *ngIf="service_form.controls['policy'].value === 'oneDay'"
+            *ngIf="service_form_basic.controls['policy'].value === 'oneDay'"
             id="cancel_policy"
           >
             Cancellation is free if done within one day of booking confirmation.
@@ -61,7 +65,7 @@
             N.B. Service charges are non-refundable.
           </p>
           <p
-            *ngIf="service_form.controls['policy'].value === 'thirtyDay'"
+            *ngIf="service_form_basic.controls['policy'].value === 'thirtyDay'"
             id="cancel_policy"
           >
             Cancellation is free if done within 30 days of booking confirmation.
@@ -81,21 +85,35 @@
       </div>
     </div>
   </div>
+  <div class="form-group">
+    <button class="btn btn-primary btn-sm" type="submit">Save</button>
+  </div>
+</form>
+
+<!-- additional part -->
+<form
+  *ngIf="step === 'additional'"
+  [formGroup]="service_from_additional"
+  (ngSumbit)="addServiceAdditional()"
+>
   <div class="form-area">
     <h3>Upload a listing image</h3>
     <div class="form-group">
-       <div class="upload-img">
-      <img *ngIf="listing_event_image_url" [src]="listing_event_image_url" />
-      <img *ngIf="!listing_event_image_url" src="assets/images/imagePlaceholder.png" />
-      <input
-        id="listing_image"
-        (change)="updateSpaceImage($event)"
-        type="file"
-        accept="image/*"
-        class="form-control"
-      />
+      <div class="upload-img">
+        <img *ngIf="listing_event_image_url" [src]="listing_event_image_url" />
+        <img
+          *ngIf="!listing_event_image_url"
+          src="assets/images/imagePlaceholder.png"
+        />
+        <input
+          id="listing_image"
+          (change)="updateSpaceImage($event)"
+          type="file"
+          accept="image/*"
+          class="form-control"
+        />
+      </div>
     </div>
-  </div>
   </div>
 
   <div class="form-area">

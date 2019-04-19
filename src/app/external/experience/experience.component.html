@@ -33,18 +33,26 @@
           <h2 class="h5 my-5">
             Refund
           </h2>
-          <p id="cancel_policy">
-            No refund <br />
-            <br />
+          <p *ngIf="listing.policy === 'sevenDay'" id="cancel_policy">
+            7 days refund policy <br /><br />
+            Ticket charges and all applicable processing fees are non-refundable
+            7 days after purchase is completed.
+          </p>
+          <p *ngIf="listing.policy === 'oneDay'" id="cancel_policy">
+            One day refund policy <br /><br />
+            Ticket charges and all applicable processing fees are non-refundable
+            24 hours after purchase is completed.
+          </p>
+          <p *ngIf="listing.policy === 'thirtyDay'" id="cancel_policy">
+            30 days refund policy <br /><br />
+            Ticket charges and all applicable processing fees are non-refundable
+            30 days after purchase is completed.
+          </p>
+          <p *ngIf="listing.policy === 'no'" id="cancel_policy">
+            No refund <br /><br />
             Ticket charges and all applicable processing fees are non-refundable
             after purchase is completed.
           </p>
-          <!-- <p *ngIf="listing.policy === 'sevenDay'" id="cancel_policy">
-            Free cancellation <br /><br />
-            Cancellation is free and exempt from all applicable cancellation
-            charges.<br />
-            N.B. Service charges are non-refundable.
-          </p> -->
         </div>
       </div>
     </div>
@@ -71,11 +79,7 @@
             </span>
           </p>
           <!-- booking button -->
-          <button
-            *ngIf="book_flag"
-            class="btn btn-primary btn-sm"
-            (click)="buy_ticket()"
-          >
+          <button class="btn btn-primary btn-sm" (click)="buy_ticket()">
             Buy ticket
           </button>
         </div>
