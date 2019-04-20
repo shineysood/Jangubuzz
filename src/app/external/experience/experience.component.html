@@ -66,8 +66,8 @@
       <div class="card p-4">
         <div class="avail_info">
           <h4 class="h6 pb-2">
-            {{ listing.startDay }}, {{ listing.startDate | date: "medium" }} -
-            {{ listing.endDay }}, {{ listing.endDate | date: "medium" }}
+            {{ listing.startDate | date: "fullDate" }} {{ listing.startDate | date: "shortTime" }} -
+            {{ listing.endDate | date: "fullDate" }} {{ listing.endDate | date: "shortTime" }}
           </h4>
           <p>
             <span *ngIf="listing.isFree" style="text-transform:uppercase">
@@ -79,7 +79,7 @@
             </span>
           </p>
           <!-- booking button -->
-          <button class="btn btn-primary btn-sm" (click)="buy_ticket()">
+          <button class="btn btn-primary btn-sm" (click)="buy_ticket(template)">
             Buy ticket
           </button>
         </div>
@@ -160,3 +160,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 </div>
 
 <!-- confirm ticket part -->
+
+
+<!-- ticket type template -->
+<ng-template #template>
+  <app-ticket-type [modalRef]="modalRef" [hostId]="ticket_host" [listingId]="ticket_listing"></app-ticket-type>
+</ng-template>

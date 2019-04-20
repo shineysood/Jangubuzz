@@ -8,7 +8,7 @@ import { ProfileComponent } from "./internal/profile/profile.component";
 import { DashboardComponent } from "./internal/dashboard/dashboard.component";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { Ng2OrderModule } from 'ng2-order-pipe';
+import { Ng2OrderModule } from "ng2-order-pipe";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./external/home/home.component";
@@ -65,12 +65,14 @@ import {
   AngularFireFunctionsModule,
   FunctionsRegionToken
 } from "@angular/fire/functions";
-import { ServiceBookingComponent } from './internal/service-booking/service-booking.component';
-import { SpaceBookingComponent } from './internal/space-booking/space-booking.component';
-import { JobsComponent } from './internal/jobs/jobs.component';
-import { UserBookingsComponent } from './internal/user-bookings/user-bookings.component';
-import { CreateTicketComponent } from './internal/create-ticket/create-ticket.component';
-import { TicketsComponent } from './internal/tickets/tickets.component';
+import { ServiceBookingComponent } from "./internal/service-booking/service-booking.component";
+import { SpaceBookingComponent } from "./internal/space-booking/space-booking.component";
+import { JobsComponent } from "./internal/jobs/jobs.component";
+import { UserBookingsComponent } from "./internal/user-bookings/user-bookings.component";
+import { CreateTicketComponent } from "./internal/create-ticket/create-ticket.component";
+import { TicketsComponent } from "./internal/tickets/tickets.component";
+import { TicketTypeComponent } from "./internal/ticket-type/ticket-type.component";
+import { Ng5SliderModule } from "ng5-slider";
 
 @NgModule({
   declarations: [
@@ -119,9 +121,11 @@ import { TicketsComponent } from './internal/tickets/tickets.component';
     JobsComponent,
     UserBookingsComponent,
     CreateTicketComponent,
-    TicketsComponent
+    TicketsComponent,
+    TicketTypeComponent
   ],
   imports: [
+    Ng5SliderModule,
     Ng2OrderModule,
     AngularFireFunctionsModule,
     AmazingTimePickerModule,

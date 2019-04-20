@@ -273,28 +273,26 @@ export class ListExperienceComponent implements OnInit {
     }
     var short_add = ci + ", " + st + ", " + co;
 
-    // var sd = new Date(
-    //   this.experience_form.controls["startDate"].value
-    // ).toDateString();
-    // var st = this.experience_form.controls["startTime"].value;
-    // var startDate = moment(sd + " " + st).toDate();
+    var sd = new Date(
+      this.experience_form_additional.controls["startDate"].value
+    ).toDateString();
+    var st = this.experience_form_additional.controls["startTime"].value;
+    var startDate = moment(sd + " " + st + ":00").toDate();
 
-    // var ed = new Date(
-    //   this.experience_form.controls["endDate"].value
-    // ).toDateString();
-    // var et = this.experience_form.controls["endTime"].value;
-    // var endDate = moment(ed + " " + et).toDate();
+    var ed = new Date(
+      this.experience_form_additional.controls["endDate"].value
+    ).toDateString();
+    var et = this.experience_form_additional.controls["endTime"].value;
+    var endDate = moment(ed + " " + et + ":00").toDate();
 
-    // console.log(startDate, endDate);
+    console.log(startDate, endDate);
 
     listingDoc
       .set(
         {
           categories: this.selectedItems,
           dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-          endDate: firebase.firestore.Timestamp.fromDate(
-            this.experience_form_additional.controls["endDate"].value
-          ),
+          endDate: firebase.firestore.Timestamp.fromDate(endDate),
           endDay: this.experience_form_additional.controls["endDate"].value
             .toString()
             .split(" ")[0],
@@ -313,9 +311,7 @@ export class ListExperienceComponent implements OnInit {
           locationName: this.experience_form_additional.controls["locationName"]
             .value,
           locationShortAddress: short_add,
-          startDate: firebase.firestore.Timestamp.fromDate(
-            this.experience_form_additional.controls["startDate"].value
-          ),
+          startDate: firebase.firestore.Timestamp.fromDate(startDate),
           startDay: this.experience_form_additional.controls["startDate"].value
             .toString()
             .split(" ")[0],

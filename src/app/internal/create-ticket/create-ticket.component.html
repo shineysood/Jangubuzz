@@ -1,80 +1,104 @@
-<div class="container">
+<div class="container w3-animate-right">
   <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <form class="form_ticket form-row" [formGroup]="ticket_form" (ngSubmit)="createTicket()">
-          <div class="form-group col-md-12">
-            <label>Title</label>
-            <input formControlName="title" class="form-control" placeholder="e.g. lorem ispem" />
-          </div>
+    <div class="col-md-8 offset-md-2">
+      <form
+        class="form_ticket form-row"
+        [formGroup]="ticket_form"
+        (ngSubmit)="createTicket()"
+      >
+        <div class="form-group col-md-12">
+          <label>Title</label>
+          <input
+            formControlName="title"
+            class="form-control"
+            placeholder="e.g. lorem ispem"
+          />
+        </div>
 
-          <div class="form-group col-md-6">
-            <label>Ticket type</label>
-            <select class="form-control" formControlName="ticketType">
-              <option value="paid">Paid ticket</option>
-              <option value="free">Free ticket</option>
-            </select>
-          </div>
+        <div class="form-group col-md-6">
+          <label>Ticket type</label>
+          <select class="form-control" formControlName="ticketType">
+            <option value="paid">Paid ticket</option>
+            <option value="free">Free ticket</option>
+          </select>
+        </div>
 
-          <div class="form-group col-md-6">
-            <label>Ticket price</label>
-            <input formControlName="price" class="form-control" />
-          </div>
+        <div class="form-group col-md-6">
+          <label>Ticket price</label>
+          <input formControlName="price" class="form-control" />
+        </div>
 
-          <div class="form-group col-md-6">
-            <label>Max tickets per order</label>
-            <input formControlName="maxPerOrder" class="form-control" />
-          </div>
+        <div class="form-group col-md-6">
+          <label>Max tickets per order</label>
+          <input formControlName="maxPerOrder" class="form-control" />
+        </div>
 
-          <div class="form-group col-md-6">
-            <label>Total number of tickets available</label>
-            <input formControlName="ticketsAvailable" class="form-control" />
-          </div>
+        <div class="form-group col-md-6">
+          <label>Total number of tickets available</label>
+          <input formControlName="ticketsAvailable" class="form-control" />
+        </div>
 
-          <div class="form-group col-md-12">
-            <label>Ticket description</label>
-            <textarea class="form-control" Name="description" placeholder="ticket description"></textarea>
-          </div>
+        <div class="form-group col-md-12">
+          <label>Ticket description</label>
+          <textarea
+            class="form-control"
+            Name="description"
+            placeholder="e.g. lorem ispem"
+          ></textarea>
+        </div>
 
-          <div class="form-group col-md-12">
-            <label>Processing fee</label>
-            <select class="form-control" Name="passOn" class="form-control">
-              <option value="passOn">Pass on ticket processing fees to buyer</option>
-              <option value="notPassOn">Do  n't pass on ticket processing fees to buyer</option>
-            </select>
-          </div>
+        <div class="form-group col-md-12">
+          <label>Processing fee</label>
+          <select class="form-control" Name="passOn" class="form-control">
+            <option value="passOn"
+              >Pass on ticket processing fees to buyer</option
+            >
+            <option value="notPassOn"
+              >Do n't pass on ticket processing fees to buyer</option
+            >
+          </select>
+        </div>
 
-          <div class="input-group form-group col-md-6">
-            <label class="w-100 d-block">Sale end date</label>
-            <input
-              type="text"
-              class="form-control"
-              #dp="bsDatepicker"
-              bsDatepicker
-              [bsValue]="bsValue"
-              formControlName="endDate"
-              placeholder="Sale end date..."
-            />
-            <div class="input-group-append">
-              <button
-                type="button"
-                class="btn btn-primary-custom"
-                (click)="dp.toggle()"
-                [attr.aria-expanded]="dp.isOpen"
-              >
-                <i class="fa fa-calendar"></i>
-              </button>
-            </div>
+        <div class="input-group form-group col-md-6">
+          <label class="w-100 d-block">Sale end date</label>
+          <input
+            type="text"
+            class="form-control"
+            #dp="bsDatepicker"
+            bsDatepicker
+            [bsValue]="bsValue"
+            formControlName="endDate"
+            placeholder="Sale end date..."
+          />
+          <div class="input-group-append">
+            <button
+              type="button"
+              class="btn btn-primary-custom"
+              (click)="dp.toggle()"
+              [attr.aria-expanded]="dp.isOpen"
+            >
+              <i class="fa fa-calendar"></i>
+            </button>
           </div>
+        </div>
 
-          <div class="form-group col-md-6">
-            <label>Sale end time</label>
-            <input atp-time-picker value="00:00" formControlName="endTime" class="form-control" placeholder="Sale end time..." />
-          </div>
+        <div class="form-group col-md-6">
+          <label>Sale end time</label>
+          <input
+            atp-time-picker
+            value="00:00"
+            formControlName="endTime"
+            class="form-control"
+            placeholder="Sale end time..."
+          />
+        </div>
 
-          <div class="form-group col-md-12 text-right mt-3">
-            <button type="submit" class="btn btn-primary-custom btn-sm">Create ticket</button>
-          </div>
-        </form>
-      </div>
+        <div class="form-group col-md-12 text-right mt-3">
+          <button type="submit" class="btn btn-primary-custom btn-sm">
+            Create ticket
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>

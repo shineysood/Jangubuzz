@@ -1,0 +1,21 @@
+<div class="ticket_div">
+  <div class="modal-header">
+    <h3>Tickets</h3>
+    <span class="pull-right" (click)="modalRef.hide()">&times;</span>
+  </div>
+  <div class="modal-content">
+    <ng-container *ngFor="let ticket of tickets">
+      <div (click)="buy_ticket(ticket.id)">
+        <span>
+          {{ ticket.payload.title }} ------- {{ ticket.payload.description }}
+        </span>
+        <span *ngIf="!ticket.payload.isPriced" class="badge badge-primary">
+          Free
+        </span>
+        <span class="badge badge-primary" *ngIf="ticket.payload.isPriced">
+          {{ ticket.payload.currency }} ${{ ticket.payload.price }}
+        </span>
+      </div>
+    </ng-container>
+  </div>
+</div>

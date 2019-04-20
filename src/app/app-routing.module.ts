@@ -44,6 +44,11 @@ const routes: Routes = [
     component: CreateListingComponent
   },
   {
+    path: "ticket/buy/:ticketId/:hostId/:listingId",
+    // canActivate: [AuthGuard],
+    component: BuyTicketComponent
+  },
+  {
     path: "spaces",
     canActivate: [AuthGuard],
     component: SpacesComponent
@@ -58,11 +63,11 @@ const routes: Routes = [
     // canActivate: [AuthGuard],
     component: ServiceBookingComponent
   },
-  {
-    path: "experience/ticket/buy/:listingId",
-    // canActivate: [AuthGuard],
-    component: BuyTicketComponent
-  },
+  // {
+  //   path: "experience/ticket/buy/:listingId",
+  //   // canActivate: [AuthGuard],
+  //   component: BuyTicketComponent
+  // },
   {
     path: "ticket/create/:listingId/:userId",
     // canActivate: [AuthGuard],

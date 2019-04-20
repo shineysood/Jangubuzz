@@ -130,9 +130,7 @@
               <h4>{{ comment.userName }}</h4>
               <h5>
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                {{
-                  comment.comment.dateCreated.seconds * 1000 | date: "longDate"
-                }}
+                {{ comment.comment.dateCreated | date: "medium" }}
               </h5>
               <pre>{{ comment.comment.message }}</pre>
               <div class="anchors_tags">
@@ -190,8 +188,7 @@
                         <div class="right">
                           <span class="name">{{ reply.name }}</span>
                           <small class="time">{{
-                            reply.reply.dateCreated.seconds * 1000
-                              | date: "medium"
+                            reply.reply.dateCreated | date: "medium"
                           }}</small>
                           <span class="message">{{ reply.reply.message }}</span>
                         </div>
@@ -362,13 +359,12 @@
         <ng-container *ngFor="let jobs of jobs">
           <div class="card">
             <div class="card-body">
-              <h4> {{ job.job.time }} </h4>
+              <h4>{{ job.job.time }}</h4>
             </div>
           </div>
         </ng-container>
       </div>
     </div>
-
   </div>
   <hr />
   <!-- comments part -->
@@ -411,9 +407,7 @@
               <h4>{{ comment.userName }}</h4>
               <h5>
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                {{
-                  comment.comment.dateCreated.seconds * 1000 | date: "longDate"
-                }}
+                {{ comment.comment.dateCreated | date: "medium" }}
               </h5>
               <pre>{{ comment.comment.message }}</pre>
               <div class="anchors_tags">
@@ -471,8 +465,7 @@
                         <div class="right">
                           <span class="name">{{ reply.name }}</span>
                           <small class="time">{{
-                            reply.reply.dateCreated.seconds * 1000
-                              | date: "medium"
+                            reply.reply.dateCreated | date: "medium"
                           }}</small>
                           <span class="message">{{ reply.reply.message }}</span>
                         </div>

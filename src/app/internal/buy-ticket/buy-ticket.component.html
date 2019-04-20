@@ -1,8 +1,136 @@
-<div class="container">
-  <form>
+<div *ngIf="!loading" class="container ticket_div_buy">
+  <h2>{{ ticket.ticket.title }}</h2>
+  <form [formGroup]="ticket_form" (ngSubmit)="get_ticket()">
     <div class="form-group">
-      <label></label>
-      <input type="text" class="form-control" placeholder="">
+      <label>Price</label>
+      <span> {{ ticket.ticket.price }} </span>
+    </div>
+
+    <div class="form-group">
+      <label>Sale end date</label>
+      <div>
+        <span> {{ ticket.saleEndDate | date: "fullDate" }} </span> --
+        <span> {{ ticket.saleEndDate | date: "shortTime" }} </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <div>
+        <span> {{ ticket.ticket.description }} </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Currency</label>
+      <div>
+        <span style="text-transform: uppercase">
+          {{ ticket.ticket.currency }}
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div *ngIf="ticket.ticket.policy === 'no'">
+        <label>No refund</label>
+        <p>
+          Ticket charges and all applicable processing fees are non-refundable
+          after purchase is completed.
+        </p>
+      </div>
+
+      <div *ngIf="ticket.ticket.policy === 'oneDay'">
+        <label>One day refund policy</label>
+        <p>
+          Ticket charges and all applicable processing fees are non-refundable
+          24 hours after purchase is completed.
+        </p>
+      </div>
+
+      <div *ngIf="ticket.ticket.policy === 'sevenDay'">
+        <label>7 days refund policy</label>
+        <p>
+          Ticket charges and all applicable processing fees are non-refundable 7
+          days after purchase is completed.
+        </p>
+      </div>
+
+      <div *ngIf="ticket.ticket.policy === 'thirtyDay'">
+        <label>30 days refund policy</label>
+        <p>
+          Ticket charges and all applicable processing fees are non-refundable
+          30 days after purchase is completed.
+        </p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <div>
+        <input
+          type="text"
+          placeholder="e.g. support@gmail.com"
+          formControlName="email"
+        />
+      </div>
+      <div
+        class="text-danger"
+        *ngIf="
+          ticket_form.controls['email'].hasError('required') &&
+          ticket_form.controls['email'].touched
+        "
+      >
+        Please enter email
+      </div>
+      <div
+        class="text-danger"
+        *ngIf="
+          ticket_form.controls['email'].hasError('pattern') &&
+          ticket_form.controls['email'].touched
+        "
+      >
+        Please enter valid email
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label
+        >Select the amount of tickets - Max purchasable:
+        {{ ticket.ticket.perOrderMax }}
+      </label>
+      <ng5-slider [(value)]="value" [options]="options"></ng5-slider>
+    </div>
+
+    <hr />
+
+    <div class="price_info">
+      <div>
+        <p>{{ value }} {{ ticket.ticket.title }}</p>
+        <p>${{ value * ticket.ticket.price }}</p>
+      </div>
+      <div>
+        <label>
+          <p>
+            Processing fees
+          </p>
+          <p>
+            $0.30
+          </p>
+        </label>
+      </div>
+      <div>
+        <p>Total</p>
+        <p>Total fees</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button class="btn btn-primary" type="submit">Buy ticket</button>
     </div>
   </form>
+</div>
+
+<!-- for loader -->
+<div class="loader" *ngIf="loading">
+  <img src="/assets/images/loader.gif" />
 </div>

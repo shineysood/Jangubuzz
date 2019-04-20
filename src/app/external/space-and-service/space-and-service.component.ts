@@ -32,6 +32,7 @@ export class SpaceAndServiceComponent implements OnInit {
   replies;
   temp_replies;
   reply;
+  temp_reply;
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
@@ -57,7 +58,7 @@ export class SpaceAndServiceComponent implements OnInit {
       // this.getListingBookings(this.listing_id);
       this.getServiceListing(data.id);
       this.getComments(data.id);
-      if(this.afAuth.auth.currentUser) {
+      if (this.afAuth.auth.currentUser) {
         this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
       }
     });
@@ -74,7 +75,7 @@ export class SpaceAndServiceComponent implements OnInit {
           var job = {
             id: item.payload.doc.id,
             job: item.payload.doc.data()
-          }
+          };
           this.jobs.push(job);
         });
         console.log("====> jobs: ", this.jobs);
@@ -101,12 +102,8 @@ export class SpaceAndServiceComponent implements OnInit {
         this.listing = res.payload.data();
         this.loading = false;
         console.log(this.listing);
-        this.listing.startDate = new Date(
-          this.listing.startDate.seconds * 1000
-        ).toString();
-        this.listing.endDate = new Date(
-          this.listing.endDate.seconds * 1000
-        ).toString();
+        this.listing.startDate = this.listing.startDate.toDate();
+        this.listing.endDate = this.listing.endDate.toDate();
 
         // to get the owner of the listing
         var listing_user: AngularFirestoreDocument = this.afs.doc(
@@ -144,22 +141,6 @@ export class SpaceAndServiceComponent implements OnInit {
       });
   }
 
-  // getListingBookings(id) {
-  //   // console.log(this.afAuth.auth.currentUser.uid, id);
-  //   if (this.afAuth.auth.currentUser) {
-  //     this.afs
-  //       .collection(
-  //         "user/" + this.afAuth.auth.currentUser.uid + "/listing/" + id + "/job"
-  //       )
-  //       .snapshotChanges()
-  //       .subscribe(data => {
-  //         data.forEach((item, i) => {
-  //           console.log(data[i].payload.doc.data());
-  //         });
-  //       });
-  //   }
-  // }
-
   getComments(id) {
     console.log("getComments");
     this.afs
@@ -175,20 +156,24 @@ export class SpaceAndServiceComponent implements OnInit {
           .subscribe(comments => {
             this.comments_list = [];
             this.temp1 = comments;
+
             this.temp1.forEach((item, i) => {
               var user: AngularFirestoreDocument = this.afs.doc(
                 "user/" + this.temp1[i].payload.doc.data().userId
               );
               user.snapshotChanges().subscribe(user => {
+                var j = this.temp1[i].payload.doc.data();
+                j.dateCreated = j.dateCreated.toDate();
                 var comment = {
                   id: this.temp1[i].payload.doc.id,
-                  comment: this.temp1[i].payload.doc.data(),
+                  comment: j,
                   userName: user.payload.data().name,
                   imageUrl: user.payload.data().profileImageUrl
                 };
                 this.comments_list.push(comment);
               });
             });
+
             console.log("comments: ", this.comments_list);
           });
       });
@@ -267,14 +252,17 @@ export class SpaceAndServiceComponent implements OnInit {
       .snapshotChanges()
       .subscribe(replies => {
         this.replies = [];
-        replies.forEach((item, i) => {
+        this.temp_reply = replies;
+        this.temp_reply.forEach((item, i) => {
           var user: AngularFirestoreDocument = this.afs.doc(
             "user/" + this.temp1[i].payload.doc.data().userId
           );
           user.snapshotChanges().subscribe(user => {
+            var j = item.payload.doc.data();
+            j.dateCreated = j.dateCreated.toDate();
             var reply = {
               id: item.payload.doc.id,
-              reply: item.payload.doc.data(),
+              reply: j,
               name: user.payload.data().name,
               imageUrl: user.payload.data().profileImageUrl
             };

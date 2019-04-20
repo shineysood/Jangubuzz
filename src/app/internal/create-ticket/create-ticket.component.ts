@@ -27,21 +27,28 @@ export class CreateTicketComponent implements OnInit {
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth
   ) {
+    window.scroll(0, 0);
+
     this.ticket_form = this.fb.group({
       title: [""],
       ticketType: [""],
       price: [""],
       maxPerOrder: [""],
       ticketsAvailable: [""],
-      passOn:[""],
+      passOn: [""],
       description: [""],
-      processingFee: [""],
       endTime: [""],
       endDate: [""]
     });
   }
 
   ngOnInit() {
+    this.ticket_form.controls["ticketType"].patchValue("paid");
+    this.ticket_form.controls["price"].patchValue(0);
+    this.ticket_form.controls["maxPerOrder"].patchValue(0);
+    this.ticket_form.controls["ticketsAvailable"].patchValue(0);
+    this.ticket_form.controls["passOn"].patchValue("passOn");
+
     this.route.params.subscribe(res => {
       this.listingId = res.listingId;
       this.hostId = res.userId;
@@ -75,16 +82,15 @@ export class CreateTicketComponent implements OnInit {
       passOn = false;
     }
 
+    var price;
     var isPriced;
     if (this.ticket_form.controls["ticketType"].value === "paid") {
       isPriced = true;
+      price = parseFloat(this.ticket_form.controls['price'].value);
     } else if (this.ticket_form.controls["ticketType"].value === "free") {
       isPriced = false;
-    }
-
-    if(!this.listing.price) {
-      this.listing.price = 0;
-    }
+      price = 0;
+    }.0
 
     var endDate = new Date(
       this.ticket_form.controls["endDate"].value
@@ -101,7 +107,7 @@ export class CreateTicketComponent implements OnInit {
           passOn: passOn,
           currency: this.listing.currency,
           policy: this.listing.policy,
-          price: parseFloat(this.listing.price),
+          price: price,
           perOrderMax: +this.ticket_form.controls["maxPerOrder"].value,
           numberOfTickets: +this.ticket_form.controls["ticketsAvailable"].value,
           ticketsLeft: +this.ticket_form.controls["ticketsAvailable"].value,
