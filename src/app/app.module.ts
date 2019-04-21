@@ -73,6 +73,7 @@ import { CreateTicketComponent } from "./internal/create-ticket/create-ticket.co
 import { TicketsComponent } from "./internal/tickets/tickets.component";
 import { TicketTypeComponent } from "./internal/ticket-type/ticket-type.component";
 import { Ng5SliderModule } from "ng5-slider";
+import { CardStripeComponent } from './internal/card-stripe/card-stripe.component';
 
 @NgModule({
   declarations: [
@@ -122,7 +123,8 @@ import { Ng5SliderModule } from "ng5-slider";
     UserBookingsComponent,
     CreateTicketComponent,
     TicketsComponent,
-    TicketTypeComponent
+    TicketTypeComponent,
+    CardStripeComponent
   ],
   imports: [
     Ng5SliderModule,

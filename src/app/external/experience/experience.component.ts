@@ -7,12 +7,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { ActivatedRoute, Router } from "@angular/router";
 import { firebase } from "@firebase/app";
 import { HttpClient } from "@angular/common/http";
-// import {
-//   StripeCardComponent,
-//   ElementOptions,
-//   ElementsOptions,
-//   StripeService
-// } from "ngx-stripe";
+
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 
 @Component({
@@ -31,32 +26,12 @@ export class ExperienceComponent implements OnInit {
   ticket_listing;
   ticket_host;
   modalRef: BsModalRef;
-  // @ViewChild(StripeCardComponent) card: StripeCardComponent;
-
-  // cardOptions: ElementOptions = {
-  //   style: {
-  //     base: {
-  //       iconColor: "#111",
-  //       color: "#111",
-  //       fontSize: "16px",
-  //       "::placeholder": {
-  //         color: "#00b3b3"
-  //       }
-  //     }
-  //   }
-  // };
-
-  //other optional options
-  // elementsOptions: ElementsOptions = {
-  // locale: 'es'
-  // };
 
   constructor(
     private http: HttpClient,
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
     private route: ActivatedRoute,
-    // private stripeService: StripeService,
     private router: Router,
     private modalService: BsModalService
   ) {

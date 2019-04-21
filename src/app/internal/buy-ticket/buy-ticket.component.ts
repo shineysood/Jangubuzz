@@ -1,4 +1,10 @@
-import { Component, OnInit, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  TemplateRef
+} from "@angular/core";
 import {
   AngularFirestore,
   AngularFirestoreDocument
@@ -9,6 +15,14 @@ import { AngularFireFunctions } from "@angular/fire/functions";
 import { Options } from "ng5-slider";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import Swal from "sweetalert2";
+import {
+  StripeCardComponent,
+  ElementOptions,
+  ElementsOptions,
+  StripeService
+} from "ngx-stripe";
+import { BsModalService } from "ngx-bootstrap/modal";
+import { BsModalRef } from "ngx-bootstrap/modal";
 
 @Component({
   selector: "app-buy-ticket",
@@ -25,9 +39,20 @@ export class BuyTicketComponent implements OnInit {
   value: number = 0;
   options: Options;
 
+  paid_obj = {
+    userId: "",
+    hostId: "",
+    listingId: "",
+    ticketId: "",
+    totalTickets: 0,
+    email: ""
+  };
+
   EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
   public ticket_form: FormGroup;
+
+  modalRef: BsModalRef;
 
   constructor(
     private afs: AngularFirestore,
@@ -35,9 +60,11 @@ export class BuyTicketComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fns: AngularFireFunctions,
+    private modalService: BsModalService,
     private fb: FormBuilder
   ) {
     window.scroll(0, 0);
+
     this.ticket_form = this.fb.group({
       email: [
         "",
@@ -90,7 +117,7 @@ export class BuyTicketComponent implements OnInit {
     });
   }
 
-  get_ticket() {
+  get_ticket(template: TemplateRef<any>) {
     if (!this.ticket.ticket.isPriced) {
       if (this.ticket_form.valid) {
         var obj = {
@@ -119,7 +146,15 @@ export class BuyTicketComponent implements OnInit {
         );
       }
     } else {
-      console.log("paid side");
+      this.paid_obj = {
+        userId: this.afAuth.auth.currentUser.uid,
+        hostId: this.hostId,
+        listingId: this.listingid,
+        ticketId: this.ticketId,
+        totalTickets: this.value,
+        email: this.ticket_form.controls["email"].value
+      };
+      this.modalRef = this.modalService.show(template);
     }
   }
 }

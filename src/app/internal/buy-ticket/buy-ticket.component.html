@@ -1,6 +1,6 @@
 <div *ngIf="!loading" class="container ticket_div_buy">
   <h2>{{ ticket.ticket.title }}</h2>
-  <form [formGroup]="ticket_form" (ngSubmit)="get_ticket()">
+  <form [formGroup]="ticket_form" (ngSubmit)="get_ticket(payment_template)">
     <div class="form-group">
       <label>Price</label>
       <span> {{ ticket.ticket.price }} </span>
@@ -124,6 +124,16 @@
       </div>
     </div>
 
+    <!-- <div *ngIf="ticket.ticket.isPriced" class="form-group">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        (click)="open_payment(payment_template)"
+      >
+        Payment
+      </button>
+    </div> -->
+
     <div class="form-group">
       <button class="btn btn-primary" type="submit">Buy ticket</button>
     </div>
@@ -134,3 +144,8 @@
 <div class="loader" *ngIf="loading">
   <img src="/assets/images/loader.gif" />
 </div>
+
+<!-- payment template -->
+<ng-template #payment_template>
+  <app-card-stripe [paid_obj]="paid_obj" [modalRef]="modalRef"></app-card-stripe>
+</ng-template>
