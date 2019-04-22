@@ -1,0 +1,15 @@
+.ticket_inner {
+	display: flex;
+    justify-content: space-between;
+    border-radius: 0;
+    padding: 15px 15px 15px;
+    border-bottom: 1px solid #cccccc66;
+}
+.ticket_div .modal-content {
+    border-radius: 0;
+    border: none;
+}
+.modal-content .ticket_inner span.badge {
+    line-height: 17px;
+    cursor: pointer;
+}

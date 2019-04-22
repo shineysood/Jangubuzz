@@ -59,7 +59,7 @@ const routes: Routes = [
     component: ShareProfileComponent
   },
   {
-    path: "service/book/:userId/:listingId",
+    path: "service/book/:hostId/:listingId",
     // canActivate: [AuthGuard],
     component: ServiceBookingComponent
   },

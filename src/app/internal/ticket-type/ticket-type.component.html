@@ -5,9 +5,9 @@
   </div>
   <div class="modal-content">
     <ng-container *ngFor="let ticket of tickets">
-      <div (click)="buy_ticket(ticket.id)">
+      <div (click)="buy_ticket(ticket.id)" class="ticket_inner">
         <span>
-          {{ ticket.payload.title }} ------- {{ ticket.payload.description }}
+          {{ ticket.payload.title }} {{ ticket.payload.description }}
         </span>
         <span *ngIf="!ticket.payload.isPriced" class="badge badge-primary">
           Free

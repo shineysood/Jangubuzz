@@ -18,7 +18,7 @@ import * as firebase from "firebase/app";
 export class ServiceBookingComponent implements OnInit {
   public service_book_form: FormGroup;
   listingId;
-  userId;
+  hostId;
   listing;
 
   constructor(
@@ -44,7 +44,7 @@ export class ServiceBookingComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.listingId = params.listingId;
-      this.userId = params.userId;
+      this.hostId = params.hostId;
     });
     if (
       this.afAuth.auth.currentUser &&
@@ -69,22 +69,25 @@ export class ServiceBookingComponent implements OnInit {
       this.service_book_form.controls["startDate"].value
     ).toDateString();
     var st = this.service_book_form.controls["startTime"].value;
-    var startDate = moment(sd + " " + st + ":00").toDate();
+    var startDate = moment(sd + " " + st + ":00")
+      .toDate()
+      .toString();
 
     // end date and time
     var ed = new Date(
       this.service_book_form.controls["endDate"].value
     ).toDateString();
     var et = this.service_book_form.controls["endTime"].value;
-    var endDate = moment(sd + " " + st + ":00").toDate();
+    var endDate = moment(ed + " " + et + ":00")
+      .toDate()
+      .toString();
 
-    console.log(startDate);
     var body = {
-      userId: this.userId,
+      userId: this.hostId,
       listingId: this.listingId,
       isApproval: false,
-      startDate: firebase.firestore.Timestamp.fromDate(startDate),
-      endDate: firebase.firestore.Timestamp.fromDate(endDate)
+      startDate: startDate,
+      endDate: endDate
     };
     console.log(body);
     // creating callable for the cloud functions
@@ -93,13 +96,14 @@ export class ServiceBookingComponent implements OnInit {
 
     // calling callable
     callable_subscriber.subscribe(data => {
+      console.log("data: after booking: ", data);
       if (data.done) {
         // create a unique id for booking
         var booking_id = this.afs.createId();
 
         // getting the specific doc based on the booking id
         const book_doc: AngularFirestoreDocument = this.afs.doc(
-          "user/" + body.userId + "/booking/" + booking_id
+          "user/" + this.hostId + "/booking/" + booking_id
         );
 
         // getting listing from ID
@@ -124,18 +128,13 @@ export class ServiceBookingComponent implements OnInit {
 
             console.log("hours :", hours);
 
-            //starting date and time
-            // var stdt = new Date(this.service_book_form.controls['startDate'].value).to
-
-            // ending of the functions
-
             // write to the database
             book_doc
               .set(
                 {
                   listingId: this.listingId,
-                  userId: this.userId,
-                  hostId: this.listing.userId,
+                  userId: this.afAuth.auth.currentUser.uid,
+                  hostId: this.hostId,
                   startDate: body.startDate,
                   endDate: body.endDate,
                   hours: hours,
@@ -161,15 +160,19 @@ export class ServiceBookingComponent implements OnInit {
                 }
               )
               .then(result => {
+                console.log(result);
                 book_doc.snapshotChanges().subscribe(res => {
                   console.log("res: ", res.payload.data());
                   if (res) {
                     console.log("Done");
                   } else {
                     console.log("Something went wrong");
-                    this.router.navigateByUrl("/");
+                    // this.router.navigateByUrl("/");
                   }
                 });
+              })
+              .catch(err => {
+                console.log("error: ", err);
               });
           });
       } else {

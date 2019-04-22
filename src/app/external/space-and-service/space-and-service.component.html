@@ -90,6 +90,23 @@
         </div>
       </div>
     </div>
+
+    <!-- Jobs part -->
+    <div class="row d-flex align-items-center flex-wrap py-5">
+      <div class="col-md-4">
+        <h3 class="m-0">Jobs</h3>
+      </div>
+      <div class="col-md-8">
+        <app-jobs [listingId]="listing_id"></app-jobs>
+        <!-- <ng-container *ngFor="let jobs of jobs">
+            <div class="card">
+              <div class="card-body">
+                <h4>{{ job.job.time }}</h4>
+              </div>
+            </div>
+          </ng-container> -->
+      </div>
+    </div>
   </div>
   <hr />
   <!-- make comments part -->
@@ -356,13 +373,14 @@
         <h3 class="m-0">Jobs</h3>
       </div>
       <div class="col-md-8">
-        <ng-container *ngFor="let jobs of jobs">
+        <app-jobs [listingId]="listing_id"></app-jobs>
+        <!-- <ng-container *ngFor="let jobs of jobs">
           <div class="card">
             <div class="card-body">
               <h4>{{ job.job.time }}</h4>
             </div>
           </div>
-        </ng-container>
+        </ng-container> -->
       </div>
     </div>
   </div>

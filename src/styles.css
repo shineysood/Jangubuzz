@@ -213,3 +213,8 @@ div#time-picker-wrapper {
     right: 35px;
   }
 }
+
+.ElementsApp, .ElementsApp .InputElement {
+  /* color: #111; */
+  font-size: 14px !important;
+}

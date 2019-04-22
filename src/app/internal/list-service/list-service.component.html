@@ -93,8 +93,8 @@
 <!-- additional part -->
 <form
   *ngIf="step === 'additional'"
-  [formGroup]="service_from_additional"
-  (ngSumbit)="addServiceAdditional()"
+  [formGroup]="service_form_additional"
+  (ngSubmit)="addServiceAdditional()"
 >
   <div class="form-area">
     <h3>Upload a listing image</h3>

@@ -3,18 +3,18 @@
   <form [formGroup]="ticket_form" (ngSubmit)="get_ticket(payment_template)">
     <div class="form-group">
       <label>Price</label>
-      <span> {{ ticket.ticket.price }} </span>
+      <span> ${{ ticket.ticket.price }} </span>
     </div>
 
     <div class="form-group">
       <label>Sale end date</label>
       <div>
-        <span> {{ ticket.saleEndDate | date: "fullDate" }} </span> --
+        <span> {{ ticket.saleEndDate | date: "fullDate" }} </span>
         <span> {{ ticket.saleEndDate | date: "shortTime" }} </span>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group description_main">
       <label>Description</label>
       <div>
         <span> {{ ticket.ticket.description }} </span>
@@ -31,6 +31,7 @@
     </div>
 
     <div class="form-group">
+      <label>Refund</label>
       <div *ngIf="ticket.ticket.policy === 'no'">
         <label>No refund</label>
         <p>
@@ -47,7 +48,7 @@
         </p>
       </div>
 
-      <div *ngIf="ticket.ticket.policy === 'sevenDay'">
+      <div *ngIf="ticket.ticket.policy === 'sevenDay'" class="seven_day">
         <label>7 days refund policy</label>
         <p>
           Ticket charges and all applicable processing fees are non-refundable 7
@@ -104,21 +105,19 @@
     <hr />
 
     <div class="price_info">
-      <div>
+      <div class="price_info_inner">
         <p>{{ value }} {{ ticket.ticket.title }}</p>
         <p>${{ value * ticket.ticket.price }}</p>
       </div>
-      <div>
-        <label>
+      <div class="price_info_inner processing">
           <p>
             Processing fees
           </p>
           <p>
             $0.30
           </p>
-        </label>
       </div>
-      <div>
+      <div class="price_info_inner total">
         <p>Total</p>
         <p>Total fees</p>
       </div>
@@ -134,7 +133,7 @@
       </button>
     </div> -->
 
-    <div class="form-group">
+    <div class="form-group buy_ticket_button">
       <button class="btn btn-primary" type="submit">Buy ticket</button>
     </div>
   </form>

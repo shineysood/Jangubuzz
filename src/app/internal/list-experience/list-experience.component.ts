@@ -209,6 +209,12 @@ export class ListExperienceComponent implements OnInit {
       });
   }
 
+  // check_time() {
+  //   var t = new Date().toString();
+  //   console.log(t)
+  //   // var startTime = this.experience_form_additional.controls["startTime"].value;
+  // }
+
   // methods for dropdown list
   onItemSelect(item: any) {
     this.selectedItems.push(item.value);

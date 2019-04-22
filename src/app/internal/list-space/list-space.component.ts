@@ -68,21 +68,22 @@ export class ListSpaceComponent implements OnInit {
     private atp: AmazingTimePickerService
   ) {
     this.space_form_basic = this.fb.group({
-      title: "",
-      description: "",
-      policy: "",
-      currency: ""
+      title: [""],
+      description: [""],
+      policy: [""],
+      currency: [""]
     });
 
     this.space_form_additional = this.fb.group({
       amenitiesOrRules: [""],
-      capacity: [""],
       cleaningFee: [""],
       damageDeposit: [""],
       dateCreated: [""],
       endDate: [""],
       geoPoint: [""],
       isCanceled: [""],
+      capacity: [""],
+      sQFT: [""],
       isDraft: [""],
       isLive: [""],
       listingImageUrl: [""],
@@ -93,7 +94,6 @@ export class ListSpaceComponent implements OnInit {
       minDay: [""],
       minHour: [""],
       perDayPrice: [""],
-      sQFT: [""],
       startDate: [""],
       state: [""],
       perHourPrice: [""]
@@ -155,11 +155,13 @@ export class ListSpaceComponent implements OnInit {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          this.space_form_basic.controls["locationAddress"].patchValue(
+          this.space_form_additional.controls["locationAddress"].patchValue(
             place.formatted_address
           );
 
           this.locationBrokenAddess_temp = place.address_components;
+
+          console.log(this.locationBrokenAddess_temp)
 
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
@@ -239,6 +241,7 @@ export class ListSpaceComponent implements OnInit {
 
     var state = "";
     var locationBrokenAddress = this.locationBrokenAddess_temp;
+    console.log(this.locationBrokenAddess_temp)
 
     var l = [];
 
@@ -292,19 +295,16 @@ export class ListSpaceComponent implements OnInit {
           cleaningFee: parseFloat(
             this.space_form_additional.controls["cleaningFee"].value
           ),
-          currency: this.space_form_additional.controls["currency"].value,
           damageDeposit: parseFloat(
             this.space_form_additional.controls["damageDeposit"].value
           ),
           dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-          description: this.space_form_additional.controls["description"].value,
           endDate: endDate,
           geoPoint: this.geoPoint,
           isCanceled: false,
           isDraft: false,
           isLive: true,
           listingImageUrl: this.listing_event_image_url,
-          listingType: this.listingType,
           locationAddress: this.space_form_additional.controls[
             "locationAddress"
           ].value,
@@ -319,12 +319,9 @@ export class ListSpaceComponent implements OnInit {
           perDayPrice: parseFloat(
             this.space_form_additional.controls["perDayPrice"].value
           ),
-          policy: this.space_form_additional.controls["policy"].value,
           sQFT: +this.space_form_additional.controls["sQFT"].value,
           startDate: startDate,
           state: state,
-          title: this.space_form_additional.controls["title"].value,
-          userId: this.userId,
           perHourPrice: parseFloat(
             this.space_form_additional.controls["perHourPrice"].value
           )

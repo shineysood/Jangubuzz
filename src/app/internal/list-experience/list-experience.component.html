@@ -1,5 +1,5 @@
 <form
-  *ngIf="step === 'basic'"
+  *ngIf="step === 'additional'"
   [formGroup]="experience_form_basic"
   (ngSubmit)="addExperienceBasic()"
 >
@@ -92,7 +92,7 @@
 
 <!-- additional information -->
 <form
-  *ngIf="step === 'additional'"
+  *ngIf="step === 'basic'"
   [formGroup]="experience_form_additional"
   (ngSubmit)="addExperienceAdditional()"
 >
@@ -195,6 +195,7 @@
         <!-- start time -->
         <div class="form-group">
           <label>Start time</label>
+          <!-- <button (click)="check_time()" type="button" class="time_main"><i class="fa fa-clock-o"></i></button> -->
           <input atp-time-picker value="19:00" formControlName="startTime" />
         </div>
       </div>

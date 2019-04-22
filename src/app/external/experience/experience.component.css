@@ -224,6 +224,20 @@ h5.live-part {
   left: 0px;
 }
 
+/*Added 22-April-2019*/
+
+.avail_info {
+    display: flex;
+    justify-content: space-between;
+}
+.avail_info .left {
+    width: 80%;
+}
+.avail_info .right button {
+    background-color: #ff5b8d;
+    border: 1px solid #ff5b8d;
+}
+
 @media screen and (max-width: 991px) {
   .list_img {
     height: 250px;
@@ -267,4 +281,7 @@ h5.live-part {
     height: auto;
     overflow-y: auto;
   }
+  .avail_info .left {
+      width: 70%;
+  }  
 }

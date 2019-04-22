@@ -1,5 +1,6 @@
 <div class="card_div container">
   <form [formGroup]="payment_form" (ngSubmit)="payment()">
+    <h2>Payment information</h2>
     <div class="form-group">
       <label for="name">Name</label>
       <input
@@ -26,7 +27,7 @@
       payment method fot tickets and services.
     </p>
 
-    <div class="form-group">
+    <div class="form-group save">
       <button class="btn btn-primary btn-sm" type="submit">Save</button>
     </div>
   </form>

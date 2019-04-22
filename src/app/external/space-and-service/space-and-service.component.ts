@@ -58,34 +58,16 @@ export class SpaceAndServiceComponent implements OnInit {
       // this.getListingBookings(this.listing_id);
       this.getServiceListing(data.id);
       this.getComments(data.id);
-      if (this.afAuth.auth.currentUser) {
-        this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
-      }
+      // if (this.afAuth.auth.currentUser) {
+      //   // this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
+      // }
     });
   }
 
-  getJobs(userId, listingId) {
-    this.jobs = [];
-    console.log(userId, listingId);
-    this.afs
-      .collection("user/" + userId + "/listing/" + listingId + "/job")
-      .snapshotChanges()
-      .subscribe(jobs => {
-        jobs.forEach((item, i) => {
-          var job = {
-            id: item.payload.doc.id,
-            job: item.payload.doc.data()
-          };
-          this.jobs.push(job);
-        });
-        console.log("====> jobs: ", this.jobs);
-      });
-  }
-
   book_service() {
-    var userId = this.afAuth.auth.currentUser.uid;
+    var hostId = this.listing.userId;
     var listingId = this.listing_id;
-    this.router.navigate(["service/book", userId, listingId]);
+    this.router.navigate(["service/book", hostId, listingId]);
   }
 
   book_space() {

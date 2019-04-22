@@ -71,12 +71,8 @@ export class ListServiceComponent implements OnInit {
 
     this.service_form_additional = this.fb.group({
       service: [""],
-      dateCreated: [""],
       endDate: [""],
       geoPoint: [""],
-      isCanceled: [""],
-      isDraft: [""],
-      isLive: [""],
       listingImageUrl: [""],
       listingType: [""],
       locationAddress: [""],
@@ -85,7 +81,6 @@ export class ListServiceComponent implements OnInit {
       locationShortAddress: [""],
       minHour: [""],
       startDate: [""],
-      state: [""],
       perHourPrice: [""]
     });
 
@@ -99,6 +94,7 @@ export class ListServiceComponent implements OnInit {
 
   ngOnInit() {
     this.service_form_basic.controls["policy"].patchValue("no");
+    this.service_form_basic.controls["currency"].patchValue("cad");
     this.afs
       .collection("amenities")
       .snapshotChanges()
@@ -209,8 +205,8 @@ export class ListServiceComponent implements OnInit {
         listingDoc.snapshotChanges().subscribe(data => {
           console.log(data.payload.data());
         });
-        this.step = "additional";
         this.loadGoogleMaps();
+        this.step = "additional";
       })
       .catch(err => {
         console.log(err);
@@ -218,6 +214,7 @@ export class ListServiceComponent implements OnInit {
   }
 
   addServiceAdditional() {
+    console.log("hello");
     // get the firestore doc
     const listingDoc: AngularFirestoreDocument = this.afs.doc(
       "user/" + this.userId + "/listing/" + this.listingId

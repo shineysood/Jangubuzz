@@ -133,3 +133,17 @@ input#listing_image {
     outline: none !important;
     box-shadow: none !important;
 }
+button.time_main,
+button.time_main:hover {
+  float: right;
+  border: none;
+  background-color: transparent !important;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+button.time_main i {
+  color: #6d6d6d;
+  font-size: 18px;
+}

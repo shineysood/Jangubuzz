@@ -65,23 +65,27 @@
     <div class="col-md-8">
       <div class="card p-4">
         <div class="avail_info">
-          <h4 class="h6 pb-2">
-            {{ listing.startDate | date: "fullDate" }} {{ listing.startDate | date: "shortTime" }} -
-            {{ listing.endDate | date: "fullDate" }} {{ listing.endDate | date: "shortTime" }}
-          </h4>
-          <p>
-            <span *ngIf="listing.isFree" style="text-transform:uppercase">
-              Free
-            </span>
-            <span *ngIf="!listing.isFree" style="text-transform:uppercase">
-              {{ listing.currency }}$ {{ listing.bottomPrice }} -
-              {{ listing.currency }}$ {{ listing.topPrice }}
-            </span>
-          </p>
-          <!-- booking button -->
-          <button class="btn btn-primary btn-sm" (click)="buy_ticket(template)">
-            Buy ticket
-          </button>
+          <div class="left">
+            <h4 class="h6 pb-2">
+              {{ listing.startDate | date: "fullDate" }} {{ listing.startDate | date: "shortTime" }} -
+              {{ listing.endDate | date: "fullDate" }} {{ listing.endDate | date: "shortTime" }}
+            </h4>
+            <p>
+              <span *ngIf="listing.isFree" style="text-transform:uppercase">
+                Free
+              </span>
+              <span *ngIf="!listing.isFree" style="text-transform:uppercase">
+                {{ listing.currency }}$ {{ listing.bottomPrice }} -
+                {{ listing.currency }}$ {{ listing.topPrice }}
+              </span>
+            </p>            
+          </div>
+          <div class="right">
+            <!-- booking button -->
+            <button class="btn btn-primary btn-sm" (click)="buy_ticket(template)">
+              Buy ticket
+            </button>            
+          </div>
         </div>
       </div>
     </div>
