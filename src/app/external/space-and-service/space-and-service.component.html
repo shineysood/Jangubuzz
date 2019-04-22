@@ -133,10 +133,10 @@
 
       <!-- comments --------------------------------- -->
       <div class="comments ">
-        <ul *ngIf="comments_list || comments_list.length === 0">
+        <ul *ngIf="comments_list.length === 0">
           <li>No Comments</li>
         </ul>
-        <ul *ngIf="comments_list || comments_list.length !== 0">
+        <ul *ngIf="comments_list.length !== 0">
           <li *ngFor="let comment of comments_list" class="d-flex">
             <div class="comment-left">
               <img src="{{ comment.imageUrl }}" />

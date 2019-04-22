@@ -76,7 +76,7 @@ export class CardStripeComponent implements OnInit {
       .createToken(this.card.getCard(), { name })
       .subscribe(result => {
         if (result.token) {
-          console.log("token: ", result.token.id);
+          console.log("token: ", result.token);
           var obj = {
             userId: this.paid_obj.userId,
             hostId: this.paid_obj.hostId,
@@ -84,7 +84,7 @@ export class CardStripeComponent implements OnInit {
             ticketId: this.paid_obj.ticketId,
             totalTickets: this.paid_obj.totalTickets,
             email: this.paid_obj.email,
-            token: result.token.id
+            token: result.token.id.toString()
           };
 
           const callable = this.fns.httpsCallable("on_ticket_purchase");

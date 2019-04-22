@@ -51,10 +51,6 @@ li {
   width: 100%;
   object-fit: cover;
 }
-.info_part {
-  /*height: 460px;
-  overflow-y: auto;*/
-}
 ul.event_info li {
   margin-bottom: 8px;
 }
@@ -227,50 +223,46 @@ button.btn.btn-primary.btn-sm {
   padding: 0 10px 0 0px;
 }
 .comment_reply {
-    display: flex;
-    padding: 15px 0 40px;
+  display: flex;
+  padding: 15px 0 40px;
 }
 .comment_reply .left img {
-    width: 40px;
-    border-radius: 100px;
-    height: 40px;
+  width: 40px;
+  border-radius: 100px;
+  height: 40px;
 }
 ul li {
-    list-style: none;
+  list-style: none;
 }
 .comment_reply .right span {
-    display: block;
+  display: block;
 }
 .comment_reply .right {
-    padding: 0 0 0 15px;
-    width: 100%;
+  padding: 0 0 0 15px;
+  width: 100%;
 }
 .comment_reply .right span.name {
-    font-weight: 600;
-    color: #444;
-    font-size: 15px;
-    line-height: 10px;
-    padding: 5px 0 0;
+  font-weight: 600;
+  color: #444;
+  font-size: 15px;
+  line-height: 10px;
+  padding: 5px 0 0;
 }
 .comment_reply .right small.time {
-    font-weight: 600;
-    color: #999999;
+  font-weight: 600;
+  color: #999999;
 }
-.comment_reply .right 
- span.message {
-    width: 100%;
-    background-color: #f9f9f9;
-    padding: 10px 15px;
-    color: #8e8e8e;
-    font-size: 14px;
-    margin: 5px 0 0;
-    word-break: break-all;
+.comment_reply .right span.message {
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 10px 15px;
+  color: #8e8e8e;
+  font-size: 14px;
+  margin: 5px 0 0;
+  word-break: break-all;
 }
 
 /*Replies Style*/
-
-
-
 
 @media screen and (max-width: 991px) {
   .list_img {

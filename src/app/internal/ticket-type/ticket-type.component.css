@@ -20,3 +20,14 @@
     font-size: 22px;
     cursor: pointer;
 }
+.loader img {
+    filter: brightness(4);
+    height: 150px;
+    width: 200px;
+    margin: 35px 0 0 0px;
+}
+
+.loader {
+    text-align: -webkit-center;
+    height: 250px;
+}

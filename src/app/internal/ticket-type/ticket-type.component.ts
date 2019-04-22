@@ -13,6 +13,7 @@ export class TicketTypeComponent implements OnInit {
   @Input() hostId;
   @Input() listingId;
   temp_tickets;
+  loading = true;
   tickets;
 
   constructor(
@@ -22,6 +23,7 @@ export class TicketTypeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.loading = true;
     this.getTickets(this.hostId, this.listingId);
   }
 
@@ -44,6 +46,7 @@ export class TicketTypeComponent implements OnInit {
           });
         }
         console.log(this.tickets);
+        this.loading = false;
       });
   }
 

@@ -67,8 +67,10 @@
         <div class="avail_info">
           <div class="left">
             <h4 class="h6 pb-2">
-              {{ listing.startDate | date: "fullDate" }} {{ listing.startDate | date: "shortTime" }} -
-              {{ listing.endDate | date: "fullDate" }} {{ listing.endDate | date: "shortTime" }}
+              {{ listing.startDate | date: "fullDate" }}
+              {{ listing.startDate | date: "shortTime" }} -
+              {{ listing.endDate | date: "fullDate" }}
+              {{ listing.endDate | date: "shortTime" }}
             </h4>
             <p>
               <span *ngIf="listing.isFree" style="text-transform:uppercase">
@@ -78,79 +80,130 @@
                 {{ listing.currency }}$ {{ listing.bottomPrice }} -
                 {{ listing.currency }}$ {{ listing.topPrice }}
               </span>
-            </p>            
+            </p>
           </div>
           <div class="right">
             <!-- booking button -->
-            <button class="btn btn-primary btn-sm" (click)="buy_ticket(template)">
+            <button
+              class="btn btn-primary btn-sm"
+              (click)="buy_ticket(template)"
+            >
               Buy ticket
-            </button>            
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
   <hr />
+
+  <!-- make comments part -->
   <div class="row mt-5 d-flex flex-wrap py-5">
     <div class="col-md-4">
       <h3 class="m-0 title-section">Comments</h3>
     </div>
     <div class="col-md-8">
-      <!-- comments div, please make it scrollable -->
-      <div class="input-comment d-flex">
+      <div *ngIf="online_user" class="input-comment d-flex">
         <div class="comment-left">
-          <img src="assets/images/user.png" />
+          <img src="{{ online_user.profileImageUrl }}" />
         </div>
         <div class="comment-right">
-          <h4>Donnel Albert</h4>
-          <textarea type="text" placeholder="Enter Your Comment"></textarea>
-          <button>Send</button>
+          <h4>{{ online_user.name }}</h4>
+          <textarea
+            type="text"
+            name="comment"
+            [(ngModel)]="comment"
+            placeholder="Enter Your Comment"
+          ></textarea>
+          <button (click)="comments(listing.userId)">Send</button>
         </div>
       </div>
 
+      <!-- comments --------------------------------- -->
       <div class="comments ">
-        <ul>
-          <li class="d-flex">
+        <ul *ngIf="comments_list.length === 0">
+          <li>No Comments</li>
+        </ul>
+        <ul *ngIf="comments_list.length !== 0">
+          <li *ngFor="let comment of comments_list" class="d-flex">
             <div class="comment-left">
-              <img src="assets/images/user.png" />
+              <img src="{{ comment.imageUrl }}" />
             </div>
+
+            <!-- comments part -->
             <div class="comment-right">
-              <h4>Donnel Albert</h4>
+              <h4>{{ comment.userName }}</h4>
               <h5>
-                <i class="fa fa-clock-o" aria-hidden="true"></i> 22 Dec 2018
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                {{ comment.comment.dateCreated | date: "medium" }}
               </h5>
-              <pre>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </pre
-              >
+              <pre>{{ comment.comment.message }}</pre>
+              <div class="anchors_tags">
+                <a
+                  href="javaScript:void(0)"
+                  *ngIf="show_replies !== comment.id"
+                  (click)="
+                    view_previous_replies(
+                      comment.comment.baseUserId,
+                      comment.id
+                    )
+                  "
+                >
+                  View previous replies
+                </a>
+                <a
+                  href="javaScript:void(0)"
+                  *ngIf="show_replies === comment.id"
+                  (click)="hide_previous_replies()"
+                >
+                  Hide replies
+                </a>
+                <a
+                  *ngIf="online_user"
+                  href="javaScript:void(0)"
+                  (click)="reply_clicked(comment.id)"
+                >
+                  Reply
+                </a>
+              </div>
+              <div *ngIf="reply_input_flag === comment.id" class="reply_field">
+                <textarea [(ngModel)]="reply" name="comment_reply"></textarea>
+                <button
+                  (click)="
+                    comment_reply(
+                      comment.id,
+                      comment.comment.userId,
+                      comment.comment.baseUserId
+                    )
+                  "
+                >
+                  Reply
+                </button>
+              </div>
+              <ng-container *ngFor="let reply of replies">
+                <div
+                  *ngIf="show_replies && reply.reply.commentId === comment.id"
+                >
+                  <ul>
+                    <li>
+                      <div class="comment_reply">
+                        <div class="left">
+                          <img src="{{ reply.imageUrl }}" />
+                        </div>
+                        <div class="right">
+                          <span class="name">{{ reply.name }}</span>
+                          <small class="time">{{
+                            reply.reply.dateCreated | date: "medium"
+                          }}</small>
+                          <span class="message">{{ reply.reply.message }}</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </ng-container>
             </div>
-          </li>
-          <li class="d-flex">
-            <div class="comment-left">
-              <img src="assets/images/user.png" />
-            </div>
-            <div class="comment-right">
-              <h4>Donnel Albert</h4>
-              <h5>
-                <i class="fa fa-clock-o" aria-hidden="true"></i> 22 Dec 2018
-              </h5>
-              <pre>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </pre
-              >
-            </div>
-          </li>
-          <li class="d-flex">
-            <div class="comment-left">
-              <img src="assets/images/user.png" />
-            </div>
-            <div class="comment-right">
-              <h4>Donnel Albert</h4>
-              <h5>
-                <i class="fa fa-clock-o" aria-hidden="true"></i> 22 Dec 2018
-              </h5>
-              <pre>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </pre
-              >
-            </div>
+            <!-- end -->
           </li>
         </ul>
       </div>
@@ -165,8 +218,11 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 <!-- confirm ticket part -->
 
-
 <!-- ticket type template -->
 <ng-template #template>
-  <app-ticket-type [modalRef]="modalRef" [hostId]="ticket_host" [listingId]="ticket_listing"></app-ticket-type>
+  <app-ticket-type
+    [modalRef]="modalRef"
+    [hostId]="ticket_host"
+    [listingId]="ticket_listing"
+  ></app-ticket-type>
 </ng-template>

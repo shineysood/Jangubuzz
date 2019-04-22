@@ -5,9 +5,8 @@ import {
 } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { ActivatedRoute, Router } from "@angular/router";
-import { firebase } from "@firebase/app";
+import * as firebase from "firebase/app";
 import { HttpClient } from "@angular/common/http";
-
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 
 @Component({
@@ -18,14 +17,24 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 export class ExperienceComponent implements OnInit {
   book_flag = false;
   listing;
+  reply;
+  temp_reply;
   startDate;
   loading = true;
+  comments_list = [];
+  temp;
+  temp1;
+  replies;
+  reply_input_flag;
+  show_replies;
+  comment;
   listing_user;
   listingId;
   tickets;
   ticket_listing;
   ticket_host;
   modalRef: BsModalRef;
+  online_user;
 
   constructor(
     private http: HttpClient,
@@ -40,6 +49,12 @@ export class ExperienceComponent implements OnInit {
 
   ngOnInit() {
     if (this.afAuth.auth.currentUser) {
+      var online_user_doc: AngularFirestoreDocument = this.afs.doc(
+        "user/" + this.afAuth.auth.currentUser.uid
+      );
+      online_user_doc.snapshotChanges().subscribe(data => {
+        this.online_user = data.payload.data();
+      });
       if (!this.afAuth.auth.currentUser.isAnonymous) {
         this.book_flag = true;
       }
@@ -48,6 +63,7 @@ export class ExperienceComponent implements OnInit {
     this.route.params.subscribe(data => {
       this.listingId = data.id;
       this.getServiceListing(data.id);
+      this.getComments(data.id);
     });
   }
 
@@ -81,5 +97,163 @@ export class ExperienceComponent implements OnInit {
 
   buy_ticket(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+  }
+
+  comments(id) {
+    var comment_id = this.afs.createId();
+    const comment_doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + id + "/listing/" + this.listingId + "/comment/" + comment_id
+    );
+
+    comment_doc
+      .set(
+        {
+          message: this.comment,
+          listingId: this.listingId,
+          dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+          dateModified: firebase.firestore.Timestamp.fromDate(new Date()),
+          userId: this.afAuth.auth.currentUser.uid,
+          baseUserId: id
+        },
+        { merge: true }
+      )
+      .then(data => {
+        this.comment = "";
+        comment_doc.snapshotChanges().subscribe(res => {
+          console.log("comment: ", res.payload.data());
+        });
+      });
+  }
+
+  getComments(id) {
+    console.log("getComments");
+    this.afs
+      .doc("listing/" + id)
+      .snapshotChanges()
+      .subscribe(data => {
+        this.temp = data.payload.data();
+        this.afs
+          .collection(
+            "user/" + this.temp.userId + "/listing/" + id + "/comment"
+          )
+          .snapshotChanges()
+          .subscribe(comments => {
+            this.comments_list = [];
+            this.temp1 = comments;
+
+            this.temp1.forEach((item, i) => {
+              var user: AngularFirestoreDocument = this.afs.doc(
+                "user/" + this.temp1[i].payload.doc.data().userId
+              );
+              user.snapshotChanges().subscribe(user => {
+                var j = this.temp1[i].payload.doc.data();
+                j.dateCreated = j.dateCreated.toDate();
+                var comment = {
+                  id: this.temp1[i].payload.doc.id,
+                  comment: j,
+                  userName: user.payload.data().name,
+                  imageUrl: user.payload.data().profileImageUrl
+                };
+                this.comments_list.push(comment);
+              });
+            });
+
+            console.log("comments: ", this.comments_list);
+          });
+      });
+  }
+
+  view_previous_replies(hostId, commentId) {
+    this.replies = [];
+    this.show_replies = commentId;
+    this.getReplies(hostId, commentId);
+  }
+
+  reply_clicked(id) {
+    if (this.reply_input_flag === "") {
+      this.reply_input_flag = id;
+    } else {
+      this.reply_input_flag = "";
+    }
+  }
+
+  hide_previous_replies() {
+    this.show_replies = "";
+  }
+
+  comment_reply(comment_id, userId, baseUserId) {
+    console.log(comment_id, userId, baseUserId);
+    if (this.afAuth.auth.currentUser) {
+      const reply_id = this.afs.createId();
+      const reply_doc: AngularFirestoreDocument = this.afs.doc(
+        "user/" +
+          baseUserId +
+          "/listing/" +
+          this.listingId +
+          "/comment/" +
+          comment_id +
+          "/reply/" +
+          reply_id
+      );
+
+      this.reply_input_flag = "";
+
+      reply_doc
+        .set(
+          {
+            message: this.reply,
+            listingId: this.listingId,
+            commentId: comment_id,
+            dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+            userId: userId,
+            baseUserId: baseUserId
+          },
+          { merge: true }
+        )
+        .then(res => {
+          console.log("res: ", res);
+          reply_doc.snapshotChanges().subscribe(data => {
+            console.log(data.payload.data());
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
+
+  getReplies(hostId, commentId) {
+    this.afs
+      .collection(
+        "user/" +
+          hostId +
+          "/listing/" +
+          this.listingId +
+          "/comment/" +
+          commentId +
+          "/reply"
+      )
+      .snapshotChanges()
+      .subscribe(replies => {
+        this.replies = [];
+        this.temp_reply = replies;
+        this.temp_reply.forEach((item, i) => {
+          var user: AngularFirestoreDocument = this.afs.doc(
+            "user/" + this.temp1[i].payload.doc.data().userId
+          );
+          user.snapshotChanges().subscribe(user => {
+            var j = item.payload.doc.data();
+            j.dateCreated = j.dateCreated.toDate();
+            var reply = {
+              id: item.payload.doc.id,
+              reply: j,
+              name: user.payload.data().name,
+              imageUrl: user.payload.data().profileImageUrl
+            };
+            this.replies.push(reply);
+          });
+          console.log(this.replies);
+        });
+      });
   }
 }
