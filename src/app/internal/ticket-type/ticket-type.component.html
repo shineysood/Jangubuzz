@@ -7,11 +7,14 @@
     <ng-container *ngFor="let ticket of tickets">
       <div (click)="buy_ticket(ticket.id)" class="ticket_inner">
         <span>
-          {{ ticket.payload.title }} {{ ticket.payload.description }}
+          {{ ticket.payload.title }} <br />
+          <small>{{ ticket.payload.description }}</small>
         </span>
-        <span *ngIf="!ticket.payload.isPriced" class="badge badge-primary">
-          Free
-        </span>
+        <div>
+          <span *ngIf="!ticket.payload.isPriced" class="badge badge-primary">
+            Free
+          </span>
+        </div>
         <span class="badge badge-primary" *ngIf="ticket.payload.isPriced">
           {{ ticket.payload.currency }} ${{ ticket.payload.price }}
         </span>

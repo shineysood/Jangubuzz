@@ -77,7 +77,6 @@ export class ListServiceComponent implements OnInit {
       listingType: [""],
       locationAddress: [""],
       locationBrokenAddress: [""],
-      locationName: [""],
       locationShortAddress: [""],
       minHour: [""],
       startDate: [""],
@@ -286,8 +285,6 @@ export class ListServiceComponent implements OnInit {
           locationBrokenAddress: this.service_form_additional.controls[
             "locationBrokenAddress"
           ].value,
-          locationName: this.service_form_additional.controls["locationName"]
-            .value,
           locationShortAddress: short_add,
           minHour: +this.service_form_additional.controls["minHour"].value,
           startDate: firebase.firestore.Timestamp.fromDate(startDate),

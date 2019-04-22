@@ -71,7 +71,7 @@ export class ServiceBookingComponent implements OnInit {
     var st = this.service_book_form.controls["startTime"].value;
     var startDate = moment(sd + " " + st + ":00")
       .toDate()
-      .toString();
+      .toDateString();
 
     // end date and time
     var ed = new Date(
@@ -80,7 +80,7 @@ export class ServiceBookingComponent implements OnInit {
     var et = this.service_book_form.controls["endTime"].value;
     var endDate = moment(ed + " " + et + ":00")
       .toDate()
-      .toString();
+      .toDateString();
 
     var body = {
       userId: this.hostId,

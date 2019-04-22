@@ -13,3 +13,10 @@
     line-height: 17px;
     cursor: pointer;
 }
+.ticket_inner span small {
+    color: #909090;
+}
+.ticket_div .modal-header span {
+    font-size: 22px;
+    cursor: pointer;
+}
