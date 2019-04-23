@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: "listing/experience/:id", component: ExperienceComponent },
   {
     path: "settings",
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     component: SettingsComponent
   },
   {

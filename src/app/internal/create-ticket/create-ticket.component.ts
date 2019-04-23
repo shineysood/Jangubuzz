@@ -86,11 +86,11 @@ export class CreateTicketComponent implements OnInit {
     var isPriced;
     if (this.ticket_form.controls["ticketType"].value === "paid") {
       isPriced = true;
-      price = parseFloat(this.ticket_form.controls['price'].value);
+      price = parseFloat(this.ticket_form.controls["price"].value);
     } else if (this.ticket_form.controls["ticketType"].value === "free") {
       isPriced = false;
-      price = 0;
-    }.0
+      price = parseFloat("0");
+    }
 
     var endDate = new Date(
       this.ticket_form.controls["endDate"].value

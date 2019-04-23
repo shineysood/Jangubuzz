@@ -147,3 +147,9 @@ button.time_main i {
   color: #6d6d6d;
   font-size: 18px;
 }
+@media (max-width: 767px) {
+  .form-area {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

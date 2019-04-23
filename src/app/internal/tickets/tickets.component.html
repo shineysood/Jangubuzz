@@ -1,3 +1,35 @@
-<p>
-  tickets works!
-</p>
+<!-- <div *ngIf="loading" class="loader">
+  <img src="assets/images/loader.gif" />
+</div> -->
+
+<!-- <div *ngIf="!loading"> -->
+<div class="row">
+  <ng-container *ngFor="let ticket of tickets">
+    <div class="col-12 col-md-6 col-lg-4 mb-3">
+      <div class="card">
+        <div class="card-header">
+          <span> {{ticket.ticket.ticketId}} </span>
+          <button
+            *ngIf="ticket.ticket.policy !== 'no' && ticket.ticket.status === 'purchased'"
+            (click)="refund(ticket.id)"
+            class="pull-right btn btn-sm btn-primary"
+          >
+            Refund
+          </button>
+        </div>
+        <div class="card-body">
+          <h4 class="text-center">{{ ticket.ticket.title }}</h4>
+          <small class="d-block text-center">{{
+            ticket.ticket.description
+          }}</small>
+          <hr />
+          <h6 class="text-center">{{ ticket.startDate }}</h6>
+          <hr />
+          <span><strong>Amount paid:</strong> ${{ ticket.ticket.price }}</span>
+          <br />
+          <span><strong>Email:</strong> {{ ticket.ticket.email }}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

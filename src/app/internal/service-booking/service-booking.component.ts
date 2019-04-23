@@ -103,7 +103,7 @@ export class ServiceBookingComponent implements OnInit {
 
         // getting the specific doc based on the booking id
         const book_doc: AngularFirestoreDocument = this.afs.doc(
-          "user/" + this.hostId + "/booking/" + booking_id
+          "user/" + this.afAuth.auth.currentUser.uid + "/booking/" + booking_id
         );
 
         // getting listing from ID

@@ -1,220 +1,252 @@
 .profile-main {
-  padding: 0px;
-  display: flex;
-  background: #ffffff;
-  margin-bottom: 40px;
-  position: relative;
-  margin-top: -22px;
-  width: 100%;
+	padding: 0px;
+	display: flex;
+	background: #ffffff;
+	margin-bottom: 40px;
+	position: relative;
+	margin-top: -22px;
+	width: 100%;
 }
 
 .pro-pic {
-  flex: 0 0 250px;
-  margin-right: 20px;
+	flex: 0 0 250px;
+	margin-right: 20px;
 }
 
 .pro-pic .profile-img {
-  width: 250px;
-  height: 300px;
-  /* object-fit: cover; */
+	width: 250px;
+	height: 300px;
+	/* object-fit: cover; */
 }
 
 .pro-pic h5 img {
-  width: 20px;
-  height: 20px;
+	width: 20px;
+	height: 20px;
 }
 
 .profile-content h3 {
-  margin-top: 20px;
-  color: #000;
-  margin-bottom: 5px;
+	margin-top: 20px;
+	color: #000;
+	margin-bottom: 5px;
 }
 
 .profile-content {
-  padding: 15px;
-  flex: 1;
+	padding: 15px;
+	flex: 1;
 }
 .profile-content h6 i {
-  color: #ff5b8c;
-  margin-right: 5px;
+	color: #ff5b8c;
+	margin-right: 5px;
 }
 
 /*Added 22-April-2019*/
 
 .profile-page .event-lists .card-body {
-  padding: 0;
+	padding: 0;
 }
 .profile-page .event-lists .card-body img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
+	width: 100%;
+	height: 250px;
+	object-fit: cover;
 }
 .profile-page .event-lists .card-body img ~ div {
-  margin: 0 auto;
+	margin: 0 auto;
 }
 .profile-page .event-lists .card-body h3 {
-  width: 100%;
-  max-width: 100%;
-  flex: none;
-  margin: 0 auto 0;
-  padding: 15px 10px;
-  font-size: 15px;
-  color: #000000 !important;
+	width: 100%;
+	max-width: 100%;
+	flex: none;
+	margin: 0 auto 0;
+	padding: 15px 10px;
+	font-size: 15px;
+	color: #000000 !important;
 }
 .profile-page .event-lists .card-body button {
-  width: 100%;
-  flex: none;
-  max-width: 100%;
-  border-radius: 0 !important;
-  background-color: #ff5b8c;
-  border-color: #ff5b8c;
+	width: 100%;
+	flex: none;
+	max-width: 100%;
+	border-radius: 0 !important;
+	background-color: #ff5b8c;
+	border-color: #ff5b8c;
 }
 .profile-content h6 {
-  background: #faf2e8;
-  max-width: fit-content;
-  padding: 5px 10px;
-  border-radius: 20px;
-  color: #393938;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  margin-right: 5px;
-  margin-bottom: 20px;
+	background: #faf2e8;
+	max-width: fit-content;
+	padding: 5px 10px;
+	border-radius: 20px;
+	color: #393938;
+	font-size: 15px;
+	display: flex;
+	align-items: center;
+	margin-right: 5px;
+	margin-bottom: 20px;
 }
 
 .profile-content h3 {
-  font-size: 24px;
-  color: #421a3c;
+	font-size: 24px;
+	color: #421a3c;
 }
 
 .event-lists h3,
 .event-lists h4 {
-  color: #989898 !important;
+	color: #989898 !important;
 }
 
 .profile-content pre {
-  font-size: 14px;
-  font-weight: 300 !important;
-  color: #989898;
+	font-size: 14px;
+	font-weight: 300 !important;
+	color: #989898;
 }
 
 .profile-content label {
-  color: #999;
-  margin-bottom: 0px;
+	color: #999;
+	margin-bottom: 0px;
 }
 
 .profile-content h5 {
-  font-size: 16px;
-  margin-top: 15px;
+	font-size: 16px;
+	margin-top: 15px;
 }
 
 .profile-content h5 img {
-  width: 20px !important;
-  height: 20px !important;
-  position: relative;
-  top: -1px;
+	width: 20px !important;
+	height: 20px !important;
+	position: relative;
+	top: -1px;
 }
 
 .edit-profile-button {
-  background: #ffffff;
-  border: none;
-  text-align: center;
-  margin-bottom: 10px !important;
-  font-size: 14px;
-  padding: 6px;
-  color: #333333;
-  display: block;
-  margin: 0px auto;
-  border: 1px solid #333;
-  width: 90%;
+	background: #ffffff;
+	border: none;
+	text-align: center;
+	margin-bottom: 10px !important;
+	font-size: 14px;
+	padding: 6px;
+	color: #333333;
+	display: block;
+	margin: 0px auto;
+	border: 1px solid #333;
+	width: 90%;
 }
 button.btn.btn-primary.edit-profile-button i {
-  margin-right: 10px;
+	margin-right: 10px;
 }
 .edit-profile-button:hover {
-  background: #ff5b8d;
-  color: #fff;
+	background: #ff5b8d;
+	color: #fff;
 }
 
 .pro-pic h4 {
-  font-size: 16px;
-  margin-top: 20px;
-  padding: 0px 15px;
+	font-size: 16px;
+	margin-top: 20px;
+	padding: 0px 15px;
 }
 
 .pro-pic h5 {
-  font-size: 14px;
-  padding: 10px 15px;
-  color: #969393;
+	font-size: 14px;
+	padding: 10px 15px;
+	color: #969393;
 }
 
 .profile-content h4 {
-  font-size: 16px;
-  margin-top: 40px;
+	font-size: 16px;
+	margin-top: 40px;
 }
 event-lists {
-  background: #f1f1f0;
-  padding: 1px 15px;
-  margin-bottom: 10px;
-  color: #989898;
+	background: #f1f1f0;
+	padding: 1px 15px;
+	margin-bottom: 10px;
+	color: #989898;
 }
 .pro-pic .profile-img {
-  background: #ddd;
+	background: #ddd;
 }
 .pro-pic h5 img {
-  background: transparent;
+	background: transparent;
 }
 .profile-content h5 pre {
-  overflow: hidden;
-  font-size: 14px;
-  font-weight: 400 !important;
-  color: #989898;
-  margin: 0px;
-  font-family: "Poppins", sans-serif !important;
-  white-space: pre-line;
+	overflow: hidden;
+	font-size: 14px;
+	font-weight: 400 !important;
+	color: #989898;
+	margin: 0px;
+	font-family: "Poppins", sans-serif !important;
+	white-space: pre-line;
 }
 .pro-pic h5 img {
-  width: 20px !important;
-  height: auto !important;
-  margin-right: 5px;
-  position: relative;
-  top: -2px;
+	width: 20px !important;
+	height: auto !important;
+	margin-right: 5px;
+	position: relative;
+	top: -2px;
+}
+/* Responsive */
+@media (max-width: 1199px) and (min-width: 992px) {
+	.pro-pic {
+		margin-right: 12px;
+		flex: 0 0 235px;
+	}
+	.pro-pic .profile-img {
+		width: 235px;
+		height: 268px;
+	}
+	.event-lists .col-md-6{
+		padding-left: 8px;
+		padding-right: 8px;
+	}
 }
 @media screen and (max-width: 991px) {
-  .pro-pic {
-    flex: 0 0 150px;
-    margin-right: 10px;
-  }
-  .pro-pic img {
-    width: 150px;
-    height: 150px;
-  }
-  .pro-pic[_ngcontent-c16] h5[_ngcontent-c16] {
-    font-size: 12px;
-    padding: 10px 15px;
-    color: #969393;
-  }
-  .pro-pic h4 {
-    font-size: 14px;
-  }
-  .profile-content h3 {
-    font-size: 20px;
-    color: #421a3c;
-  }
-  .pro-pic {
-    flex: 0 0 150px;
-    margin-right: 20px;
-  }
+	.pro-pic {
+		flex: 0 0 150px;
+		margin-right: 10px;
+	}
+	.pro-pic img {
+		width: 150px;
+		height: 150px;
+	}
+	.pro-pic[_ngcontent-c16] h5[_ngcontent-c16] {
+		font-size: 12px;
+		padding: 10px 15px;
+		color: #969393;
+	}
+	.pro-pic h4 {
+		font-size: 14px;
+		padding: 0px 5px 0px 11px;
+	}
+	.profile-content h3 {
+		font-size: 20px;
+		color: #421a3c;
+	}
+	.pro-pic {
+		flex: 0 0 150px;
+		margin-right: 15px;
+	}
 
-  .pro-pic .profile-img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-  }
+	.pro-pic .profile-img {
+		width: 150px;
+		height: 150px;
+		object-fit: cover;
+	}
+	.pro-pic h5 {
+		padding: 10px 4px 5px 10px;
+	}
 }
 
+@media (max-width: 991px) and (min-width: 768px) {
+	.profile-page .event-lists .card-body img {
+		height: 165px;
+	}
+}
 @media screen and (max-width: 767px) {
-  .profile-main {
-    flex-direction: column;
-  }
+	.profile-main {
+		flex-direction: column;
+	}
+	.pro-pic {
+		text-align: center;
+		margin-right: 0;
+	}
+	.pro-pic .profile-img {
+		width: 186px;
+		height: 192px; 
+	}
 }

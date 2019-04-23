@@ -1,0 +1,22 @@
+
+.card .btn{
+    background: #ff5b8d;
+    border: none;
+    color: #fff;
+    letter-spacing: 1px;
+}
+.card .card-body h4{
+	font-size: 1.2rem;
+	margin-bottom: 3px;
+}
+.card .card-body small{
+	color: #909090;
+}
+.card .card-body span{
+	font-size: 13px;
+	color: #909090;
+}
+.card .card-body span strong,
+.card .card-body span b{
+	color: #000;
+}

@@ -184,4 +184,7 @@ button.navbar-toggler img:active {
   button.navbar-toggler img {
     width: 30px;
   }
+  button#navbarDropdown:hover{
+    color: #000 !important;
+  }
 }

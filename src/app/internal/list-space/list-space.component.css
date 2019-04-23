@@ -122,3 +122,10 @@ input#listing_image {
 
   width: auto;
 }
+
+@media (max-width: 767px) {
+  .form-area {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

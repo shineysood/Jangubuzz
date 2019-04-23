@@ -8,10 +8,13 @@ import { AngularFirestore } from "@angular/fire/firestore";
   styleUrls: ["./tickets.component.css"]
 })
 export class TicketsComponent implements OnInit {
+  loading = true;
   tickets = [];
+  temp;
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {}
 
   ngOnInit() {
+    this.loading = true;
     this.getUserTickets();
   }
 
@@ -21,13 +24,21 @@ export class TicketsComponent implements OnInit {
       .snapshotChanges()
       .subscribe(data => {
         data.forEach((item, i) => {
+          this.temp = item.payload.doc.data();
           var obj = {
             id: item.payload.doc.id,
-            ticket: item.payload.doc.data()
+            ticket: item.payload.doc.data(),
+            dateCreated: this.temp.dateCreated.toDate().toString(),
+            startDate: this.temp.startDate.toDate().toString()
           };
           this.tickets.push(obj);
         });
         console.log(this.tickets);
+        this.loading = false;
       });
+  }
+
+  refund() {
+    console.log("hello refund method")
   }
 }

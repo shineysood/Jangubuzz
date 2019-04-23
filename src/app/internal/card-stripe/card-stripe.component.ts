@@ -80,14 +80,16 @@ export class CardStripeComponent implements OnInit {
           var obj = {
             userId: this.paid_obj.userId,
             hostId: this.paid_obj.hostId,
-            listingId: this.paid_obj.listingid,
+            listingId: this.paid_obj.listingId,
             ticketId: this.paid_obj.ticketId,
             totalTickets: this.paid_obj.totalTickets,
             email: this.paid_obj.email,
             token: result.token.id.toString()
           };
 
-          const callable = this.fns.httpsCallable("on_ticket_purchase");
+          console.log(obj);
+
+          const callable = this.fns.httpsCallable("on_ticket_test_purchase");
           const callable_subscriber = callable(obj);
 
           callable_subscriber.subscribe(data => {
