@@ -35,6 +35,10 @@ export class ExperienceComponent implements OnInit {
   ticket_host;
   modalRef: BsModalRef;
   online_user;
+  jobs = [];
+  temp_job;
+  jobs_flag = false;
+  loading_jobs = true;
 
   constructor(
     private http: HttpClient,
@@ -64,7 +68,12 @@ export class ExperienceComponent implements OnInit {
       this.listingId = data.id;
       this.getServiceListing(data.id);
       this.getComments(data.id);
-      // this.getTickets(data.id);
+      if (this.afAuth.auth.currentUser) {
+        if (!this.afAuth.auth.currentUser.isAnonymous) {
+          this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
+          this.jobs_flag = true;
+        }
+      }
     });
   }
 
@@ -83,9 +92,6 @@ export class ExperienceComponent implements OnInit {
         console.log(this.listing.startDate);
         console.log(this.listing);
 
-        // this.listing.startDay = this.listing.startDate.toDattoString().split(" ")[0];
-        // this.listing.endDay = this.listing.endDate.toString().split(" ")[0];
-
         // to get the owner of the listing
         var listing_user: AngularFirestoreDocument = this.afs.doc(
           "user/" + this.listing.userId
@@ -95,25 +101,6 @@ export class ExperienceComponent implements OnInit {
         });
       });
   }
-
-  // getTickets(listingId) {
-  //   this.afs
-  //     .collection(
-  //       "user/" +
-  //         this.afAuth.auth.currentUser.uid +
-  //         "/listing/" +
-  //         listingId +
-  //         "/purchase"
-  //     )
-  //     .snapshotChanges()
-  //     .subscribe(data => {
-  //       data.forEach((item, i) => {
-  //         if (data[i].payload.doc.id === "Inay89pTA8tIGKUUkeJZ") {
-  //           console.log("=====> ", data[i].payload.doc.data());
-  //         }
-  //       });
-  //     });
-  // }
 
   buy_ticket(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
@@ -273,6 +260,70 @@ export class ExperienceComponent implements OnInit {
           });
           console.log(this.replies);
         });
+      });
+  }
+
+  getJobs(userId, listingId) {
+    this.afs
+      .collection("user/" + userId + "/listing/" + listingId + "/purchase")
+      .snapshotChanges()
+      .subscribe(data => {
+        data.forEach((item, i) => {
+          this.temp_job = item.payload.doc.data();
+          var startDate = this.temp_job.startDate.toDate();
+          var obj = {
+            purchaseId: item.payload.doc.id,
+            job: this.temp_job,
+            startDate: startDate
+          };
+          this.jobs.push(obj);
+        });
+        console.log(this.jobs);
+        this.loading_jobs = false;
+      });
+  }
+
+  approve_refund(purchaseId, listingId, hostId) {
+    const refund_Doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + hostId + "/listing/" + listingId + "/purchase/" + purchaseId
+    );
+
+    refund_Doc
+      .set(
+        {
+          status: "refunded"
+        },
+        { merge: true }
+      )
+      .then(data => {
+        refund_Doc.snapshotChanges().subscribe(res => {
+          console.log(res.payload.data());
+        });
+      })
+      .catch(err => {
+        console.log("error: ", err);
+      });
+  }
+
+  cancel_refund(purchaseId, listingId, hostId) {
+    const refund_Doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + hostId + "/listing/" + listingId + "/purchase/" + purchaseId
+    );
+
+    refund_Doc
+      .set(
+        {
+          status: "purchased"
+        },
+        { merge: true }
+      )
+      .then(data => {
+        refund_Doc.snapshotChanges().subscribe(res => {
+          console.log(res.payload.data());
+        });
+      })
+      .catch(err => {
+        console.log("error: ", err);
       });
   }
 }

@@ -43,7 +43,7 @@ export class TicketsComponent implements OnInit {
           }
 
           var obj = {
-            id: item.payload.doc.id,
+            purchaseId: item.payload.doc.id,
             ticket: item.payload.doc.data(),
             dateCreated: this.temp.dateCreated.toDate().toString(),
             startDate: this.temp.startDate.toDate().toString(),

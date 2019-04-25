@@ -18,7 +18,7 @@
           <h5>{{ ticket.ticket.description }}</h5>
         </div>
         <div class="card-body">
-          <h4>{{ ticket.ticket.ticketId }}</h4>
+          <h4>{{ ticket.purchaseId }}</h4>
           <h2 *ngIf="ticket.ticket.isPriced">${{ ticket.ticket.price }}</h2>
           <h2 *ngIf="!ticket.ticket.isPriced">FREE</h2>
           <ul>
@@ -37,7 +37,7 @@
             <button
               type="button"
               *ngIf="ticket.flag_refund === 1"
-              (click)="refund(ticket.id)"
+              (click)="refund(ticket.purchaseId)"
               class="pull-right btn btn-sm btn-primary"
             >
               Refund
@@ -48,6 +48,13 @@
               class="pull-right btn btn-sm btn-primary"
             >
               Refund initiated
+            </button>
+            <button
+              type="button"
+              *ngIf="ticket.ticket.status === 'refunded'"
+              class="pull-right btn btn-sm btn-primary"
+            >
+              Refunded
             </button>
           </div>
         </div>

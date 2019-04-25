@@ -2,19 +2,16 @@
   <!-- Nav tabs -->
   <div class="tabs-header">
     <div class="container">
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#details">Details</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#tickets">Tickets</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#jobs">Jobs</a>
-    </li>
-  </ul>
-</div>
-</div>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#details">Info</a>
+        </li>
+        <li *ngIf="jobs_flag" class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#jobs">Jobs</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
   <!-- Tab panes -->
   <div class="tab-content">
@@ -227,8 +224,14 @@
                           <li>
                             <div class="comment_reply">
                               <div class="left">
-                                <img *ngIf="reply.imageUrl" src="{{ reply.imageUrl }}" />
-                                <img *ngIf="!reply.imageUrl" src="assets/images/user.png" />
+                                <img
+                                  *ngIf="reply.imageUrl"
+                                  src="{{ reply.imageUrl }}"
+                                />
+                                <img
+                                  *ngIf="!reply.imageUrl"
+                                  src="assets/images/user.png"
+                                />
                               </div>
                               <div class="right">
                                 <span class="name">{{ reply.name }}</span>
@@ -269,7 +272,68 @@
         ></app-ticket-type>
       </ng-template>
     </div>
-    <div class="tab-pane container fade" id="tickets">...</div>
-    <div class="tab-pane container fade" id="jobs">...</div>
+    <div *ngIf="jobs_flag" class="tab-pane container fade" id="jobs">
+      <div *ngIf="loading_jobs" class="loader">
+        <img src="assets/images/loader.gif" />
+      </div>
+
+      <div *ngIf="!loading_jobs && jobs.length === 0" class="empty_tickets">
+        <h2>No tickets</h2>
+      </div>
+
+      <div *ngIf="!loading_jobs && jobs.length !== 0" class="row">
+        <ng-container *ngFor="let job of jobs">
+          <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <div class="card">
+              <div class="card-header">
+                <span class="ticket-logo">
+                  <img src="assets/images/logo.png" alt="logo" />
+                </span>
+                <h3>{{ job.job.title }}</h3>
+                <h5>{{ job.job.description }}</h5>
+              </div>
+              <div class="card-body">
+                <h4>{{ job.purchaseId }}</h4>
+                <h2 *ngIf="job.job.isPriced">${{ job.job.totalPricePaid }}</h2>
+                <h2 *ngIf="!job.job.isPriced">FREE</h2>
+                <ul>
+                  <li>
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    {{ job.startDate | date: "medium" }}
+                  </li>
+                  <li>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    {{ job.startDate | date: "shortTime" }}
+                  </li>
+                  <li>
+                    <i class="fa fa-envelope" aria-hidden="true"></i
+                    >{{ job.job.email }}
+                  </li>
+                </ul>
+
+                <div class="refund-btn">
+                  <button
+                    *ngIf="job.job.status === 'requested'"
+                    type="button"
+                    (click)="approve_refund(job.purchaseId, job.job.listingId, job.job.hostId)"
+                    class="pull-right btn btn-sm btn-primary"
+                  >
+                    Approve Refund
+                  </button>
+                  <button
+                    *ngIf="job.job.status === 'requested'"
+                    type="button"
+                    (click)="cancel_refund(job.purchaseId, job.job.listingId, job.job.hostId)"
+                    class="pull-right btn btn-sm btn-primary"
+                  >
+                    Cancel Refund
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
   </div>
 </div>

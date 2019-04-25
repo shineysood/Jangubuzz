@@ -322,8 +322,9 @@ h5.live-part {
   font-size: 16px;
 }
 .comments {
-  height: 355px;
-  overflow-y: scroll;
+  height: auto;
+  max-height: 355px;
+  overflow-y: auto;
 }
 
 .fixed_img_wrap {
@@ -421,5 +422,148 @@ h5.live-part {
   }
   .avail_info .left {
     width: 70%;
+  }
+}
+
+
+/* jobs */
+#jobs .card .btn {
+  background: #ff5b8d;
+  border: none;
+  color: #fff;
+  letter-spacing: 1px;
+}
+#jobs .card .card-body h4 {
+  font-size: 1.2rem;
+  margin-bottom: 3px;
+}
+#jobs .card .card-body small {
+  color: #909090;
+}
+#jobs .card .card-body span {
+  font-size: 13px;
+  color: #909090;
+}
+#jobs .card .card-body span strong,
+#jobs .card .card-body span b {
+  color: #000;
+}
+.loader img {
+  height: 250px;
+  width: 363px;
+  max-width: 100%;
+  filter: brightness(3);
+}
+
+#jobs .card {
+  min-height: 375px;
+}
+#jobs .card-header img {
+  max-width: 100%;
+}
+#jobs span.ticket-logo {
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  background: #ff5b8c;
+  padding: 10px;
+  border: 4px solid #fff;
+  border-radius: 100px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+#jobs .card {
+  border: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  border-radius: 10px;
+}
+#jobs .card-header {
+  padding: 30px 10px 0px;
+  text-align: center;
+  position: relative;
+  background: #fff;
+  border: none;
+}
+#jobs .card-header::before {
+  width: 100%;
+  height: 80px;
+  border-top: 0px solid transparent;
+  border-bottom: 48px solid transparent;
+  border-left: 365px solid #ff5b8c;
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+}
+#jobs .card-header h5 {
+  font-size: 14px;
+  color: #ff5b8c;
+  margin: 5px 0px 0px;
+}
+#jobs .card-header h3 {
+  font-size: 24px;
+  color: #421a3a;
+  margin: 0px;
+  margin-top: 20px;
+}
+#jobs .card-body h4 {
+  font-size: 16px !important;
+  text-align: center;
+  margin: 10px 0px 15px !important;
+  display: block;
+}
+#jobs .card-body h2 {
+  text-align: center;
+  margin: 0px 0px 15px;
+  color: #ff5b8c;
+}
+#jobs .card-body ul {
+  padding: 0px;
+  list-style: none;
+}
+#jobs .empty_tickets {
+  text-align: center;
+  margin: 54px;
+}
+#jobs .card-body ul li i {
+  color: #421a3a;
+  position: absolute;
+  left: 0px;
+  top: 3px;
+}
+#jobs .card-body ul li {
+  font-size: 14px;
+  padding-left: 20px;
+  color: #999;
+  position: relative;
+}
+#jobs .card .btn {
+  background: transparent;
+  border: none;
+  color: #ff5b8d;
+  letter-spacing: 1px;
+  text-decoration: underline;
+  font-weight: 600;
+  font-size: 13px;
+}
+#jobs .card button:hover {
+  background: transparent !important;
+  color: #421a3a !important;
+}
+@media screen and (max-width: 767px) {
+  #jobs .card-header::before {
+    width: 100%;
+    height: 68px;
+    border-top: 0px solid transparent;
+    border-bottom: 48px solid transparent;
+    border-left: 767px solid #ff5b8c;
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
   }
 }
