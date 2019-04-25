@@ -15,7 +15,6 @@ export class ProfileComponent implements OnInit {
   modalRef: BsModalRef;
   user_logged;
   dob;
-  user_bookings = [];
   bio;
   loading = false;
   photoURL;
@@ -36,17 +35,6 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getUserBookings().subscribe(data => {
-      // this.user_bookings = [];
-      data.forEach((item, i) => {
-        var obj = {
-          id: data[i].payload.doc.id,
-          payload: data[i].payload.doc.data()
-        };
-        this.user_bookings.push(obj);
-      });
-    });
-
     this.afs
       .collection("listing")
       .snapshotChanges()
@@ -65,7 +53,23 @@ export class ProfileComponent implements OnInit {
             this.user_listings.push(listing);
           }
         });
+        console.log(this.user_listings);
       });
+
+    // this.afs
+    //   .collection("user/" + this.afAuth.auth.currentUser.uid + "/listing")
+    //   .snapshotChanges()
+    //   .subscribe(list => {
+    //     this.all_listings = list;
+    //     this.all_listings.forEach((item, i) => {
+    //       var listing = {
+    //         id: this.all_listings[i].payload.doc.id,
+    //         payload: this.all_listings[i].payload.doc.data()
+    //       };
+    //       this.user_listings.push(listing);
+    //     });
+    //     console.log(this.user_listings);
+    //   });
 
     const userDoc: AngularFirestoreDocument = this.afs.doc(
       "user/" + this.afAuth.auth.currentUser.uid
@@ -120,24 +124,5 @@ export class ProfileComponent implements OnInit {
       "/user/" +
       this.afAuth.auth.currentUser.uid;
     console.log(link);
-  }
-
-  // delete_listing(id) {
-  //   this.afs
-  //     .collection("listing")
-  //     .doc(id.toString())
-  //     .delete()
-  //     .then(res => {
-  //       console.log(res);
-  //     })
-  //     .catch(err => {
-  //       console.log("error: ", err);
-  //     });
-  // }
-
-  getUserBookings() {
-    return this.afs
-      .collection("user/" + this.afAuth.auth.currentUser.uid + "/booking")
-      .snapshotChanges();
   }
 }

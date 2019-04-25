@@ -10,7 +10,7 @@ import * as moment from "moment";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { google } from "@google/maps";
 import { MapsAPILoader } from "@agm/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
 import { AngularFireDatabase } from "@angular/fire/database";
@@ -60,7 +60,8 @@ export class ListServiceComponent implements OnInit {
     private afs: AngularFirestore,
     public afd: AngularFireDatabase,
     public store: AngularFireStorage,
-    private atp: AmazingTimePickerService
+    private atp: AmazingTimePickerService,
+    private router: Router
   ) {
     this.afs
       .collection("services")
@@ -301,6 +302,8 @@ export class ListServiceComponent implements OnInit {
       .then(data => {
         listingDoc.snapshotChanges().subscribe(data => {
           console.log(data.payload.data());
+          var id = data.payload.id;
+          this.router.navigate(["listing/spaces-and-services", id]);
         });
       })
       .catch(err => {

@@ -18,9 +18,9 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#payment"
+          <a class="nav-link" data-toggle="tab" href="#booking"
             ><span><img src="assets/images/payout.png" alt="img"/></span>
-            <h6 class="link-heading">Payments</h6></a
+            <h6 class="link-heading">Bookings</h6></a
           >
         </li>
         <li class="nav-item">
@@ -38,8 +38,13 @@
       </div>
 
       <div id="account" class="container tab-pane fade">
+          <br />
+          <app-account></app-account>
+        </div>
+
+      <div id="booking" class="container tab-pane fade">
         <br />
-        <app-account></app-account>
+        <app-user-bookings></app-user-bookings>
       </div>
 
       <div id="ticket" class="container tab-pane fade">

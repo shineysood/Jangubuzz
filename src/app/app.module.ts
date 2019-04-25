@@ -74,6 +74,7 @@ import { TicketTypeComponent } from "./internal/ticket-type/ticket-type.componen
 import { Ng5SliderModule } from "ng5-slider";
 import { CardStripeComponent } from './internal/card-stripe/card-stripe.component';
 import { JobsComponent } from './internal/jobs/jobs.component';
+import { ReviewsComponent } from './external/reviews/reviews.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { JobsComponent } from './internal/jobs/jobs.component';
     TicketsComponent,
     TicketTypeComponent,
     CardStripeComponent,
-    JobsComponent
+    JobsComponent,
+    ReviewsComponent
   ],
   imports: [
     Ng5SliderModule,

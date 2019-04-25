@@ -77,41 +77,25 @@
                           class="img-fluid"
                         />
                         <div class="row">
-                            <h3 class="col-md-6 ng">{{ item.payload.title }}</h3>
-                            <button
-                              *ngIf="
-                                item.payload.listingType === 'eventListingType'
-                              "
-                              type="button"
-                              class="btn btn-primary btn-sm col-md-6"
-                              (click)="create_ticket(item.id, item.payload.userId)"
-                            >
-                              Create ticket
-                            </button>
+                          <h3 class="col-md-6 ng">{{ item.payload.title }}</h3>
+                          <button
+                            *ngIf="
+                              item.payload.listingType === 'eventListingType'
+                            "
+                            type="button"
+                            class="btn btn-primary btn-sm col-md-6"
+                            (click)="
+                              create_ticket(item.id, item.payload.userId)
+                            "
+                          >
+                            Create ticket
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </ng-container>
               </div>
-            </div>
-          </div>
-
-          <!-- Bookings List -->
-          <h4>Bookings List</h4>
-
-          <div *ngIf="user_bookings.length === 0">
-            NO BOOKINGS
-          </div>
-
-          <div *ngIf="user_bookings.length !== 0">
-            <div class="event-lists">
-              <ng-container *ngFor="let item of user_bookings">
-                <h3>{{ item.payload.description }}</h3>
-                <h4>
-                  {{ item.payload.dateCreated.seconds * 1000 | date: "medium" }}
-                </h4>
-              </ng-container>
             </div>
           </div>
         </div>

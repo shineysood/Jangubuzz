@@ -10,7 +10,7 @@ import * as moment from "moment";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { google } from "@google/maps";
 import { MapsAPILoader } from "@agm/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import * as $ from "jquery";
 import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from "firebase/app";
@@ -65,7 +65,8 @@ export class ListSpaceComponent implements OnInit {
     private afs: AngularFirestore,
     public afd: AngularFireDatabase,
     public store: AngularFireStorage,
-    private atp: AmazingTimePickerService
+    private atp: AmazingTimePickerService,
+    private router: Router
   ) {
     this.space_form_basic = this.fb.group({
       title: [""],
@@ -161,7 +162,7 @@ export class ListSpaceComponent implements OnInit {
 
           this.locationBrokenAddess_temp = place.address_components;
 
-          console.log(this.locationBrokenAddess_temp)
+          console.log(this.locationBrokenAddess_temp);
 
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
@@ -241,7 +242,7 @@ export class ListSpaceComponent implements OnInit {
 
     var state = "";
     var locationBrokenAddress = this.locationBrokenAddess_temp;
-    console.log(this.locationBrokenAddess_temp)
+    console.log(this.locationBrokenAddess_temp);
 
     var l = [];
 
@@ -333,6 +334,8 @@ export class ListSpaceComponent implements OnInit {
       .then(data => {
         listingDoc.snapshotChanges().subscribe(data => {
           console.log(data.payload.data());
+          var id = data.payload.id;
+          this.router.navigate(["listing/spaces-and-services", id]);
         });
       })
       .catch(err => {

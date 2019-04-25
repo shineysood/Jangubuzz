@@ -1,0 +1,131 @@
+.card-header img {
+  max-width: 100%;
+}
+span.ticket-logo {
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  background: #ff5b8c;
+  padding: 10px;
+  border: 4px solid #fff;
+  border-radius: 100px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+.card {
+  border: none;
+  min-height: 332px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  border-radius: 10px;
+}
+.card-header {
+  padding: 30px 10px 0px;
+  text-align: center;
+  position: relative;
+  background: #fff;
+  border: none;
+}
+.card-header::before {
+  width: 100%;
+  height: 80px;
+  border-top: 0px solid transparent;
+  border-bottom: 48px solid transparent;
+  border-left: 380px solid #ff5b8c;
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+}
+.card-header h5 {
+  font-size: 14px;
+  color: #ff5b8c;
+  margin: 5px 0px 0px;
+}
+.card-header h3 {
+  font-size: 24px;
+  color: #421a3a;
+  margin: 0px;
+  margin-top: 20px;
+}
+.card-body h4 {
+  font-size: 16px !important;
+  text-align: center;
+  margin: 10px 0px 15px !important;
+  display: block;
+}
+.card-body h2 {
+  text-align: center;
+  margin: 0px 0px 15px;
+  color: #ff5b8c;
+}
+.card-body ul {
+  padding: 0px;
+  list-style: none;
+}
+.empty_tickets {
+  text-align: center;
+  margin: 54px;
+}
+.card-body ul li i {
+  color: #421a3a;
+  position: absolute;
+  left: 0px;
+  top: 3px;
+}
+.card-body ul li {
+  font-size: 14px;
+  padding-left: 20px;
+  color: #999;
+  position: relative;
+}
+.card .btn {
+  background: transparent;
+  border: none;
+  color: #ff5b8d;
+  letter-spacing: 1px;
+  text-decoration: underline;
+  font-weight: 600;
+  font-size: 13px;
+}
+.card button:hover {
+  background: transparent !important;
+  color: #421a3a !important;
+}
+.card-body h2 small {
+  font-size: 14px;
+  color: #333;
+  display: block;
+  margin-bottom: 25px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.cancel_div img {
+  width: 80%;
+}
+.cancel_div {
+  position: absolute;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media screen and (max-width: 767px) {
+  .card-header[_ngcontent-c8]::before {
+    width: 100%;
+    height: 68px;
+    border-top: 0px solid transparent;
+    border-bottom: 48px solid transparent;
+    border-left: 767px solid #ff5b8c;
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+  }
+}
