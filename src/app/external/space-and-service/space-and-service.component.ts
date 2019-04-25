@@ -22,11 +22,12 @@ export class SpaceAndServiceComponent implements OnInit {
   listing_user;
   listing_id;
   online_user;
+  job_flag = false;
   comment;
   comments_list = [];
   temp;
   temp1;
-  jobs;
+  jobs = [];
   reply_input_flag;
   show_replies;
   replies;
@@ -41,6 +42,14 @@ export class SpaceAndServiceComponent implements OnInit {
     private router: Router
   ) {
     window.scroll(0, 0);
+
+    if (this.afAuth.auth.currentUser) {
+      if (!this.afAuth.auth.currentUser.isAnonymous) {
+        this.job_flag = true;
+      } else {
+        this.job_flag = false;
+      }
+    }
   }
 
   ngOnInit() {
@@ -58,6 +67,7 @@ export class SpaceAndServiceComponent implements OnInit {
       // this.getListingBookings(this.listing_id);
       this.getServiceListing(data.id);
       this.getComments(data.id);
+
       // if (this.afAuth.auth.currentUser) {
       //   // this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
       // }

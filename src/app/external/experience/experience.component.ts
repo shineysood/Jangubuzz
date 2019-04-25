@@ -24,7 +24,7 @@ export class ExperienceComponent implements OnInit {
   comments_list = [];
   temp;
   temp1;
-  replies;
+  replies = [];
   reply_input_flag;
   show_replies;
   comment;
@@ -64,6 +64,7 @@ export class ExperienceComponent implements OnInit {
       this.listingId = data.id;
       this.getServiceListing(data.id);
       this.getComments(data.id);
+      // this.getTickets(data.id);
     });
   }
 
@@ -94,6 +95,25 @@ export class ExperienceComponent implements OnInit {
         });
       });
   }
+
+  // getTickets(listingId) {
+  //   this.afs
+  //     .collection(
+  //       "user/" +
+  //         this.afAuth.auth.currentUser.uid +
+  //         "/listing/" +
+  //         listingId +
+  //         "/purchase"
+  //     )
+  //     .snapshotChanges()
+  //     .subscribe(data => {
+  //       data.forEach((item, i) => {
+  //         if (data[i].payload.doc.id === "Inay89pTA8tIGKUUkeJZ") {
+  //           console.log("=====> ", data[i].payload.doc.data());
+  //         }
+  //       });
+  //     });
+  // }
 
   buy_ticket(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
@@ -164,7 +184,6 @@ export class ExperienceComponent implements OnInit {
   }
 
   view_previous_replies(hostId, commentId) {
-    this.replies = [];
     this.show_replies = commentId;
     this.getReplies(hostId, commentId);
   }
@@ -239,7 +258,7 @@ export class ExperienceComponent implements OnInit {
         this.temp_reply = replies;
         this.temp_reply.forEach((item, i) => {
           var user: AngularFirestoreDocument = this.afs.doc(
-            "user/" + this.temp1[i].payload.doc.data().userId
+            "user/" + this.temp_reply[i].payload.doc.data().userId
           );
           user.snapshotChanges().subscribe(user => {
             var j = item.payload.doc.data();

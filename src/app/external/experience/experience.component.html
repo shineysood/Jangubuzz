@@ -1,228 +1,275 @@
-<!-- for service type listing -->
-<div *ngIf="!loading" class="container service_div">
-  <div class="row d-flex flex-wrap upper-section fixed_img_wrap">
-    <div class="col-md-4 fixed_img">
-      <img
-        src="{{ listing.listingImageUrl }}"
-        alt=""
-        class="img-fluid list_img"
-      />
-    </div>
-    <div class="col-md-8">
-      <div class="info_part">
-        <p *ngIf="!loading" class="service_cat">{{ listing.categories }}</p>
-        <h1 class="mb-3">
-          {{ listing.title }} <small>by {{ listing_user }}</small>
-        </h1>
-        <ul class="list-unstyled mb-5 event_info">
-          <li><i class="fa fa-map-marker"></i>{{ listing.locationAddress }}</li>
-          <li *ngIf="listing.isLive">
-            <h5 class="live-part"><i class="fa fa-circle"></i>Live</h5>
-          </li>
-        </ul>
+<div class="service_div ">
+  <!-- Nav tabs -->
+  <div class="tabs-header">
+    <div class="container">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#details">Details</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#tickets">Tickets</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#jobs">Jobs</a>
+    </li>
+  </ul>
+</div>
+</div>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane container active" id="details">
+      <!-- for service type listing -->
+      <div *ngIf="!loading" class="container">
+        <div class="row d-flex flex-wrap upper-section fixed_img_wrap">
+          <div class="col-md-4 fixed_img">
+            <img
+              src="{{ listing.listingImageUrl }}"
+              alt=""
+              class="img-fluid list_img"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="info_part">
+              <p *ngIf="!loading" class="service_cat">
+                {{ listing.categories }}
+              </p>
+              <h1 class="mb-3">
+                {{ listing.title }} <small>by {{ listing_user }}</small>
+              </h1>
+              <ul class="list-unstyled mb-5 event_info">
+                <li>
+                  <i class="fa fa-map-marker"></i>{{ listing.locationAddress }}
+                </li>
+                <li *ngIf="listing.isLive">
+                  <h5 class="live-part"><i class="fa fa-circle"></i>Live</h5>
+                </li>
+              </ul>
+              <hr />
+
+              <div class="about_host">
+                <h2 class="h5 my-5">
+                  Description
+                </h2>
+                <pre id="description">{{ listing.description }}</pre>
+              </div>
+
+              <div class="about_host">
+                <h2 class="h5 my-5">
+                  Refund
+                </h2>
+                <p *ngIf="listing.policy === 'sevenDay'" id="cancel_policy">
+                  7 days refund policy <br /><br />
+                  Ticket charges and all applicable processing fees are
+                  non-refundable 7 days after purchase is completed.
+                </p>
+                <p *ngIf="listing.policy === 'oneDay'" id="cancel_policy">
+                  One day refund policy <br /><br />
+                  Ticket charges and all applicable processing fees are
+                  non-refundable 24 hours after purchase is completed.
+                </p>
+                <p *ngIf="listing.policy === 'thirtyDay'" id="cancel_policy">
+                  30 days refund policy <br /><br />
+                  Ticket charges and all applicable processing fees are
+                  non-refundable 30 days after purchase is completed.
+                </p>
+                <p *ngIf="listing.policy === 'no'" id="cancel_policy">
+                  No refund <br /><br />
+                  Ticket charges and all applicable processing fees are
+                  non-refundable after purchase is completed.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row mt-5 d-flex align-items-center flex-wrap py-5">
+          <div class="col-md-4">
+            <h3 class="m-0 title-section">Availability</h3>
+          </div>
+          <div class="col-md-8">
+            <div class="card p-4">
+              <div class="avail_info">
+                <div class="left">
+                  <h4 class="h6 pb-2">
+                    {{ listing.startDate | date: "fullDate" }}
+                    {{ listing.startDate | date: "shortTime" }} -
+                    {{ listing.endDate | date: "fullDate" }}
+                    {{ listing.endDate | date: "shortTime" }}
+                  </h4>
+                  <p>
+                    <span
+                      *ngIf="listing.isFree"
+                      style="text-transform:uppercase"
+                    >
+                      Free
+                    </span>
+                    <span
+                      *ngIf="!listing.isFree"
+                      style="text-transform:uppercase"
+                    >
+                      {{ listing.currency }}$ {{ listing.bottomPrice }} -
+                      {{ listing.currency }}$ {{ listing.topPrice }}
+                    </span>
+                  </p>
+                </div>
+                <div class="right">
+                  <!-- booking button -->
+                  <button
+                    class="btn btn-primary btn-sm"
+                    (click)="buy_ticket(template)"
+                  >
+                    Buy ticket
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <hr />
 
-        <div class="about_host">
-          <h2 class="h5 my-5">
-            Description
-          </h2>
-          <pre id="description">{{ listing.description }}</pre>
-        </div>
-
-        <div class="about_host">
-          <h2 class="h5 my-5">
-            Refund
-          </h2>
-          <p *ngIf="listing.policy === 'sevenDay'" id="cancel_policy">
-            7 days refund policy <br /><br />
-            Ticket charges and all applicable processing fees are non-refundable
-            7 days after purchase is completed.
-          </p>
-          <p *ngIf="listing.policy === 'oneDay'" id="cancel_policy">
-            One day refund policy <br /><br />
-            Ticket charges and all applicable processing fees are non-refundable
-            24 hours after purchase is completed.
-          </p>
-          <p *ngIf="listing.policy === 'thirtyDay'" id="cancel_policy">
-            30 days refund policy <br /><br />
-            Ticket charges and all applicable processing fees are non-refundable
-            30 days after purchase is completed.
-          </p>
-          <p *ngIf="listing.policy === 'no'" id="cancel_policy">
-            No refund <br /><br />
-            Ticket charges and all applicable processing fees are non-refundable
-            after purchase is completed.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <hr />
-  <div class="row mt-5 d-flex align-items-center flex-wrap py-5">
-    <div class="col-md-4">
-      <h3 class="m-0 title-section">Availability</h3>
-    </div>
-    <div class="col-md-8">
-      <div class="card p-4">
-        <div class="avail_info">
-          <div class="left">
-            <h4 class="h6 pb-2">
-              {{ listing.startDate | date: "fullDate" }}
-              {{ listing.startDate | date: "shortTime" }} -
-              {{ listing.endDate | date: "fullDate" }}
-              {{ listing.endDate | date: "shortTime" }}
-            </h4>
-            <p>
-              <span *ngIf="listing.isFree" style="text-transform:uppercase">
-                Free
-              </span>
-              <span *ngIf="!listing.isFree" style="text-transform:uppercase">
-                {{ listing.currency }}$ {{ listing.bottomPrice }} -
-                {{ listing.currency }}$ {{ listing.topPrice }}
-              </span>
-            </p>
+        <!-- make comments part -->
+        <div class="row mt-5 d-flex flex-wrap py-5">
+          <div class="col-md-4">
+            <h3 class="m-0 title-section">Comments</h3>
           </div>
-          <div class="right">
-            <!-- booking button -->
-            <button
-              class="btn btn-primary btn-sm"
-              (click)="buy_ticket(template)"
-            >
-              Buy ticket
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <hr />
-
-  <!-- make comments part -->
-  <div class="row mt-5 d-flex flex-wrap py-5">
-    <div class="col-md-4">
-      <h3 class="m-0 title-section">Comments</h3>
-    </div>
-    <div class="col-md-8">
-      <div *ngIf="online_user" class="input-comment d-flex">
-        <div class="comment-left">
-          <img src="{{ online_user.profileImageUrl }}" />
-        </div>
-        <div class="comment-right">
-          <h4>{{ online_user.name }}</h4>
-          <textarea
-            type="text"
-            name="comment"
-            [(ngModel)]="comment"
-            placeholder="Enter Your Comment"
-          ></textarea>
-          <button (click)="comments(listing.userId)">Send</button>
-        </div>
-      </div>
-
-      <!-- comments --------------------------------- -->
-      <div class="comments ">
-        <ul *ngIf="comments_list.length === 0">
-          <li>No Comments</li>
-        </ul>
-        <ul *ngIf="comments_list.length !== 0">
-          <li *ngFor="let comment of comments_list" class="d-flex">
-            <div class="comment-left">
-              <img src="{{ comment.imageUrl }}" />
+          <div class="col-md-8">
+            <div *ngIf="online_user" class="input-comment d-flex">
+              <div class="comment-left">
+                <img src="{{ online_user.profileImageUrl }}" />
+              </div>
+              <div class="comment-right">
+                <h4>{{ online_user.name }}</h4>
+                <textarea
+                  type="text"
+                  name="comment"
+                  [(ngModel)]="comment"
+                  placeholder="Enter Your Comment"
+                ></textarea>
+                <button (click)="comments(listing.userId)">Send</button>
+              </div>
             </div>
 
-            <!-- comments part -->
-            <div class="comment-right">
-              <h4>{{ comment.userName }}</h4>
-              <h5>
-                <i class="fa fa-clock-o" aria-hidden="true"></i>
-                {{ comment.comment.dateCreated | date: "medium" }}
-              </h5>
-              <pre>{{ comment.comment.message }}</pre>
-              <div class="anchors_tags">
-                <a
-                  href="javaScript:void(0)"
-                  *ngIf="show_replies !== comment.id"
-                  (click)="
-                    view_previous_replies(
-                      comment.comment.baseUserId,
-                      comment.id
-                    )
-                  "
-                >
-                  View previous replies
-                </a>
-                <a
-                  href="javaScript:void(0)"
-                  *ngIf="show_replies === comment.id"
-                  (click)="hide_previous_replies()"
-                >
-                  Hide replies
-                </a>
-                <a
-                  *ngIf="online_user"
-                  href="javaScript:void(0)"
-                  (click)="reply_clicked(comment.id)"
-                >
-                  Reply
-                </a>
-              </div>
-              <div *ngIf="reply_input_flag === comment.id" class="reply_field">
-                <textarea [(ngModel)]="reply" name="comment_reply"></textarea>
-                <button
-                  (click)="
-                    comment_reply(
-                      comment.id,
-                      comment.comment.userId,
-                      comment.comment.baseUserId
-                    )
-                  "
-                >
-                  Reply
-                </button>
-              </div>
-              <ng-container *ngFor="let reply of replies">
-                <div
-                  *ngIf="show_replies && reply.reply.commentId === comment.id"
-                >
-                  <ul>
-                    <li>
-                      <div class="comment_reply">
-                        <div class="left">
-                          <img src="{{ reply.imageUrl }}" />
-                        </div>
-                        <div class="right">
-                          <span class="name">{{ reply.name }}</span>
-                          <small class="time">{{
-                            reply.reply.dateCreated | date: "medium"
-                          }}</small>
-                          <span class="message">{{ reply.reply.message }}</span>
-                        </div>
+            <!-- comments --------------------------------- -->
+            <div class="comments ">
+              <ul *ngIf="comments_list.length === 0">
+                <li>No Comments</li>
+              </ul>
+              <ul *ngIf="comments_list.length !== 0">
+                <li *ngFor="let comment of comments_list" class="d-flex">
+                  <div class="comment-left">
+                    <img src="{{ comment.imageUrl }}" />
+                  </div>
+
+                  <!-- comments part -->
+                  <div class="comment-right">
+                    <h4>{{ comment.userName }}</h4>
+                    <h5>
+                      <i class="fa fa-clock-o" aria-hidden="true"></i>
+                      {{ comment.comment.dateCreated | date: "medium" }}
+                    </h5>
+                    <pre>{{ comment.comment.message }}</pre>
+                    <div class="anchors_tags">
+                      <a
+                        href="javaScript:void(0)"
+                        *ngIf="show_replies !== comment.id"
+                        (click)="
+                          view_previous_replies(
+                            comment.comment.baseUserId,
+                            comment.id
+                          )
+                        "
+                      >
+                        View previous replies
+                      </a>
+                      <a
+                        href="javaScript:void(0)"
+                        *ngIf="show_replies === comment.id"
+                        (click)="hide_previous_replies()"
+                      >
+                        Hide replies
+                      </a>
+                      <a
+                        *ngIf="online_user"
+                        href="javaScript:void(0)"
+                        (click)="reply_clicked(comment.id)"
+                      >
+                        Reply
+                      </a>
+                    </div>
+                    <div
+                      *ngIf="reply_input_flag === comment.id"
+                      class="reply_field"
+                    >
+                      <textarea
+                        [(ngModel)]="reply"
+                        name="comment_reply"
+                      ></textarea>
+                      <button
+                        (click)="
+                          comment_reply(
+                            comment.id,
+                            comment.comment.userId,
+                            comment.comment.baseUserId
+                          )
+                        "
+                      >
+                        Reply
+                      </button>
+                    </div>
+                    <ng-container *ngFor="let reply of replies">
+                      <div
+                        *ngIf="
+                          show_replies && reply.reply.commentId === comment.id
+                        "
+                      >
+                        <ul>
+                          <li>
+                            <div class="comment_reply">
+                              <div class="left">
+                                <img *ngIf="reply.imageUrl" src="{{ reply.imageUrl }}" />
+                                <img *ngIf="!reply.imageUrl" src="assets/images/user.png" />
+                              </div>
+                              <div class="right">
+                                <span class="name">{{ reply.name }}</span>
+                                <small class="time">{{
+                                  reply.reply.dateCreated | date: "medium"
+                                }}</small>
+                                <span class="message">{{
+                                  reply.reply.message
+                                }}</span>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
                       </div>
-                    </li>
-                  </ul>
-                </div>
-              </ng-container>
+                    </ng-container>
+                  </div>
+                  <!-- end -->
+                </li>
+              </ul>
             </div>
-            <!-- end -->
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
+
+      <!-- for displaying loader  -->
+      <div *ngIf="loading" class="service_div loader_list">
+        <img src="assets/images/loader.gif" />
+      </div>
+
+      <!-- confirm ticket part -->
+
+      <!-- ticket type template -->
+      <ng-template #template>
+        <app-ticket-type
+          [modalRef]="modalRef"
+          [hostId]="ticket_host"
+          [listingId]="ticket_listing"
+        ></app-ticket-type>
+      </ng-template>
     </div>
+    <div class="tab-pane container fade" id="tickets">...</div>
+    <div class="tab-pane container fade" id="jobs">...</div>
   </div>
 </div>
-
-<!-- for displaying loader  -->
-<div *ngIf="loading" class="service_div loader_list">
-  <img src="assets/images/loader.gif" />
-</div>
-
-<!-- confirm ticket part -->
-
-<!-- ticket type template -->
-<ng-template #template>
-  <app-ticket-type
-    [modalRef]="modalRef"
-    [hostId]="ticket_host"
-    [listingId]="ticket_listing"
-  ></app-ticket-type>
-</ng-template>

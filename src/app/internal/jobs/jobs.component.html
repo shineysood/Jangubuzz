@@ -1,11 +1,58 @@
 <div *ngIf="jobs.length === 0">
-  no jobs
+  No Jobs
 </div>
 
-<div *ngIf="jobs.length !== 0">
-  <ng-container>
-    <div>
-      
+<div *ngIf="jobs.length !== 0" class="row">
+  <ng-container *ngFor="let job of jobs">
+    <div class="col-12 col-md-6 col-lg-4 mb-3">
+      <div class="card">
+        <div *ngIf="job.job.isCanceled" class="cancel_div">
+          <img src="assets/images/cancel.png" />
+        </div>
+        <div *ngIf="job.job.isHostApproved" class="cancel_div">
+          <img src="assets/images/approved.png" />
+        </div>
+        <div class="card-header">
+          <span class="ticket-logo">
+            <img src="assets/images/logo.png" alt="logo" />
+          </span>
+        </div>
+        <div class="card-body">
+          <h4>{{ job.id }}</h4>
+          <h2>${{ job.job.perHourPrice }} <small>per hour</small></h2>
+
+          <ul>
+            <li>
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              {{ job.job.startDate }} -
+              {{ job.job.endDate }}
+            </li>
+            <li>
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              {{ job.job.hours }} hours
+            </li>
+          </ul>
+
+          <div class="refund-btn">
+            <button
+              *ngIf="!job.job.isCanceled && !job.job.isHostApproved"
+              type="button"
+              (click)="approve(job.id, job.job.hostId, job.job.listingId)"
+              class="pull-right btn btn-sm btn-primary"
+            >
+              Approve
+            </button>
+            <button
+              *ngIf="!job.job.isCanceled && !job.job.isHostApproved"
+              (click)="cancel(job.id, job.job.hostId, job.job.listingId)"
+              type="button"
+              class="pull-right btn btn-sm btn-primary"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </ng-container>
 </div>

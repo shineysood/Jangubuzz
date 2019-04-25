@@ -1,33 +1,55 @@
-<!-- <div *ngIf="loading" class="loader">
+<div *ngIf="loading" class="loader">
   <img src="assets/images/loader.gif" />
-</div> -->
+</div>
 
-<!-- <div *ngIf="!loading"> -->
-<div class="row">
+<div class="empty_tickets" *ngIf="!loading && tickets.length === 0">
+  <h2>No tickets</h2>
+</div>
+
+<div *ngIf="!loading && tickets.length !== 0" class="row">
   <ng-container *ngFor="let ticket of tickets">
     <div class="col-12 col-md-6 col-lg-4 mb-3">
       <div class="card">
         <div class="card-header">
-          <span> {{ticket.ticket.ticketId}} </span>
-          <button
-            *ngIf="ticket.ticket.policy !== 'no' && ticket.ticket.status === 'purchased'"
-            (click)="refund(ticket.id)"
-            class="pull-right btn btn-sm btn-primary"
-          >
-            Refund
-          </button>
+          <span class="ticket-logo">
+            <img src="assets/images/logo.png" alt="logo" />
+          </span>
+          <h3>{{ ticket.ticket.title }}</h3>
+          <h5>{{ ticket.ticket.description }}</h5>
         </div>
         <div class="card-body">
-          <h4 class="text-center">{{ ticket.ticket.title }}</h4>
-          <small class="d-block text-center">{{
-            ticket.ticket.description
-          }}</small>
-          <hr />
-          <h6 class="text-center">{{ ticket.startDate }}</h6>
-          <hr />
-          <span><strong>Amount paid:</strong> ${{ ticket.ticket.price }}</span>
-          <br />
-          <span><strong>Email:</strong> {{ ticket.ticket.email }}</span>
+          <h4>{{ ticket.ticket.ticketId }}</h4>
+          <h2 *ngIf="ticket.ticket.isPriced">${{ ticket.ticket.price }}</h2>
+          <h2 *ngIf="!ticket.ticket.isPriced">FREE</h2>
+          <ul>
+            <li>
+              <i class="fa fa-calendar" aria-hidden="true"></i
+              >{{ ticket.startDate | date: "fullDate" }}
+            </li>
+            <li>
+              <i class="fa fa-clock-o" aria-hidden="true"></i
+              >{{ ticket.startDate | date: "shortTime" }}
+            </li>
+            <!--     <li><i class="fa fa-envelope" aria-hidden="true"></i> {{ ticket.ticket.email }}</li> -->
+          </ul>
+
+          <div class="refund-btn">
+            <button
+              type="button"
+              *ngIf="ticket.flag_refund === 1"
+              (click)="refund(ticket.id)"
+              class="pull-right btn btn-sm btn-primary"
+            >
+              Refund
+            </button>
+            <button
+              type="button"
+              *ngIf="ticket.ticket.status === 'requested'"
+              class="pull-right btn btn-sm btn-primary"
+            >
+              Refund initiated
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -67,13 +67,13 @@ import {
 } from "@angular/fire/functions";
 import { ServiceBookingComponent } from "./internal/service-booking/service-booking.component";
 import { SpaceBookingComponent } from "./internal/space-booking/space-booking.component";
-import { JobsComponent } from "./internal/jobs/jobs.component";
 import { UserBookingsComponent } from "./internal/user-bookings/user-bookings.component";
 import { CreateTicketComponent } from "./internal/create-ticket/create-ticket.component";
 import { TicketsComponent } from "./internal/tickets/tickets.component";
 import { TicketTypeComponent } from "./internal/ticket-type/ticket-type.component";
 import { Ng5SliderModule } from "ng5-slider";
 import { CardStripeComponent } from './internal/card-stripe/card-stripe.component';
+import { JobsComponent } from './internal/jobs/jobs.component';
 
 @NgModule({
   declarations: [
@@ -119,12 +119,12 @@ import { CardStripeComponent } from './internal/card-stripe/card-stripe.componen
     ListExperienceComponent,
     ServiceBookingComponent,
     SpaceBookingComponent,
-    JobsComponent,
     UserBookingsComponent,
     CreateTicketComponent,
     TicketsComponent,
     TicketTypeComponent,
-    CardStripeComponent
+    CardStripeComponent,
+    JobsComponent
   ],
   imports: [
     Ng5SliderModule,

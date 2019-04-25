@@ -32,7 +32,7 @@ li {
 }
 
 .service_div {
-  margin-top: 100px;
+  margin-top: 60px;
   min-height: 80vh;
 }
 .pb-2 {
@@ -68,6 +68,28 @@ ul.event_info li i.fa {
   padding-left: 35px;
   /* color: #421a3c; */
 }
+
+/* added tabs header */
+.tabs-header {
+  background: #f7f5f6;
+  margin-bottom: 30px;
+}
+.tabs-header ul.nav.nav-tabs {
+  border: none;
+}
+.tabs-header ul.nav.nav-tabs li a {
+  color: #421a3a;
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 2px solid #f7f5f6;
+}
+.tabs-header .nav-tabs .nav-link.active {
+  color: #ff5b8d !important;
+  background-color: #f7f5f6;
+  border: none;
+  border-bottom: 2px solid #ff5b8d !important;
+}
+/* ends tabs header */
 
 .service_cat:before {
   position: absolute;

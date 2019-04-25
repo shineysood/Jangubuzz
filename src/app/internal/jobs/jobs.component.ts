@@ -1,9 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
+import { Component, OnInit, Input } from "@angular/core";
+import {
+  AngularFirestore,
+  AngularFirestoreDocument
+} from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
-import { AngularFirestoreDocument } from "@angular/fire/firestore";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFireFunctions } from "@angular/fire/functions";
-import { Input } from "@angular/core";
 
 @Component({
   selector: "app-jobs",
@@ -11,38 +13,78 @@ import { Input } from "@angular/core";
   styleUrls: ["./jobs.component.css"]
 })
 export class JobsComponent implements OnInit {
-  jobs = [];
   @Input() listingId;
-
+  jobs = [];
+  temp;
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
-    private fns: AngularFireFunctions
+    private route: ActivatedRoute,
+    private fns: AngularFireFunctions,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.getJobs(this.afAuth.auth.currentUser.uid, this.listingId);
+    this.getBookings(this.afAuth.auth.currentUser.uid, this.listingId);
   }
 
-  getJobs(userId, listingId) {
-    // this.jobs = [];
-    console.log(userId, listingId);
-    this.afs
-      .collection("user/" + userId + "/listing/" + listingId + "/job")
-      .snapshotChanges()
-      .subscribe(jobs => {
-        jobs.forEach((item, i) => {
-          var job = {
-            id: item.payload.doc.id,
-            job: item.payload.doc.data()
-          };
-          this.jobs.push(job);
+  approve(id, hostId, listingId) {
+    const job_doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + hostId + "/listing/" + listingId + "/job/" + id
+    );
+
+    job_doc
+      .set(
+        {
+          isHostApproved: true
+        },
+        { merge: true }
+      )
+      .then(res => {
+        job_doc.snapshotChanges().subscribe(data => {
+          console.log(data.payload.data());
         });
-        console.log("====> jobs: ", this.jobs);
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
-  approve_booking() {
-    // on_booking_availability
+  cancel(id, hostId, listingId) {
+    const job_doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + hostId + "/listing/" + listingId + "/job/" + id
+    );
+
+    job_doc
+      .set(
+        {
+          isCanceled: true
+        },
+        { merge: true }
+      )
+      .then(res => {
+        job_doc.snapshotChanges().subscribe(data => {
+          console.log(data.payload.data());
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  getBookings(userId, listingId) {
+    this.afs
+      .collection("user/" + userId + "/listing/" + listingId + "/job")
+      .snapshotChanges()
+      .subscribe(data => {
+        data.forEach((item, i) => {
+          var obj = {
+            id: item.payload.doc.id,
+            job: item.payload.doc.data()
+          };
+          this.jobs.push(obj);
+        });
+        console.log("jobs: ===>", this.jobs);
+      });
   }
 }
