@@ -10,8 +10,14 @@
 }
 .text-danger {
   font-size: 13px;
-  margin: -14px 0 20px 0;
+  margin: 1px 0 0px 0;
 }
+.booking-form .form-group button.btn{
+bottom: auto;
+top:28px;
+}
+
+
 button.btn.btn-success {
   position: absolute;
   right: 10px;

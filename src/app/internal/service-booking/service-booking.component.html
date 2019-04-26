@@ -77,16 +77,17 @@
         >
           <i class="fa fa-calendar"></i>
         </button>
+        <div
+          class="text-danger"
+          *ngIf="
+            service_book_form.controls['endDate'].hasError('required') &&
+            service_book_form.controls['endDate'].touched
+          "
+        >
+          Please enter end date
+        </div>
       </div>
-      <div
-        class="text-danger"
-        *ngIf="
-          service_book_form.controls['endDate'].hasError('required') &&
-          service_book_form.controls['endDate'].touched
-        "
-      >
-        Please enter end date
-      </div>
+
       <!-- end time -->
       <div class="form-group">
         <label for="endTime"> End time</label>
