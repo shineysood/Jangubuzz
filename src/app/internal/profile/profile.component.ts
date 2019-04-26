@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit {
       .collection("listing")
       .snapshotChanges()
       .subscribe(list => {
-        // this.user_listings = [];
         this.all_listings = list;
         list.forEach((item, i) => {
           if (
@@ -55,21 +54,6 @@ export class ProfileComponent implements OnInit {
         });
         console.log(this.user_listings);
       });
-
-    // this.afs
-    //   .collection("user/" + this.afAuth.auth.currentUser.uid + "/listing")
-    //   .snapshotChanges()
-    //   .subscribe(list => {
-    //     this.all_listings = list;
-    //     this.all_listings.forEach((item, i) => {
-    //       var listing = {
-    //         id: this.all_listings[i].payload.doc.id,
-    //         payload: this.all_listings[i].payload.doc.data()
-    //       };
-    //       this.user_listings.push(listing);
-    //     });
-    //     console.log(this.user_listings);
-    //   });
 
     const userDoc: AngularFirestoreDocument = this.afs.doc(
       "user/" + this.afAuth.auth.currentUser.uid

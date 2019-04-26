@@ -17,6 +17,15 @@
             formControlName="title"
           />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            service_form_basic.controls['title'].hasError('required') &&
+            service_form_basic.controls['title'].touched
+          "
+        >
+          Please enter title
+        </div>
       </div>
       <div class="col-sm-12">
         <div class="form-group">
@@ -27,6 +36,15 @@
             placeholder="Description ..."
             formControlName="description"
           ></textarea>
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            service_form_basic.controls['description'].hasError('required') &&
+            service_form_basic.controls['description'].touched
+          "
+        >
+          Please enter description
         </div>
       </div>
       <div class="col-sm-6">
@@ -121,6 +139,7 @@
     <div class="form-group">
       <select formControlName="service">
         <ng-container *ngFor="let item of services">
+            <option value="">Select service...</option> 
           <option value="{{ item.payload.doc.id }}">
             {{ item.payload.doc.id }}
           </option>
@@ -147,6 +166,7 @@
           #search
         />
       </div>
+
       <agm-map
         [latitude]="latitude"
         [longitude]="longitude"
@@ -155,6 +175,16 @@
       >
         <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
       </agm-map>
+      <div
+        class="text-danger"
+        *ngIf="
+          service_form_additional.controls['locationAddress'].hasError(
+            'required'
+          ) && service_form_additional.controls['locationAddress'].touched
+        "
+      >
+        Please select location address
+      </div>
     </div>
   </div>
   <div class="form-area">
@@ -166,12 +196,31 @@
           <label> Daily start time</label>
           <input atp-time-picker value="19:00" formControlName="startDate" />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            service_form_additional.controls['startDate'].hasError(
+              'required'
+            ) && service_form_additional.controls['startDate'].touched
+          "
+        >
+          Please enter start date
+        </div>
       </div>
       <!-- end time -->
       <div class="col-sm-6">
         <div class="form-group">
           <label> Daily end time</label>
           <input atp-time-picker value="19:00" formControlName="endDate" />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            service_form_additional.controls['endDate'].hasError('required') &&
+            service_form_additional.controls['endDate'].touched
+          "
+        >
+          Please enter end date
         </div>
       </div>
     </div>
@@ -190,6 +239,16 @@
             id="price_per_hour"
           />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            service_form_additional.controls['perHourPrice'].hasError(
+              'required'
+            ) && service_form_additional.controls['perHourPrice'].touched
+          "
+        >
+          Please enter price per hour
+        </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
@@ -200,6 +259,15 @@
             formControlName="minHour"
             id="min_hours"
           />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            service_form_additional.controls['minHour'].hasError('required') &&
+            service_form_additional.controls['minHour'].touched
+          "
+        >
+          Please enter minimum hours
         </div>
       </div>
     </div>

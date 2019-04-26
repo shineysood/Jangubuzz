@@ -17,6 +17,15 @@
             formControlName="title"
           />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            experience_form_basic.controls['title'].hasError('required') &&
+            experience_form_basic.controls['title'].touched
+          "
+        >
+          Please enter title
+        </div>
       </div>
       <div class="col-sm-12">
         <div class="form-group">
@@ -27,6 +36,16 @@
             placeholder="Description ..."
             formControlName="description"
           ></textarea>
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            experience_form_basic.controls['description'].hasError(
+              'required'
+            ) && experience_form_basic.controls['description'].touched
+          "
+        >
+          Please enter description
         </div>
       </div>
       <div class="col-sm-6">
@@ -90,6 +109,8 @@
   </div>
 </form>
 
+<!-- ------------------------------- -->
+<!-- //////////////////////////////////////////////// -->
 <!-- additional information -->
 <form
   *ngIf="step === 'additional'"
@@ -132,12 +153,25 @@
   <div class="form-area">
     <h3>Location information</h3>
     <h5>Which city will you host your experience in?</h5>
+
     <div class="form-group">
+      <label for="location_name">Location name</label>
       <input
+        id="location_name"
         type="text"
         placeholder="e.g. John dior"
         formControlName="locationName"
       />
+    </div>
+    <div
+      class="text-danger"
+      *ngIf="
+        experience_form_additional.controls['locationName'].hasError(
+          'required'
+        ) && experience_form_additional.controls['locationName'].touched
+      "
+    >
+      Please enter location name
     </div>
     <div>
       <div class="form-group">
@@ -163,6 +197,16 @@
       >
         <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
       </agm-map>
+      <div
+        class="text-danger"
+        *ngIf="
+          experience_form_additional.controls['locationAddress'].hasError(
+            'required'
+          ) && experience_form_additional.controls['locationAddress'].touched
+        "
+      >
+        Please select location address
+      </div>
     </div>
   </div>
   <div class="form-area">
@@ -178,6 +222,7 @@
             #dp="bsDatepicker"
             bsDatepicker
             [bsValue]="bsValue"
+            [bsConfig]="bsConfig"
             formControlName="startDate"
             placeholder="Enter start date..."
           />
@@ -190,6 +235,16 @@
             <i class="fa fa-calendar"></i>
           </button>
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            experience_form_additional.controls['startDate'].hasError(
+              'required'
+            ) && experience_form_additional.controls['startDate'].touched
+          "
+        >
+          Please select location address
+        </div>
       </div>
       <div class="col-sm-6">
         <!-- start time -->
@@ -197,6 +252,16 @@
           <label>Start time</label>
           <!-- <button (click)="check_time()" type="button" class="time_main"><i class="fa fa-clock-o"></i></button> -->
           <input atp-time-picker value="19:00" formControlName="startTime" />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            experience_form_additional.controls['startTime'].hasError(
+              'required'
+            ) && experience_form_additional.controls['startTime'].touched
+          "
+        >
+          Please enter start time
         </div>
       </div>
       <div class="col-sm-6">
@@ -209,6 +274,7 @@
             #dp="bsDatepicker"
             bsDatepicker
             [bsValue]="bsValue"
+            [bsConfig]="bsConfig"
             formControlName="endDate"
             placeholder="Enter end date..."
           />
@@ -221,12 +287,32 @@
             <i class="fa fa-calendar"></i>
           </button>
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            experience_form_additional.controls['endDate'].hasError(
+              'required'
+            ) && experience_form_additional.controls['endDate'].touched
+          "
+        >
+          Please enter end date
+        </div>
       </div>
       <!-- end time -->
       <div class="col-sm-6">
         <div class="form-group">
           <label> End time</label>
           <input atp-time-picker value="19:00" formControlName="endTime" />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            experience_form_additional.controls['endTime'].hasError(
+              'required'
+            ) && experience_form_additional.controls['endTime'].touched
+          "
+        >
+          Please enter end time
         </div>
       </div>
       <div class="col-sm-6">

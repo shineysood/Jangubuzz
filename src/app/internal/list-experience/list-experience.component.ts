@@ -7,7 +7,7 @@ import {
   Input
 } from "@angular/core";
 import * as moment from "moment";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { google } from "@google/maps";
 import { MapsAPILoader } from "@agm/core";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -20,6 +20,11 @@ import {
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import { AmazingTimePickerService } from "amazing-time-picker";
+import Swal from "sweetalert2";
+import {
+  BsDaterangepickerDirective,
+  BsDatepickerConfig
+} from "ngx-bootstrap/datepicker";
 
 declare var google: any;
 
@@ -57,6 +62,13 @@ export class ListExperienceComponent implements OnInit {
   public experience_form_basic: FormGroup;
   public experience_form_additional: FormGroup;
 
+  @ViewChild("dp") datepicker: BsDaterangepickerDirective;
+
+  bsConfig: Partial<BsDatepickerConfig>;
+  minDate;
+
+  // bsConfif: any;
+
   constructor(
     private route: ActivatedRoute,
     private mapsAPILoader: MapsAPILoader,
@@ -71,31 +83,19 @@ export class ListExperienceComponent implements OnInit {
   ) {
     this.experience_form_basic = this.fb.group({
       currency: [""],
-      description: [""],
+      description: ["", Validators.required],
       policy: [""],
-      title: [""]
+      title: ["", Validators.required]
     });
 
     this.experience_form_additional = this.fb.group({
-      dateCreated: [""],
-      endDay: [""],
       recurrence: [""],
-      startDate: [""],
-      startDay: [""],
-      state: [""],
-      listingImageUrl: [""],
-      locationAddress: [""],
-      locationBrokenAddress: [""],
-      locationName: [""],
-      locationShortAddress: [""],
-      startTime: [""],
-      endTime: [""],
-      endDate: [""],
-      geoPoint: [""],
-      isCanceled: [""],
-      isDraft: [""],
-      isLive: [""],
-      isFree: [""]
+      startDate: ["", Validators.required],
+      locationAddress: ["", Validators.required],
+      locationName: ["", Validators.required],
+      startTime: ["", Validators.required],
+      endTime: ["", Validators.required],
+      endDate: ["", Validators.required]
     });
   }
 
@@ -130,7 +130,6 @@ export class ListExperienceComponent implements OnInit {
       });
 
     this.selectedItems = [];
-
     // end
 
     this.experience_form_basic.controls["currency"].patchValue("cad");
@@ -180,34 +179,41 @@ export class ListExperienceComponent implements OnInit {
   }
 
   addExperienceBasic() {
-    this.listingId = this.afs.createId();
-    // get the firestore doc
-    const listingDoc: AngularFirestoreDocument = this.afs.doc(
-      "user/" + this.userId + "/listing/" + this.listingId
-    );
+    if (this.experience_form_basic.valid) {
+      this.listingId = this.afs.createId();
+      // get the firestore doc
+      const listingDoc: AngularFirestoreDocument = this.afs.doc(
+        "user/" + this.userId + "/listing/" + this.listingId
+      );
 
-    listingDoc
-      .set(
-        {
-          title: this.experience_form_basic.controls["title"].value,
-          description: this.experience_form_basic.controls["description"].value,
-          policy: this.experience_form_basic.controls["policy"].value,
-          listingType: this.listingType,
-          currency: this.experience_form_basic.controls["currency"].value,
-          userId: this.afAuth.auth.currentUser.uid
-        },
-        { merge: true }
-      )
-      .then(res => {
-        listingDoc.snapshotChanges().subscribe(data => {
-          console.log(data.payload.data());
+      listingDoc
+        .set(
+          {
+            title: this.experience_form_basic.controls["title"].value,
+            description: this.experience_form_basic.controls["description"]
+              .value,
+            policy: this.experience_form_basic.controls["policy"].value,
+            listingType: this.listingType,
+            currency: this.experience_form_basic.controls["currency"].value,
+            userId: this.afAuth.auth.currentUser.uid
+          },
+          { merge: true }
+        )
+        .then(res => {
+          listingDoc.snapshotChanges().subscribe(data => {
+            console.log(data.payload.data());
+          });
+          this.step = "additional";
+          this.loadGoogleMaps();
+        })
+        .catch(err => {
+          console.log(err);
         });
-        this.step = "additional";
-        this.loadGoogleMaps();
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    } else {
+      Object.keys(this.experience_form_basic.controls).forEach(i =>
+        this.experience_form_basic.controls[i].markAsTouched()
+      );
+    }
   }
 
   // check_time() {
@@ -242,104 +248,117 @@ export class ListExperienceComponent implements OnInit {
   }
 
   addExperienceAdditional() {
-    // get the firestore doc
-    const listingDoc: AngularFirestoreDocument = this.afs.doc(
-      "user/" + this.userId + "/listing/" + this.listingId
-    );
+    if (this.experience_form_additional.valid) {
+      console.log("hello additional methods");
+      // get the firestore doc
+      const listingDoc: AngularFirestoreDocument = this.afs.doc(
+        "user/" + this.userId + "/listing/" + this.listingId
+      );
 
-    var state = "";
-    var locationBrokenAddress = this.locationBrokenAddess_temp;
+      var state = "";
+      var locationBrokenAddress = this.locationBrokenAddess_temp;
 
-    var l = [];
+      var l = [];
 
-    for (var i = 0; i < locationBrokenAddress.length; i++) {
-      l.push(locationBrokenAddress[i].long_name);
-    }
-
-    this.experience_form_additional.controls[
-      "locationBrokenAddress"
-    ].patchValue(l);
-
-    for (var i = 0; i < locationBrokenAddress.length; i++) {
-      if (locationBrokenAddress[i].types[0] === "administrative_area_level_1") {
-        state = locationBrokenAddress[i].long_name;
+      for (var i = 0; i < locationBrokenAddress.length; i++) {
+        l.push(locationBrokenAddress[i].long_name);
       }
-    }
 
-    var st, ci, co;
-    for (var i = 0; i < locationBrokenAddress.length; i++) {
-      if (locationBrokenAddress[i].types[0] === "administrative_area_level_2") {
-        ci = locationBrokenAddress[i].long_name;
-      } else if (
-        locationBrokenAddress[i].types[0] === "administrative_area_level_1"
-      ) {
-        st = locationBrokenAddress[i].long_name;
-      } else if (locationBrokenAddress[i].types[0] === "country") {
-        co = locationBrokenAddress[i].long_name;
-      }
-    }
-    var short_add = ci + ", " + st + ", " + co;
+      // this.experience_form_additional.controls[
+      //   "locationBrokenAddress"
+      // ].patchValue(l);
 
-    var sd = new Date(
-      this.experience_form_additional.controls["startDate"].value
-    ).toDateString();
-    var st = this.experience_form_additional.controls["startTime"].value;
-    var startDate = moment(sd + " " + st + ":00").toDate();
-
-    var ed = new Date(
-      this.experience_form_additional.controls["endDate"].value
-    ).toDateString();
-    var et = this.experience_form_additional.controls["endTime"].value;
-    var endDate = moment(ed + " " + et + ":00").toDate();
-
-    console.log(startDate, endDate);
-
-    listingDoc
-      .set(
-        {
-          categories: this.selectedItems,
-          dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-          endDate: firebase.firestore.Timestamp.fromDate(endDate),
-          endDay: this.experience_form_additional.controls["endDate"].value
-            .toString()
-            .split(" ")[0],
-          geoPoint: this.geoPoint,
-          isCanceled: false,
-          isDraft: false,
-          isLive: true,
-          isFree: true,
-          listingImageUrl: this.listing_event_image_url,
-          locationAddress: this.experience_form_additional.controls[
-            "locationAddress"
-          ].value,
-          locationBrokenAddress: this.experience_form_additional.controls[
-            "locationBrokenAddress"
-          ].value,
-          locationName: this.experience_form_additional.controls["locationName"]
-            .value,
-          locationShortAddress: short_add,
-          startDate: firebase.firestore.Timestamp.fromDate(startDate),
-          startDay: this.experience_form_additional.controls["startDate"].value
-            .toString()
-            .split(" ")[0],
-          state: state,
-          recurrence: this.experience_form_additional.controls["recurrence"]
-            .value
-        },
-        {
-          merge: true
+      for (var i = 0; i < locationBrokenAddress.length; i++) {
+        if (
+          locationBrokenAddress[i].types[0] === "administrative_area_level_1"
+        ) {
+          state = locationBrokenAddress[i].long_name;
         }
-      )
-      .then(data => {
-        listingDoc.snapshotChanges().subscribe(data => {
-          console.log(data.payload.data());
-          var id = data.payload.id;
-          this.router.navigate(["listing/experience", id]);
+      }
+
+      var st, ci, co;
+      for (var i = 0; i < locationBrokenAddress.length; i++) {
+        if (
+          locationBrokenAddress[i].types[0] === "administrative_area_level_2"
+        ) {
+          ci = locationBrokenAddress[i].long_name;
+        } else if (
+          locationBrokenAddress[i].types[0] === "administrative_area_level_1"
+        ) {
+          st = locationBrokenAddress[i].long_name;
+        } else if (locationBrokenAddress[i].types[0] === "country") {
+          co = locationBrokenAddress[i].long_name;
+        }
+      }
+      var short_add = ci + ", " + st + ", " + co;
+
+      var sd = new Date(
+        this.experience_form_additional.controls["startDate"].value
+      ).toDateString();
+      var st = this.experience_form_additional.controls["startTime"].value;
+      var startDate = moment(sd + " " + st + ":00").toDate();
+
+      var ed = new Date(
+        this.experience_form_additional.controls["endDate"].value
+      ).toDateString();
+      var et = this.experience_form_additional.controls["endTime"].value;
+      var endDate = moment(ed + " " + et + ":00").toDate();
+
+      console.log(startDate, endDate);
+
+      listingDoc
+        .set(
+          {
+            categories: this.selectedItems,
+            dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+            endDate: firebase.firestore.Timestamp.fromDate(endDate),
+            endDay: this.experience_form_additional.controls["endDate"].value
+              .toString()
+              .split(" ")[0],
+            geoPoint: this.geoPoint,
+            isCanceled: false,
+            isDraft: false,
+            isLive: true,
+            isFree: true,
+            listingImageUrl: this.listing_event_image_url,
+            locationAddress: this.experience_form_additional.controls[
+              "locationAddress"
+            ].value,
+            locationBrokenAddress: l,
+            locationName: this.experience_form_additional.controls[
+              "locationName"
+            ].value,
+            locationShortAddress: short_add,
+            startDate: firebase.firestore.Timestamp.fromDate(startDate),
+            startDay: this.experience_form_additional.controls[
+              "startDate"
+            ].value
+              .toString()
+              .split(" ")[0],
+            state: state,
+            recurrence: this.experience_form_additional.controls["recurrence"]
+              .value
+          },
+          {
+            merge: true
+          }
+        )
+        .then(data => {
+          listingDoc.snapshotChanges().subscribe(data => {
+            console.log(data.payload.data());
+            Swal.fire("", "Listed successfully", "success");
+            this.router.navigateByUrl("/");
+          });
+        })
+        .catch(err => {
+          console.log(err);
         });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    } else {
+      console.log("else part og this ksdmlkdsm");
+      Object.keys(this.experience_form_additional.controls).forEach(i =>
+        this.experience_form_additional.controls[i].markAsTouched()
+      );
+    }
   }
 
   updateSpaceImage(event) {
@@ -357,6 +376,11 @@ export class ListExperienceComponent implements OnInit {
           this.pic_loader = false;
         });
       });
+
+    this.minDate = new Date();
+    this.bsConfig = Object.assign({}, { minDate: this.minDate });
+    console.log(this.datepicker);
+    this.datepicker.setConfig();
   }
 
   set() {

@@ -11,3 +11,11 @@ form.review-form .form-group:last-child button {
   background-color: #ff5b8c;
   border: 1px solid #ff5b8c;
 }
+form.review-form .form-group:nth-of-type(2) {
+  display: flex;
+  align-items: center;
+}
+form.review-form .form-group:nth-of-type(2) label {
+  margin: 0 10px 0 0px;
+  color: #909090;
+}

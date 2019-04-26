@@ -12,12 +12,17 @@
   margin-bottom: 0;
 }
 .card_div .form-group.save button {
-	background-color: #ff5b8d;
-	border: none;
+  background-color: #ff5b8d;
+  border: none;
 }
 .card_div h2 {
-    font-size: 22px;
-    margin: 0 0 20px;
-    border-bottom: 1px solid #cccccc70;
-    padding: 0 0 15px;
+  font-size: 22px;
+  margin: 0 0 20px;
+  border-bottom: 1px solid #cccccc70;
+  padding: 0 0 15px;
+}
+
+.text-danger {
+  margin: -13px 0 15px 0;
+  font-size: 12px;
 }

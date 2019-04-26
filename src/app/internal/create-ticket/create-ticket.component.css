@@ -1,11 +1,31 @@
 .form_ticket {
-    margin: 100px 0;
-    background-color: #f5f5f5;
-    padding: 20px 25px;
-    box-shadow: 0 5px 15px 0 rgba(00,0,0,0.2);
+  margin: 100px 0;
+  background-color: #f5f5f5;
+  padding: 20px 25px;
+  box-shadow: 0 5px 15px 0 rgba(00, 0, 0, 0.2);
 }
 .btn-primary-custom {
-    background-color: #ff5b8d;
-    border-color: #ff5b8d;
-    color: #fff;
+  background-color: #ff5b8d;
+  border-color: #ff5b8d;
+  color: #fff;
+}
+.date-cal {
+  width: 100%;
+  position: relative;
+}
+.date-cal .input-group-append {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+.date-cal .input-group-append button,
+.date-cal .input-group-append button:hover {
+  background-color: transparent !important;
+  border: none !important;
+  color: #ff5b8d !important;
+}
+
+.text-danger {
+  font-size: 12px;
 }

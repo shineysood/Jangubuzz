@@ -71,7 +71,6 @@ export class ExperienceComponent implements OnInit {
       if (this.afAuth.auth.currentUser) {
         if (!this.afAuth.auth.currentUser.isAnonymous) {
           this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
-          this.jobs_flag = true;
         }
       }
     });
@@ -84,6 +83,14 @@ export class ExperienceComponent implements OnInit {
       .subscribe(res => {
         this.listing = res.data();
         this.ticket_host = res.data().userId;
+        if (
+          this.afAuth.auth.currentUser &&
+          !this.afAuth.auth.currentUser.isAnonymous &&
+          this.listing.userId === this.afAuth.auth.currentUser.uid
+        ) {
+          this.jobs_flag = true;
+        }
+
         this.ticket_listing = res.id;
         this.loading = false;
         this.listing.startDate = this.listing.startDate.toDate().toString();

@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFireFunctions } from "@angular/fire/functions";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import * as moment from "moment";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-space-booking",
@@ -19,6 +20,8 @@ export class SpaceBookingComponent implements OnInit {
   listingId;
   userId;
   listing;
+
+  minDate: Date;
 
   constructor(
     private afs: AngularFirestore,
@@ -41,6 +44,7 @@ export class SpaceBookingComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.minDate = new Date();
     this.route.params.subscribe(params => {
       this.listingId = params.listingId;
       this.userId = params.userId;
@@ -127,7 +131,9 @@ export class SpaceBookingComponent implements OnInit {
                   currency: this.listing.currency,
                   policy: this.listing.policy,
                   description: this.listing.description,
-                  damageChargeDate: this.space_book_form.controls["startDate"].value.toString(),
+                  damageChargeDate: this.space_book_form.controls[
+                    "startDate"
+                  ].value.toString(),
                   damageDeposit: this.listing.damageDeposit,
                   cleaningFee: this.listing.cleaningFee,
                   dateCreated: this.listing.dateCreated,
@@ -152,10 +158,18 @@ export class SpaceBookingComponent implements OnInit {
                 book_doc.snapshotChanges().subscribe(res => {
                   // console.log("res: ", res.payload.data());
                   if (res) {
-                    alert("Booking Made Successfully");
+                    Swal.fire("", "Booking Made Successfully", "success");
+                    if (this.afAuth.auth.currentUser) {
+                      if (!this.afAuth.auth.currentUser.isAnonymous) {
+                        this.router.navigateByUrl("/settings");
+                      } else {
+                        this.router.navigateByUrl("/");
+                      }
+                    } else {
+                      this.router.navigateByUrl("/");
+                    }
                   } else {
-                    alert("Something went wrong");
-                    this.router.navigateByUrl("/");
+                    Swal.fire("", "Something went wrong", "error");
                   }
                 });
               });

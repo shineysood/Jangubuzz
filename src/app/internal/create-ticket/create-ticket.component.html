@@ -13,7 +13,17 @@
             class="form-control"
             placeholder="e.g. lorem ispem"
           />
+          <div
+          *ngIf="
+            ticket_form.controls['title'].hasError('required') &&
+            ticket_form.controls['title'].touched
+          "
+          class="text-danger"
+        >
+          Please enter title
         </div>
+        </div>
+        
 
         <div class="form-group col-md-6">
           <label>Ticket type</label>
@@ -26,16 +36,43 @@
         <div class="form-group col-md-6">
           <label>Ticket price</label>
           <input formControlName="price" class="form-control" />
+          <div
+            *ngIf="
+              ticket_form.controls['price'].hasError('required') &&
+              ticket_form.controls['price'].touched
+            "
+            class="text-danger"
+          >
+            Please enter price
+          </div>
         </div>
 
         <div class="form-group col-md-6">
           <label>Max tickets per order</label>
           <input formControlName="maxPerOrder" class="form-control" />
+          <div
+            *ngIf="
+              ticket_form.controls['maxPerOrder'].hasError('required') &&
+              ticket_form.controls['maxPerOrder'].touched
+            "
+            class="text-danger"
+          >
+            Please enter maximum tickets per order
+          </div>
         </div>
 
         <div class="form-group col-md-6">
           <label>Total number of tickets available</label>
           <input formControlName="ticketsAvailable" class="form-control" />
+          <div
+            *ngIf="
+              ticket_form.controls['ticketsAvailable'].hasError('required') &&
+              ticket_form.controls['ticketsAvailable'].touched
+            "
+            class="text-danger"
+          >
+            Please enter available tickets
+          </div>
         </div>
 
         <div class="form-group col-md-12">
@@ -45,6 +82,15 @@
             formControlName="description"
             placeholder="e.g. lorem ispem"
           ></textarea>
+          <div
+            *ngIf="
+              ticket_form.controls['description'].hasError('required') &&
+              ticket_form.controls['description'].touched
+            "
+            class="text-danger"
+          >
+            Please enter description
+          </div>
         </div>
 
         <div class="form-group col-md-12">
@@ -61,24 +107,35 @@
 
         <div class="input-group form-group col-md-6">
           <label class="w-100 d-block">Sale end date</label>
-          <input
-            type="text"
-            class="form-control"
-            #dp="bsDatepicker"
-            bsDatepicker
-            [bsValue]="bsValue"
-            formControlName="endDate"
-            placeholder="Sale end date..."
-          />
-          <div class="input-group-append">
-            <button
-              type="button"
-              class="btn btn-primary-custom"
-              (click)="dp.toggle()"
-              [attr.aria-expanded]="dp.isOpen"
-            >
-              <i class="fa fa-calendar"></i>
-            </button>
+          <div class="date-cal">
+              <input
+              type="text"
+              class="form-control"
+              #dp="bsDatepicker"
+              bsDatepicker
+              [bsValue]="bsValue"
+              formControlName="endDate"
+              placeholder="Sale end date..."
+            />
+            <div class="input-group-append">
+              <button
+                type="button"
+                class="btn btn-primary-custom"
+                (click)="dp.toggle()"
+                [attr.aria-expanded]="dp.isOpen"
+              >
+                <i class="fa fa-calendar"></i>
+              </button>
+            </div>
+          </div>
+          <div
+            *ngIf="
+              ticket_form.controls['endDate'].hasError('required') &&
+              ticket_form.controls['endDate'].touched
+            "
+            class="text-danger"
+          >
+            Please enter end date
           </div>
         </div>
 
@@ -91,6 +148,15 @@
             class="form-control"
             placeholder="Sale end time..."
           />
+          <div
+            *ngIf="
+              ticket_form.controls['endTime'].hasError('required') &&
+              ticket_form.controls['endTime'].touched
+            "
+            class="text-danger"
+          >
+            Please enter sale end time
+          </div>
         </div>
 
         <div class="form-group col-md-12 text-right mt-3">

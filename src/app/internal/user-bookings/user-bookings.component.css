@@ -89,6 +89,8 @@ span.ticket-logo {
   text-decoration: underline;
   font-weight: 600;
   font-size: 13px;
+  z-index: 9;
+  position: relative;
 }
 .card button:hover {
   background: transparent !important;

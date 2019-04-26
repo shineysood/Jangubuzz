@@ -143,7 +143,7 @@
                   [(ngModel)]="comment"
                   placeholder="Enter Your Comment"
                 ></textarea>
-                <button (click)="comments(listing.userId)">Send</button>
+                <button [disabled]="!comment" (click)="comments(listing.userId)">Send</button>
               </div>
             </div>
 
@@ -203,6 +203,7 @@
                         name="comment_reply"
                       ></textarea>
                       <button
+                      [disabled]="!reply"
                         (click)="
                           comment_reply(
                             comment.id,

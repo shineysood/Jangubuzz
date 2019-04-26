@@ -61,7 +61,7 @@ export class CardStripeComponent implements OnInit {
     window.scroll(0, 0);
 
     this.payment_form = this.fb.group({
-      name: [""]
+      name: ["", Validators.required]
     });
   }
 
@@ -70,40 +70,55 @@ export class CardStripeComponent implements OnInit {
   }
 
   payment() {
-    const name = this.payment_form.controls["name"].value;
-    console.log(name);
-    this.stripeService
-      .createToken(this.card.getCard(), { name })
-      .subscribe(result => {
-        if (result.token) {
-          console.log("token: ", result.token);
-          var obj = {
-            userId: this.paid_obj.userId,
-            hostId: this.paid_obj.hostId,
-            listingId: this.paid_obj.listingId,
-            ticketId: this.paid_obj.ticketId,
-            totalTickets: this.paid_obj.totalTickets,
-            email: this.paid_obj.email,
-            token: result.token.id.toString()
-          };
+    if (this.payment_form.valid) {
+      const name = this.payment_form.controls["name"].value;
+      this.stripeService
+        .createToken(this.card.getCard(), { name })
+        .subscribe(result => {
+          if (result.token) {
+            var obj = {
+              userId: this.paid_obj.userId,
+              hostId: this.paid_obj.hostId,
+              listingId: this.paid_obj.listingId,
+              ticketId: this.paid_obj.ticketId,
+              totalTickets: this.paid_obj.totalTickets,
+              email: this.paid_obj.email,
+              token: result.token.id.toString()
+            };
 
-          console.log(obj);
+            const callable = this.fns.httpsCallable("on_ticket_test_purchase");
+            const callable_subscriber = callable(obj);
 
-          const callable = this.fns.httpsCallable("on_ticket_test_purchase");
-          const callable_subscriber = callable(obj);
-
-          callable_subscriber.subscribe(data => {
-            this.modalRef.hide();
-            console.log(data);
-            if (data.done) {
-              Swal.fire("Success", data.done, "success");
-            } else if (data.error) {
-              Swal.fire("OOPS !!!", data.error, "error");
-            }
-          });
-        } else if (result.error) {
-          Swal.fire(result.error.type, result.error.message, "error");
-        }
+            callable_subscriber.subscribe(data => {
+              this.modalRef.hide();
+              // console.log(data);
+              if (data.done) {
+                Swal.fire(
+                  "Success",
+                  "Your ticket id is " + data.done,
+                  "success"
+                );
+                if (this.afAuth.auth.currentUser) {
+                  if (!this.afAuth.auth.currentUser.isAnonymous) {
+                    this.router.navigateByUrl("/settings");
+                  } else {
+                    this.router.navigateByUrl("/");
+                  }
+                } else {
+                  this.router.navigateByUrl("/");
+                }
+              } else if (data.error) {
+                Swal.fire("OOPS !!!", data.error, "error");
+              }
+            });
+          } else if (result.error) {
+            Swal.fire(result.error.type, result.error.message, "error");
+          }
+        });
+    } else {
+      Object.keys(this.payment_form.controls).forEach(key => {
+        this.payment_form.controls[key].markAsTouched({ onlySelf: true });
       });
+    }
   }
 }

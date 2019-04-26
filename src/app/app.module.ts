@@ -75,6 +75,7 @@ import { Ng5SliderModule } from "ng5-slider";
 import { CardStripeComponent } from './internal/card-stripe/card-stripe.component';
 import { JobsComponent } from './internal/jobs/jobs.component';
 import { ReviewsComponent } from './external/reviews/reviews.component';
+import { NgxInputStarRatingModule } from 'ngx-input-star-rating';
 
 @NgModule({
   declarations: [
@@ -131,6 +132,7 @@ import { ReviewsComponent } from './external/reviews/reviews.component';
   imports: [
     Ng5SliderModule,
     Ng2OrderModule,
+    NgxInputStarRatingModule,
     AngularFireFunctionsModule,
     AmazingTimePickerModule,
     NgxStripeModule.forRoot("pk_test_oJupeugAVMirroj6zdxZct70"),

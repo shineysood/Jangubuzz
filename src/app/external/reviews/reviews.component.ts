@@ -7,6 +7,7 @@ import {
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import * as firebase from "firebase/app";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: "app-reviews",

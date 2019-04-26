@@ -135,7 +135,16 @@ export class BuyTicketComponent implements OnInit {
 
         callable_subscriber.subscribe(data => {
           if (data.done) {
-            Swal.fire("Success", data.done, "success");
+            Swal.fire("Success", "Your ticket is " + data.done, "success");
+            if (this.afAuth.auth.currentUser) {
+              if (!this.afAuth.auth.currentUser.isAnonymous) {
+                this.router.navigateByUrl("/settings");
+              } else {
+                this.router.navigateByUrl("/");
+              }
+            } else {
+              this.router.navigateByUrl("/");
+            }
           } else if (data.error) {
             Swal.fire("OOPS !!!", data.done, "error");
           }
@@ -146,15 +155,21 @@ export class BuyTicketComponent implements OnInit {
         );
       }
     } else {
-      this.paid_obj = {
-        userId: this.afAuth.auth.currentUser.uid,
-        hostId: this.hostId,
-        listingId: this.listingid,
-        ticketId: this.ticketId,
-        totalTickets: this.value,
-        email: this.ticket_form.controls["email"].value
-      };
-      this.modalRef = this.modalService.show(template);
+      if (this.ticket_form.valid) {
+        this.paid_obj = {
+          userId: this.afAuth.auth.currentUser.uid,
+          hostId: this.hostId,
+          listingId: this.listingid,
+          ticketId: this.ticketId,
+          totalTickets: this.value,
+          email: this.ticket_form.controls["email"].value
+        };
+        this.modalRef = this.modalService.show(template);
+      } else {
+        Object.keys(this.ticket_form.controls).forEach(i =>
+          this.ticket_form.controls[i].markAsTouched()
+        );
+      }
     }
   }
 }

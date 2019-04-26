@@ -11,6 +11,11 @@
   font-weight: bold;
 }
 
+.text-danger {
+  font-size: 12px;
+  margin: -12px 0 15px 0;
+}
+
 .overSelect {
   position: absolute;
   left: 0;
@@ -125,7 +130,7 @@ input#listing_image {
 }
 
 @media only screen and (max-width: 767px) {
-  .form-area{
+  .form-area {
     padding-left: 15px;
     padding-right: 15px;
   }

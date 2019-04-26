@@ -7,7 +7,7 @@ import {
   Input
 } from "@angular/core";
 import * as moment from "moment";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { google } from "@google/maps";
 import { MapsAPILoader } from "@agm/core";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -69,35 +69,35 @@ export class ListSpaceComponent implements OnInit {
     private router: Router
   ) {
     this.space_form_basic = this.fb.group({
-      title: [""],
-      description: [""],
+      title: ["", Validators.required],
+      description: ["", Validators.required],
       policy: [""],
       currency: [""]
     });
 
     this.space_form_additional = this.fb.group({
       amenitiesOrRules: [""],
-      cleaningFee: [""],
-      damageDeposit: [""],
+      cleaningFee: ["", Validators.required],
+      damageDeposit: ["", Validators.required],
       dateCreated: [""],
-      endDate: [""],
+      endDate: ["", Validators.required],
       geoPoint: [""],
       isCanceled: [""],
-      capacity: [""],
-      sQFT: [""],
+      capacity: ["", Validators.required],
+      sQFT: ["", Validators.required],
       isDraft: [""],
       isLive: [""],
       listingImageUrl: [""],
-      locationAddress: [""],
+      locationAddress: ["", Validators.required],
       locationBrokenAddress: [""],
-      locationName: [""],
+      locationName: ["", Validators.required],
       locationShortAddress: [""],
-      minDay: [""],
-      minHour: [""],
-      perDayPrice: [""],
-      startDate: [""],
+      minDay: ["", Validators.required],
+      minHour: ["", Validators.required],
+      perDayPrice: ["", Validators.required],
+      startDate: ["", Validators.required],
       state: [""],
-      perHourPrice: [""]
+      perHourPrice: ["", Validators.required]
     });
   }
 
@@ -207,140 +207,158 @@ export class ListSpaceComponent implements OnInit {
   }
 
   addSpaceBasic() {
-    this.listingId = this.afs.createId();
-    // get the firestore doc
-    const listingDoc: AngularFirestoreDocument = this.afs.doc(
-      "user/" + this.userId + "/listing/" + this.listingId
-    );
+    if (this.space_form_basic.valid) {
+      this.listingId = this.afs.createId();
+      // get the firestore doc
+      const listingDoc: AngularFirestoreDocument = this.afs.doc(
+        "user/" + this.userId + "/listing/" + this.listingId
+      );
 
-    listingDoc
-      .set({
-        title: this.space_form_basic.controls["title"].value,
-        currency: this.space_form_basic.controls["currency"].value,
-        userId: this.userId,
-        listingType: this.listingType,
-        description: this.space_form_basic.controls["description"].value,
-        policy: this.space_form_basic.controls["policy"].value
-      })
-      .then(res => {
-        listingDoc.snapshotChanges().subscribe(data => {
-          console.log(data.payload.data());
+      listingDoc
+        .set({
+          title: this.space_form_basic.controls["title"].value,
+          currency: this.space_form_basic.controls["currency"].value,
+          userId: this.userId,
+          listingType: this.listingType,
+          description: this.space_form_basic.controls["description"].value,
+          policy: this.space_form_basic.controls["policy"].value
+        })
+        .then(res => {
+          listingDoc.snapshotChanges().subscribe(data => {
+            console.log(data.payload.data());
+          });
+          this.step = "additional";
+          this.loadGoogleMaps();
+        })
+        .catch(err => {
+          console.log(err);
         });
-        this.step = "additional";
-        this.loadGoogleMaps();
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    } else {
+      Object.keys(this.space_form_basic.controls).forEach(i =>
+        this.space_form_basic.controls[i].markAsTouched()
+      );
+    }
   }
 
   addSpaceAdditional() {
-    // get the firestore doc
-    const listingDoc: AngularFirestoreDocument = this.afs.doc(
-      "user/" + this.userId + "/listing/" + this.listingId
-    );
+    if (this.space_form_additional.valid) {
+      // get the firestore doc
+      const listingDoc: AngularFirestoreDocument = this.afs.doc(
+        "user/" + this.userId + "/listing/" + this.listingId
+      );
 
-    var state = "";
-    var locationBrokenAddress = this.locationBrokenAddess_temp;
-    console.log(this.locationBrokenAddess_temp);
+      var state = "";
+      var locationBrokenAddress = this.locationBrokenAddess_temp;
+      console.log(this.locationBrokenAddess_temp);
 
-    var l = [];
+      var l = [];
 
-    for (var i = 0; i < locationBrokenAddress.length; i++) {
-      l.push(locationBrokenAddress[i].long_name);
-    }
-
-    this.space_form_additional.controls["locationBrokenAddress"].patchValue(l);
-
-    for (var i = 0; i < locationBrokenAddress.length; i++) {
-      if (locationBrokenAddress[i].types[0] === "administrative_area_level_1") {
-        state = locationBrokenAddress[i].long_name;
+      for (var i = 0; i < locationBrokenAddress.length; i++) {
+        l.push(locationBrokenAddress[i].long_name);
       }
-    }
 
-    var st, ci;
-    for (var i = 0; i < locationBrokenAddress.length; i++) {
-      if (locationBrokenAddress[i].types[0] === "administrative_area_level_2") {
-        ci = locationBrokenAddress[i].long_name;
-      } else if (
-        locationBrokenAddress[i].types[0] === "administrative_area_level_1"
-      ) {
-        st = locationBrokenAddress[i].long_name;
-      }
-    }
-    var short_add = ci + ", " + st;
+      this.space_form_additional.controls["locationBrokenAddress"].patchValue(
+        l
+      );
 
-    // converting startDate to timestamp
-    var s = new Date().toDateString();
-    var startDate = moment(
-      s +
-        " " +
-        this.space_form_additional.controls["startDate"].value.toString() +
-        ":00"
-    ).toDate();
-
-    // converting endDate to timestamp
-    var e = new Date().toDateString();
-    var endDate = moment(
-      e +
-        " " +
-        this.space_form_additional.controls["endDate"].value.toString() +
-        ":00"
-    ).toDate();
-
-    listingDoc
-      .set(
-        {
-          amenitiesOrRules: this.selectedItems,
-          capacity: +this.space_form_additional.controls["capacity"].value,
-          cleaningFee: parseFloat(
-            this.space_form_additional.controls["cleaningFee"].value
-          ),
-          damageDeposit: parseFloat(
-            this.space_form_additional.controls["damageDeposit"].value
-          ),
-          dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-          endDate: endDate,
-          geoPoint: this.geoPoint,
-          isCanceled: false,
-          isDraft: false,
-          isLive: true,
-          listingImageUrl: this.listing_event_image_url,
-          locationAddress: this.space_form_additional.controls[
-            "locationAddress"
-          ].value,
-          locationBrokenAddress: this.space_form_additional.controls[
-            "locationBrokenAddress"
-          ].value,
-          locationName: this.space_form_additional.controls["locationName"]
-            .value,
-          locationShortAddress: short_add,
-          minDay: +this.space_form_additional.controls["minDay"].value,
-          minHour: +this.space_form_additional.controls["minHour"].value,
-          perDayPrice: parseFloat(
-            this.space_form_additional.controls["perDayPrice"].value
-          ),
-          sQFT: +this.space_form_additional.controls["sQFT"].value,
-          startDate: startDate,
-          state: state,
-          perHourPrice: parseFloat(
-            this.space_form_additional.controls["perHourPrice"].value
-          )
-        },
-        {
-          merge: true
+      for (var i = 0; i < locationBrokenAddress.length; i++) {
+        if (
+          locationBrokenAddress[i].types[0] === "administrative_area_level_1"
+        ) {
+          state = locationBrokenAddress[i].long_name;
         }
-      )
-      .then(data => {
-        listingDoc.snapshotChanges().subscribe(data => {
-          console.log(data.payload.data());
-          var id = data.payload.id;
-          this.router.navigate(["listing/spaces-and-services", id]);
+      }
+
+      var st, ci;
+      for (var i = 0; i < locationBrokenAddress.length; i++) {
+        if (
+          locationBrokenAddress[i].types[0] === "administrative_area_level_2"
+        ) {
+          ci = locationBrokenAddress[i].long_name;
+        } else if (
+          locationBrokenAddress[i].types[0] === "administrative_area_level_1"
+        ) {
+          st = locationBrokenAddress[i].long_name;
+        }
+      }
+      var short_add = ci + ", " + st;
+
+      // converting startDate to timestamp
+      var s = new Date().toDateString();
+      var startDate = moment(
+        s +
+          " " +
+          this.space_form_additional.controls["startDate"].value.toString() +
+          ":00"
+      ).toDate();
+
+      // converting endDate to timestamp
+      var e = new Date().toDateString();
+      var endDate = moment(
+        e +
+          " " +
+          this.space_form_additional.controls["endDate"].value.toString() +
+          ":00"
+      ).toDate();
+
+      listingDoc
+        .set(
+          {
+            amenitiesOrRules: this.selectedItems,
+            capacity: +this.space_form_additional.controls["capacity"].value,
+            cleaningFee: parseFloat(
+              this.space_form_additional.controls["cleaningFee"].value
+            ),
+            damageDeposit: parseFloat(
+              this.space_form_additional.controls["damageDeposit"].value
+            ),
+            dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+            endDate: endDate,
+            geoPoint: this.geoPoint,
+            isCanceled: false,
+            isDraft: false,
+            isLive: true,
+            listingImageUrl: this.listing_event_image_url,
+            locationAddress: this.space_form_additional.controls[
+              "locationAddress"
+            ].value,
+            locationBrokenAddress: this.space_form_additional.controls[
+              "locationBrokenAddress"
+            ].value,
+            locationName: this.space_form_additional.controls["locationName"]
+              .value,
+            locationShortAddress: short_add,
+            minDay: +this.space_form_additional.controls["minDay"].value,
+            minHour: +this.space_form_additional.controls["minHour"].value,
+            perDayPrice: parseFloat(
+              this.space_form_additional.controls["perDayPrice"].value
+            ),
+            sQFT: +this.space_form_additional.controls["sQFT"].value,
+            startDate: startDate,
+            state: state,
+            perHourPrice: parseFloat(
+              this.space_form_additional.controls["perHourPrice"].value
+            )
+          },
+          {
+            merge: true
+          }
+        )
+        .then(data => {
+          listingDoc.snapshotChanges().subscribe(data => {
+            console.log(data.payload.data());
+            var id = data.payload.id;
+            this.router.navigate(["listing/spaces-and-services", id]);
+          });
+        })
+        .catch(err => {
+          console.log(err);
         });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    } else {
+      Object.keys(this.space_form_additional.controls).forEach(i =>
+        this.space_form_additional.controls[i].markAsTouched()
+      );
+    }
   }
 
   updateSpaceImage(event) {

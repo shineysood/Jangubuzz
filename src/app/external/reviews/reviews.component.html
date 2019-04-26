@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    Review a bookiung
+    Review a booking
   </div>
   <div class="card-body">
     <form class="review-form" [formGroup]="review_form" (ngSubmit)="review()">
@@ -16,12 +16,7 @@
 
       <div class="form-group">
         <label for="review">Rating</label>
-        <input
-          type="text"
-          formControlName="rating"
-          class="form-control"
-          id="review"
-        />
+        <ngx-input-star-rating formControlName="rating"></ngx-input-star-rating>
       </div>
 
       <div class="form-group">

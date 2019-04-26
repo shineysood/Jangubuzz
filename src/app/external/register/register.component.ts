@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild
+} from "@angular/core";
 import { FormGroup, Validators } from "@angular/forms";
 import { FormBuilder } from "@angular/forms";
 import { AngularFireAuth } from "@angular/fire/auth";
@@ -8,6 +15,11 @@ import {
   AngularFirestore,
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
+import Swal from "sweetalert2";
+import {
+  BsDaterangepickerDirective,
+  BsDatepickerConfig
+} from "ngx-bootstrap/datepicker";
 
 @Component({
   selector: "app-register",
@@ -20,6 +32,12 @@ export class RegisterComponent implements OnInit {
   public registerForm: FormGroup;
   @Input() modalRef: BsModalRef;
   @Output() cancelRegistration: EventEmitter<any> = new EventEmitter();
+
+  @ViewChild("dp") datepicker: BsDaterangepickerDirective;
+
+  bsConfig: Partial<BsDatepickerConfig>;
+  maxDate: Date;
+
   constructor(
     public afAuth: AngularFireAuth,
     private afs: AngularFirestore,
@@ -39,7 +57,16 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.maxDate = new Date();
+  }
+
+  ngAfterViewChecked(): void {
+    //Called after every check of the component's view. Applies to components only.
+    //Add 'implements AfterViewChecked' to the class.
+    this.bsConfig = Object.assign({}, { maxDate: this.maxDate });
+    this.datepicker.setConfig();
+  }
 
   register(event) {
     if (this.registerForm.valid) {
@@ -67,17 +94,21 @@ export class RegisterComponent implements OnInit {
             { merge: true }
           );
 
-          userDoc.set(
-            {
-              name: that.registerForm.controls["name"].value, //String
-              lastLogin: new Date(), //current date or timestamp
-              dateModified: new Date(), //current date or timestamp
-              dateCreated: new Date() //current date or timestamp
-            },
-            {
-              merge: true
-            }
-          );
+          userDoc
+            .set(
+              {
+                name: that.registerForm.controls["name"].value, //String
+                lastLogin: new Date(), //current date or timestamp
+                dateModified: new Date(), //current date or timestamp
+                dateCreated: new Date() //current date or timestamp
+              },
+              {
+                merge: true
+              }
+            )
+            .then(data => {
+              Swal.fire("", "Registered successfully", "success");
+            });
 
           // Update user provider data
           that.afAuth.auth.currentUser.updateProfile({
@@ -91,7 +122,7 @@ export class RegisterComponent implements OnInit {
           that.cancel();
         })
         .catch(function(error) {
-          console.log("error: ", error);
+          Swal.fire(error.code, error.message, "error");
         });
     } else {
       Object.keys(this.registerForm.controls).forEach(key => {

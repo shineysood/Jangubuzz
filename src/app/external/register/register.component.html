@@ -91,6 +91,7 @@
             #dp="bsDatepicker"
             bsDatepicker
             [bsValue]="bsValue"
+            [maxDate]="maxDate"
             formControlName="dob"
             placeholder="Enter date of birth..."
           />
@@ -102,6 +103,15 @@
           >
             <i class="fa fa-calendar"></i>
           </button>
+          <div
+            class="text-danger"
+            *ngIf="
+              registerForm.controls['dob'].hasError('required') &&
+              registerForm.controls['dob'].touched
+            "
+          >
+            Please enter date of birth
+          </div>
         </div>
       </div>
 

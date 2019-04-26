@@ -17,6 +17,15 @@
             formControlName="title"
           />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_basic.controls['title'].hasError('required') &&
+            space_form_basic.controls['title'].touched
+          "
+        >
+          Please enter title
+        </div>
       </div>
       <div class="col-sm-12">
         <div class="form-group">
@@ -27,6 +36,15 @@
             placeholder="Description ..."
             formControlName="description"
           ></textarea>
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_basic.controls['description'].hasError('required') &&
+            space_form_basic.controls['description'].touched
+          "
+        >
+          Please enter description
         </div>
       </div>
 
@@ -118,8 +136,8 @@
 
   <div class="form-area">
     <h3>Space information</h3>
-    <div class="row">      
-    <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-6">
         <div class="form-group">
           <label for="sqft">Sqft</label>
           <input
@@ -130,22 +148,39 @@
             formControlName="sQFT"
           />
         </div>
-
-      </div>
-              <div class="col-sm-6">
-          <div class="form-group">
-            <label for="capacity">Capacity</label>
-            <input
-              id="capacity"
-              type="text"
-              class="form-control"
-              formControlName="capacity"
-              placeholder="Capacity ..."
-            />
-          </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['sQFT'].hasError('required') &&
+            space_form_additional.controls['sQFT'].touched
+          "
+        >
+          Please enter Square feet
         </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="capacity">Capacity</label>
+          <input
+            id="capacity"
+            type="text"
+            class="form-control"
+            formControlName="capacity"
+            placeholder="Capacity ..."
+          />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['capacity'].hasError('required') &&
+            space_form_additional.controls['capacity'].touched
+          "
+        >
+          Please enter capacity
+        </div>
+      </div>
     </div>
-      <!-- end -->
+    <!-- end -->
   </div>
 
   <div class="form-area">
@@ -177,6 +212,16 @@
             placeholder="Location name..."
           />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['locationName'].hasError(
+              'required'
+            ) && space_form_additional.controls['locationName'].touched
+          "
+        >
+          Please enter location name
+        </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
@@ -205,6 +250,16 @@
             [longitude]="longitude"
           ></agm-marker>
         </agm-map>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['locationAddress'].hasError(
+              'required'
+            ) && space_form_additional.controls['locationAddress'].touched
+          "
+        >
+          Please enter location address
+        </div>
       </div>
     </div>
   </div>
@@ -218,12 +273,30 @@
           <label> Daily start time</label>
           <input atp-time-picker value="19:00" formControlName="startDate" />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['startDate'].hasError('required') &&
+            space_form_additional.controls['startDate'].touched
+          "
+        >
+          Please enter start date
+        </div>
       </div>
       <!-- end time -->
       <div class="col-sm-6">
         <div class="form-group">
           <label> Daily end time</label>
           <input atp-time-picker value="19:00" formControlName="endDate" />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['endDate'].hasError('required') &&
+            space_form_additional.controls['endDate'].touched
+          "
+        >
+          Please enter end date
         </div>
       </div>
     </div>
@@ -241,6 +314,16 @@
             id="price_per_hour"
           />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['perHourPrice'].hasError(
+              'required'
+            ) && space_form_additional.controls['perHourPrice'].touched
+          "
+        >
+          Please enter price per hour
+        </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
@@ -251,6 +334,15 @@
             formControlName="minHour"
             id="min_hours"
           />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['minHour'].hasError('required') &&
+            space_form_additional.controls['minHour'].touched
+          "
+        >
+          Please enter minimum hours
         </div>
       </div>
       <div class="col-sm-6">
@@ -263,6 +355,16 @@
             id="price_per_day"
           />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['perDayPrice'].hasError(
+              'required'
+            ) && space_form_additional.controls['perDayPrice'].touched
+          "
+        >
+          Please enter price per day
+        </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
@@ -273,6 +375,15 @@
             formControlName="minDay"
             id="min_days"
           />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['minDay'].hasError('required') &&
+            space_form_additional.controls['minDay'].touched
+          "
+        >
+          Please enter minimum days
         </div>
       </div>
       <div class="col-sm-6">
@@ -285,6 +396,16 @@
             id="cleaning_fee"
           />
         </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['cleaningFee'].hasError(
+              'required'
+            ) && space_form_additional.controls['cleaningFee'].touched
+          "
+        >
+          Please enter cleaning fees
+        </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
@@ -295,6 +416,16 @@
             formControlName="damageDeposit"
             id="damage_deposit"
           />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="
+            space_form_additional.controls['damageDeposit'].hasError(
+              'required'
+            ) && space_form_additional.controls['damageDeposit'].touched
+          "
+        >
+          Please enter damage deposit
         </div>
       </div>
     </div>
