@@ -5,6 +5,7 @@ import { AngularFirestoreDocument } from "@angular/fire/firestore";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { ActivatedRoute, Router } from "@angular/router";
 import { environment } from "../../../environments/environment";
+import * as $ from "jquery";
 
 @Component({
   selector: "app-profile",
@@ -33,6 +34,45 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
+  readmore() {
+    $(document).ready(function() {
+      var maxLength = 500;
+      $(".show-read-more").each(function() {
+        var myStr = $(this).text();
+        if ($.trim(myStr).length > maxLength) {
+          var newStr = myStr.substring(0, maxLength);
+          var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+          $(this)
+            .empty()
+            .html(newStr);
+          $(this).append(
+            ' <a href="javascript:void(0);" class="read-more">.....</a>'
+          );
+          $(this).append('<span class="more-text">' + removedStr + "</span>");
+          $(this).append(
+            ' <a href="javascript:void(0);" class="read-less" >read less</a>'
+          );
+          
+        }
+      });
+
+      $(".read-more").click(function() {
+        $(this)
+          .siblings(".more-text").show();          
+          $(".read-less").show();
+          $(this).hide();
+      });      
+      $(".read-less").click(function() {
+        $(this)
+          .siblings(".more-text")
+          .hide();
+          $(".read-more").show();
+        $(this).hide();
+      });
+
+    });
+  }
 
   ngOnInit() {
     this.afs
@@ -83,6 +123,10 @@ export class ProfileComponent implements OnInit {
           emailVerified: this.afAuth.auth.currentUser.emailVerified,
           phoneNumber: ""
         };
+
+        // setTimeout(() => {
+          this.readmore();
+        // });
       });
     });
   }

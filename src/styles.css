@@ -269,3 +269,12 @@ div#time-picker-wrapper {
     width: 96px;
     border-radius: 0 50px 50px 0;
 }
+
+
+.show-read-more .more-text,
+  .show-read-more .read-less{
+    display: none;
+}
+/* .show-read-more a{
+  color: #ff5b8c; 
+} */
