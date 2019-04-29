@@ -10,6 +10,7 @@
         <div class="form-group">
           <label for="title">Title</label>
           <input
+            maxlength="50"
             id="title"
             type="text"
             class="form-control"
@@ -139,7 +140,7 @@
     <div class="form-group">
       <select formControlName="service">
         <ng-container *ngFor="let item of services">
-            <option value="">Select service...</option> 
+          <option value="">Select service...</option>
           <option value="{{ item.payload.doc.id }}">
             {{ item.payload.doc.id }}
           </option>

@@ -9,7 +9,7 @@
             src="{{ user_logged.photoURL }}"
           />
           <img *ngIf="!user_logged.photoURL" src="assets/images/user.png" />
-          <h4>{{ verifications.name }} Provided</h4>
+          <!-- <h4>{{ verifications.name }} Provided</h4>
           <h5 *ngIf="verifications.emailVerified">
             <img src="assets/images/tick.png" alt="img" />
             Email address
@@ -25,7 +25,7 @@
           <h5 *ngIf="!verifications.phoneNumber">
             <img src="assets/images/cross.png" alt="img" />
             Phone number
-          </h5>
+          </h5> -->
           <br /><br />
           <button
             type="button"
@@ -59,47 +59,59 @@
             >
           </h5>
           <!-- Event lists -->
-          <h4>Events List</h4>
+          <h4>{{ verifications.name }} Provided</h4>
+          <h5  *ngIf="verifications.emailVerified">
+            <img src="assets/images/tick.png" alt="img" />
+            <span class="verifi_cont">Email address</span>
+          </h5>
+          <h5 *ngIf="!verifications.emailVerified">
+            <img src="assets/images/cross.png" alt="img" />
+            <span class="verifi_cont">Email address</span>
+          </h5>
+          <h5 *ngIf="verifications.phoneNumber">
+            <img src="assets/images/tick.png" alt="img" />
+            <span class="verifi_cont">Phone number</span>
+          </h5>
+          <h5 *ngIf="!verifications.phoneNumber">
+            <img src="assets/images/cross.png" alt="img" />
+            <span class="verifi_cont">Phone number</span>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-          <div *ngIf="user_listings.length === 0">
-            NO LISTINGS
-          </div>
+<hr />
+<h4>Events List</h4>
 
-          <div *ngIf="user_listings.length !== 0">
-            <div class="event-lists">
-              <div class="row">
-                <ng-container *ngFor="let item of user_listings">
-                  <div class="col-md-6">
-                    <div class="card mb-3">
-                      <div class="card-body">
-                        <img
-                          src="{{ item.payload.listingImageUrl }}"
-                          class="img-fluid"
-                        />
-                        <div class="row">
-                          <h3 class="col-md-6 ng">{{ item.payload.title }}</h3>
-                          <button
-                            *ngIf="
-                              item.payload.listingType === 'eventListingType'
-                            "
-                            type="button"
-                            class="btn btn-primary btn-sm col-md-6"
-                            (click)="
-                              create_ticket(item.id, item.payload.userId)
-                            "
-                          >
-                            Create ticket
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
+<div *ngIf="user_listings.length === 0">
+  NO LISTINGS
+</div>
+
+<div *ngIf="user_listings.length !== 0">
+  <div class="event-lists">
+    <div class="row">
+      <ng-container *ngFor="let item of user_listings">
+        <div class="col-md-6 col-lg-4">
+          <div class="card mb-3">
+            <div class="card-body p-0">
+              <img src="{{ item.payload.listingImageUrl }}" class="img-fluid" />
+              <div class="card-overlay p-2">
+                <p class="ng">{{ item.payload.title }}</p>
+                <button
+                  *ngIf="item.payload.listingType === 'eventListingType'"
+                  type="button"
+                  class="btn btn-primary btn-sm col-12"
+                  (click)="create_ticket(item.id, item.payload.userId)"
+                >
+                  Create ticket
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </ng-container>
     </div>
   </div>
 </div>
