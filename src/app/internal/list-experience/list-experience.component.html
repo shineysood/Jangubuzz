@@ -224,7 +224,7 @@
             #dp="bsDatepicker"
             bsDatepicker
             [bsValue]="bsValue"
-            [bsConfig]="bsConfig"
+            [minDate]="minDate"
             formControlName="startDate"
             placeholder="Enter start date..."
           />
@@ -245,7 +245,7 @@
             ) && experience_form_additional.controls['startDate'].touched
           "
         >
-          Please select location address
+          Please select start date
         </div>
       </div>
       <div class="col-sm-6">
@@ -276,7 +276,7 @@
             #dp="bsDatepicker"
             bsDatepicker
             [bsValue]="bsValue"
-            [bsConfig]="bsConfig"
+            [minDate]="minDate"
             formControlName="endDate"
             placeholder="Enter end date..."
           />

@@ -62,10 +62,10 @@ export class ListExperienceComponent implements OnInit {
   public experience_form_basic: FormGroup;
   public experience_form_additional: FormGroup;
 
-  @ViewChild("dp") datepicker: BsDaterangepickerDirective;
+  // @ViewChild("dp") datepicker: BsDaterangepickerDirective;
 
-  bsConfig: Partial<BsDatepickerConfig>;
-  minDate;
+  // bsConfig: Partial<BsDatepickerConfig>;
+  minDate: Date;
 
   // bsConfif: any;
 
@@ -100,6 +100,7 @@ export class ListExperienceComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.minDate = new Date();
     // to get categories list
     this.afs
       .collection("categories")
@@ -376,11 +377,6 @@ export class ListExperienceComponent implements OnInit {
           this.pic_loader = false;
         });
       });
-
-    this.minDate = new Date();
-    this.bsConfig = Object.assign({}, { minDate: this.minDate });
-    console.log(this.datepicker);
-    this.datepicker.setConfig();
   }
 
   set() {
