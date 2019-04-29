@@ -256,8 +256,8 @@ div#time-picker-wrapper {
 
 .heading_border {
     position: relative;
-    margin-bottom: 15px;
-    padding-bottom: 5px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
 }
 .heading_border:after {
     position: absolute;
