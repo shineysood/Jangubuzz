@@ -4,22 +4,27 @@
     <div class="service-bar-content">
       <!-- search bar -->
       <div class="search-bar">
-        <form>
+        <form [formGroup]="searchForm" (ngSubmit)="search()">
           <div class="activity-select">
-            <label for="1">What kind of activity?</label>
-            <select>
-              <option value="volvo">All activities</option>
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option>
+            <label for="1">What kind of listing?</label>
+            <select formControlName="listingType">
+              <option value="" disabled selected>Select listing</option>
+              <option value="eventListingType">Experiences</option>
+              <option value="eventSpaceListingType">Spaces</option>
+              <option value="eventServiceListingType">Services</option>
             </select>
           </div>
           <div class="location-search">
             <label for="3">Where?</label>
-            <input id="3" type="text" placeholder="Search by city or address" />
+            <select formControlName="location">
+              <option value="" disabled selected>Select your location</option>
+              <option *ngFor="let item of items" value="{{ item.location }}">
+                {{ item.location }}
+              </option>
+            </select>
           </div>
           <div class="search-btn-box">
-            <button class="home-search-btn">
+            <button class="home-search-btn" type="submit">
               Search
             </button>
           </div>

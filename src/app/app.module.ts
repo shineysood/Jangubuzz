@@ -76,6 +76,7 @@ import { CardStripeComponent } from './internal/card-stripe/card-stripe.componen
 import { JobsComponent } from './internal/jobs/jobs.component';
 import { ReviewsComponent } from './external/reviews/reviews.component';
 import { NgxInputStarRatingModule } from 'ngx-input-star-rating';
+import { SearchedItemsComponent } from './external/searched-items/searched-items.component';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,8 @@ import { NgxInputStarRatingModule } from 'ngx-input-star-rating';
     TicketTypeComponent,
     CardStripeComponent,
     JobsComponent,
-    ReviewsComponent
+    ReviewsComponent,
+    SearchedItemsComponent
   ],
   imports: [
     Ng5SliderModule,
