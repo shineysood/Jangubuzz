@@ -11,7 +11,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 export class SearchedItemsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private afs: AngularFirestore) {
     this.route.params.subscribe(data => {
-      console.log("=====>", data);
+      // console.log("=====>", data);
     });
   }
 
