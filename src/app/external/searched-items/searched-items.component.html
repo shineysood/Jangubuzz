@@ -1,3 +1,34 @@
-<p>
-  searched-items works!
-</p>
+<div *ngIf="!loading && searchedItems.length !== 0" class="container service_div">
+  <div class="card-columns">
+    <ng-container *ngFor="let item of searchedItems">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ item.payload.title }}</h5>
+        </div>
+        <div class="card-body">
+          <img
+            (click)="navigate_listing(item.id, item.type)"
+            src="{{ item.payload.listingImageUrl }}"
+          />
+        </div>
+        <div class="card-footer">
+          <p>{{ item.payload.locationAddress }}</p>
+          <small *ngIf="!item.payload.isFree">
+            Starting from
+            <span style="text-transform: capitalize">
+              {{ item.payload.currency }}
+            </span>
+          </small>
+          <small *ngIf="item.payload.isFree">
+            Free
+          </small>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<!-- for displaying loader  -->
+<div *ngIf="loading" class="service_div loader_list">
+  <img src="assets/images/loader.gif" />
+</div>

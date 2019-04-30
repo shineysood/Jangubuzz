@@ -2,7 +2,9 @@
   margin-top: 100px;
   min-height: 80vh;
 }
-
+img {
+  width: 100%;
+}
 .loader_list {
   text-align: center;
 }
@@ -93,35 +95,49 @@ h4 {
   justify-content: left;
 }
 .card-header h5 {
-    color: #252525;
-    font-size: 20px;
+  color: #252525;
+  font-size: 20px;
 }
-.card-header, .card-footer {
-    background: #fff;
+.card-header,
+.card-footer {
+  background: #fff;
 }
 .card-header p {
-    font-size: 13px;
-    color: #ff5b8d;
-    margin: 0px;
+  font-size: 13px;
+  color: #ff5b8d;
+  margin: 0px;
 }
-.card-body, .card-body img {
-    padding: 0px;
-    border-radius: 0px !important;
-      margin: 0px;
+.card-body,
+.card-body img {
+  padding: 0px;
+  border-radius: 0px !important;
+  margin: 0px;
 }
 .card {
-    border-radius: 0px;
-    border: 1px solid #f1f0f0;
-        margin-bottom: 40px;
+  border-radius: 0px;
+  border: 1px solid #f1f0f0;
+  margin-bottom: 20px;
+  cursor: pointer;
 }
 .card-footer p {
-    color: #666;
-    font-size: 14px;
-    margin: 0px;
+  color: #666;
+  font-size: 14px;
+  margin: 0px;
+}
+.card:hover img {
+  filter: brightness(80%);
+}
+.card:hover {
+  border-radius: 0px;
+  border: 1px solid #fa5a8d;
 }
 .card-footer small {
-    color: #000;
-    font-size: 11px;
+  color: #000;
+  font-size: 11px;
+}
+.card-header,
+.card-footer {
+  background: #f3f3f3;
 }
 @media (max-width: 991px) {
   .experiences-section h4 {
@@ -137,5 +153,5 @@ h4 {
   }
   .experiences-section[_ngcontent-c4] {
     padding: 0px 0px 0px;
-}
+  }
 }

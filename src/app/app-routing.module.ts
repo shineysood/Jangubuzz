@@ -64,25 +64,15 @@ const routes: Routes = [
     // canActivate: [AuthGuard],
     component: ServiceBookingComponent
   },
-  // {
-  //   path: "experience/ticket/buy/:listingId",
-  //   // canActivate: [AuthGuard],
-  //   component: BuyTicketComponent
-  // },
   {
     path: "ticket/create/:listingId/:userId",
     // canActivate: [AuthGuard],
     component: CreateTicketComponent
   },
   {
-    path: "listing/:listingType/:location",
+    path: "listing/search/:location/:listingType",
     // canActivate: [AuthGuard],
     component: SearchedItemsComponent
-  },
-  {
-    path: "space/book/:userId/:listingId",
-    // canActivate: [AuthGuard],
-    component: SpaceBookingComponent
   },
   { path: "**", component: PageNotFoundComponent }
 ];

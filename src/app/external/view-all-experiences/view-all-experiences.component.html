@@ -1,45 +1,39 @@
 <div *ngIf="!loading" class="container service_div">
-  <div class="experiences-section">
-    <div class="container">
+  <div class="card-columns">
+    <!-- <div class="container">
       <div class="row rxp-content">
-        <div class="content-box row">
-          <div
-            *ngFor="let item of experiences | sort:'time'; let i = index"
-            class="col-lg-4 col-md-6 exp-box"
-          >
-            <div class="card">
-              <div class="card-header">
-                <h5>{{ item.payload.title }}</h5>
-                <p>
-                  {{ item.payload.startDate.seconds * 1000 | date: "fullDate" }}
-                  -
-                  {{ item.payload.endDate.seconds * 1000 | date: "fullDate" }}
-                </p>
-              </div>
-              <div class="card-body">
-                <img
-                  (click)="open_experience(item.id)"
-                  src="{{ item.payload.listingImageUrl }}"
-                />
-              </div>
-              <div class="card-footer">
-                <p>{{ item.payload.locationAddress }}</p>
-                <small *ngIf="!item.payload.isFree">
-                  Starting from
-                  <span style="text-transform: capitalize">
-                    {{ item.payload.currency }}
-                  </span>
-                  $ {{ item.payload.bottomPrice }}
-                </small>
-                <small *ngIf="item.payload.isFree">
-                  Free
-                </small>
-              </div>
-            </div>
-          </div>
+        <div class="content-box row"> -->
+    <ng-container *ngFor="let item of experiences">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ item.payload.title }}</h5>
+          <p>
+            {{ item.payload.startDate.seconds * 1000 | date: "fullDate" }}
+            -
+            {{ item.payload.endDate.seconds * 1000 | date: "fullDate" }}
+          </p>
+        </div>
+        <div class="card-body">
+          <img
+            (click)="open_experience(item.id)"
+            src="{{ item.payload.listingImageUrl }}"
+          />
+        </div>
+        <div class="card-footer">
+          <p>{{ item.payload.locationAddress }}</p>
+          <small *ngIf="!item.payload.isFree">
+            Starting from
+            <span style="text-transform: capitalize">
+              {{ item.payload.currency }}
+            </span>
+            $ {{ item.payload.bottomPrice }}
+          </small>
+          <small *ngIf="item.payload.isFree">
+            Free
+          </small>
         </div>
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>
 

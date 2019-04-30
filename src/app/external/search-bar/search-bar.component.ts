@@ -42,7 +42,8 @@ export class SearchBarComponent implements OnInit {
         this.temp.forEach((item, i) => {
           var obj = {
             id: this.temp[i].payload.doc.id,
-            location: this.temp[i].payload.doc.data().locationAddress
+            location: this.temp[i].payload.doc.data().locationAddress,
+            state: this.temp[i].payload.doc.data().state
           };
           this.items.push(obj);
         });
@@ -52,6 +53,7 @@ export class SearchBarComponent implements OnInit {
   search() {
     var location = this.searchForm.controls["location"].value;
     var listingType = this.searchForm.controls["listingType"].value;
-    this.router.navigate(["listing", listingType, location]);
+    console.log(location)
+    this.router.navigate(["listing/search", location, listingType]);
   }
 }

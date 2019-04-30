@@ -1,0 +1,54 @@
+.service_div {
+  margin-top: 100px;
+}
+img {
+  max-width: 100%;
+  width: 100%;
+}
+.card-body {
+  padding: 0px;
+  cursor: pointer;
+}
+.card-header h5 {
+  font-size: 16px;
+  margin: 0px;
+}
+.service_div.loader_list img {
+  width: 400px;
+  filter: brightness(3);
+}
+
+.service_div.loader_list {
+  text-align: center;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card:hover img {
+  filter: brightness(80%);
+}
+.card:hover {
+  border-radius: 0px;
+  border: 1px solid #fa5a8d;
+}
+.card-header {
+  background: #fff;
+  border-radius: 0px !important;
+}
+.card {
+  border-radius: 0px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+.card-footer {
+  background: #fff;
+}
+
+.card-footer small {
+  color: #fa5a8d;
+}
+.card-footer p {
+  margin: 0px;
+}
