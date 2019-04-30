@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 
 @Component({
@@ -21,9 +21,11 @@ export class SearchBarComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router
   ) {
+    window.scroll(0, 0);
+
     this.searchForm = this.fb.group({
-      location: [""],
-      listingType: [""]
+      location: ["", Validators.required],
+      listingType: ["", Validators.required]
     });
   }
 
@@ -51,9 +53,16 @@ export class SearchBarComponent implements OnInit {
   }
 
   search() {
-    var location = this.searchForm.controls["location"].value;
-    var listingType = this.searchForm.controls["listingType"].value;
-    console.log(location)
-    this.router.navigate(["listing/search", location, listingType]);
+    if (this.searchForm.valid) {
+      var location = this.searchForm.controls["location"].value;
+      var listingType = this.searchForm.controls["listingType"].value;
+      console.log(location);
+      this.router.navigate(["listing/search", location, listingType]);
+    } else {
+      // Object.keys(this.searchForm.controls).forEach(i =>
+      //   this.searchForm.controls[i].markAsTouched()
+      // );
+      alert("Please enter listing type and listing location");
+    }
   }
 }

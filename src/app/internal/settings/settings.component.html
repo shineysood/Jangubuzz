@@ -29,6 +29,12 @@
             <h6 class="link-heading">Tickets</h6></a
           >
         </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#message"
+            ><span><img src="assets/images/card.png" alt="img"/></span>
+            <h6 class="link-heading">Messages</h6></a
+          >
+        </li>
       </ul>
     </div>
     <div class="tab-content">
@@ -38,9 +44,9 @@
       </div>
 
       <div id="account" class="container tab-pane fade">
-          <br />
-          <app-account></app-account>
-        </div>
+        <br />
+        <app-account></app-account>
+      </div>
 
       <div id="booking" class="container tab-pane fade">
         <br />
@@ -50,6 +56,11 @@
       <div id="ticket" class="container tab-pane fade">
         <br />
         <app-tickets></app-tickets>
+      </div>
+
+      <div id="message" class="container tab-pane fade">
+        <br />
+        <app-messages></app-messages>
       </div>
     </div>
   </div>

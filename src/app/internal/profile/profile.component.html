@@ -97,7 +97,7 @@
           <div class="card mb-3">
             <div class="card-body p-0">
               <img src="{{ item.payload.listingImageUrl }}" class="img-fluid" />
-              <div class="card-overlay p-2">
+              <div (click)="navigate(item.id, item.payload.listingType)" class="card-overlay p-2">
                 <p class="ng">{{ item.payload.title }}</p>
                 <button
                   *ngIf="item.payload.listingType === 'eventListingType'"

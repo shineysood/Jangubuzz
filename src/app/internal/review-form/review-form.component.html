@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="card-header">
+      Feedback
+    </div>
+    <div class="card-body">
+      <form class="review-form" [formGroup]="review_form" (ngSubmit)="review()">
+        <div class="form-group">
+          <label for="message">Message</label>
+          <input
+            type="text"
+            id="message"
+            formControlName="message"
+            class="form-control"
+          />
+        </div>
+  
+        <div class="form-group">
+          <label for="review">Rating</label>
+          <ngx-input-star-rating formControlName="rating"></ngx-input-star-rating>
+        </div>
+  
+        <div class="form-group">
+          <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

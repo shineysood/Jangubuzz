@@ -53,24 +53,23 @@ export class ProfileComponent implements OnInit {
           $(this).append(
             ' <a href="javascript:void(0);" class="read-less" >read less</a>'
           );
-          
         }
       });
 
       $(".read-more").click(function() {
         $(this)
-          .siblings(".more-text").show();          
-          $(".read-less").show();
-          $(this).hide();
-      });      
+          .siblings(".more-text")
+          .show();
+        $(".read-less").show();
+        $(this).hide();
+      });
       $(".read-less").click(function() {
         $(this)
           .siblings(".more-text")
           .hide();
-          $(".read-more").show();
+        $(".read-more").show();
         $(this).hide();
       });
-
     });
   }
 
@@ -125,7 +124,7 @@ export class ProfileComponent implements OnInit {
         };
 
         // setTimeout(() => {
-          this.readmore();
+        this.readmore();
         // });
       });
     });
@@ -141,6 +140,17 @@ export class ProfileComponent implements OnInit {
     this.dob = this.user_logged.dob;
     this.bio = this.user_logged.bio;
     this.modalRef = this.modalService.show(template);
+  }
+
+  navigate(id, type) {
+    if (type === "eventListingType") {
+      this.router.navigate(["listing/experience", id]);
+    } else if (
+      type === "eventSpaceListingType" ||
+      type === "eventServiceListingType"
+    ) {
+      this.router.navigate(["listing/spaces-and-services", id]);
+    }
   }
 
   shareProfile() {

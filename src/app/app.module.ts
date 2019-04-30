@@ -77,6 +77,8 @@ import { JobsComponent } from './internal/jobs/jobs.component';
 import { ReviewsComponent } from './external/reviews/reviews.component';
 import { NgxInputStarRatingModule } from 'ngx-input-star-rating';
 import { SearchedItemsComponent } from './external/searched-items/searched-items.component';
+import { MessagesComponent } from './internal/messages/messages.component';
+import { ReviewFormComponent } from './internal/review-form/review-form.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +131,9 @@ import { SearchedItemsComponent } from './external/searched-items/searched-items
     CardStripeComponent,
     JobsComponent,
     ReviewsComponent,
-    SearchedItemsComponent
+    SearchedItemsComponent,
+    MessagesComponent,
+    ReviewFormComponent
   ],
   imports: [
     Ng5SliderModule,

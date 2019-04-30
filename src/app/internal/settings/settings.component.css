@@ -1,5 +1,6 @@
 .main_div {
   margin-top: 100px;
+  min-height: 100vh;
 }
 .profile-tabs[_ngcontent-c4] {
   display: flex;

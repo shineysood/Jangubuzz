@@ -1,4 +1,7 @@
-<div *ngIf="!loading && searchedItems.length !== 0" class="container service_div">
+<div
+  *ngIf="!loading && searchedItems.length !== 0"
+  class="container service_div"
+>
   <div class="card-columns">
     <ng-container *ngFor="let item of searchedItems">
       <div class="card">
@@ -26,6 +29,13 @@
       </div>
     </ng-container>
   </div>
+</div>
+
+<div
+  *ngIf="!loading && searchedItems.length === 0"
+  class="container service_div"
+>
+  <h1>No listings ...</h1>
 </div>
 
 <!-- for displaying loader  -->

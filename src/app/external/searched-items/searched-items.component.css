@@ -5,6 +5,10 @@ img {
   max-width: 100%;
   width: 100%;
 }
+.service_div h1 {
+  text-align: center;
+  height: 80vh;
+}
 .card-body {
   padding: 0px;
   cursor: pointer;

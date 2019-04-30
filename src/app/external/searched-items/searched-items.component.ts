@@ -11,6 +11,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 export class SearchedItemsComponent implements OnInit {
   searchedItems = [];
   loading = true;
+  no_list = false;
   temp = [];
   constructor(
     private route: ActivatedRoute,
@@ -20,34 +21,28 @@ export class SearchedItemsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      console.log(params);
       this.afs
         .collection("listing")
         .snapshotChanges()
         .subscribe(data => {
-          data[0].payload.doc.data;
           this.temp = data;
-          if(this.temp.length !== 0) {
-            this.temp.forEach((item, i) => {
-              if (
-                this.temp[i].payload.doc.data().listingType ===
-                  params.listingType &&
-                this.temp[i].payload.doc.data().locationAddress ===
-                  params.location
-              ) {
-                var obj = {
-                  id: this.temp[i].payload.doc.id,
-                  payload: this.temp[i].payload.doc.data(),
-                  type: this.temp[i].payload.doc.data().listingType
-                };
-                this.searchedItems.push(obj);
-                this.loading = false;
-              }
-            });
-          } else {
-            this.loading = false;
-          }
-          console.log(this.searchedItems);
+          this.temp.forEach((item, i) => {
+            if (
+              this.temp[i].payload.doc.data().listingType ===
+                params.listingType &&
+              this.temp[i].payload.doc.data().locationAddress ===
+                params.location
+            ) {
+              var obj = {
+                id: this.temp[i].payload.doc.id,
+                payload: this.temp[i].payload.doc.data(),
+                type: this.temp[i].payload.doc.data().listingType
+              };
+              this.searchedItems.push(obj);
+              this.loading = false;
+            }
+          });
+          this.loading = false;
         });
     });
   }

@@ -87,4 +87,22 @@ export class JobsComponent implements OnInit {
         console.log("jobs: ===>", this.jobs);
       });
   }
+
+  getReviews(listingId, bookingId) {
+    console.log(bookingId, listingId);
+    this.afs
+      .collection(
+        "user/" +
+          this.afAuth.auth.currentUser.uid +
+          "/listing/" +
+          listingId +
+          "/job/" +
+          bookingId +
+          "/review"
+      )
+      .snapshotChanges()
+      .subscribe(data => {
+        console.log("reviews: ", data);
+      });
+  }
 }

@@ -16,14 +16,13 @@
           </div>
           <div class="location-search">
             <label for="3">Where?</label>
-            <!-- <select formControlName="location">
-              <option value="" disabled selected>Select your location</option>
-              <option *ngFor="let item of items" value="{{ item.location }}">
-                {{ item.location }}
-              </option>
-            </select> -->
-
-            <input type="text" placeholder="Enter location..." formControlName="location" name="city" list="cityname" />
+            <input
+              type="text"
+              placeholder="Enter location..."
+              formControlName="location"
+              name="city"
+              list="cityname"
+            />
             <datalist id="cityname">
               <option *ngFor="let item of items" value="{{ item.location }}">
                 {{ item.location }}
