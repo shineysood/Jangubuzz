@@ -80,6 +80,7 @@ import { SearchedItemsComponent } from './external/searched-items/searched-items
 import { MessagesComponent } from './internal/messages/messages.component';
 import { ReviewFormComponent } from './internal/review-form/review-form.component';
 import { UserReviewsComponent } from './internal/user-reviews/user-reviews.component';
+import { UserListingComponent } from './internal/user-listing/user-listing.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +136,8 @@ import { UserReviewsComponent } from './internal/user-reviews/user-reviews.compo
     SearchedItemsComponent,
     MessagesComponent,
     ReviewFormComponent,
-    UserReviewsComponent
+    UserReviewsComponent,
+    UserListingComponent
   ],
   imports: [
     Ng5SliderModule,

@@ -1,3 +1,140 @@
-<p>
-  user-listing works!
-</p>
+<!-- <div *ngIf="user_listings.length !== 0" class="container service_div">
+  <div class="row">
+    <ng-container *ngFor="let item of user_listings">
+      <div class="col-md-6 col-lg-4">
+        <div class="card mb-3">
+          <div class="card-body p-0">
+            <img src="{{ item.payload.listingImageUrl }}" class="img-fluid" />
+            <div
+              (click)="navigate(item.id, item.payload.listingType)"
+              class="card-overlay p-2"
+            >
+              <p class="ng">{{ item.payload.title }}</p>
+              <button
+                *ngIf="item.payload.listingType === 'eventListingType'"
+                type="button"
+                class="btn btn-primary btn-sm col-12"
+                (click)="create_ticket(item.id, item.payload.userId)"
+              >
+                Create ticket
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<div *ngIf="user_listings.length === 0" class="container service_div">
+  No listings
+</div> -->
+
+<div class="container service_div">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#experiences"
+        >Experiences</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#services">Services</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#spaces">Spaces</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane container active" id="experiences">
+      <div class="row" *ngIf="experiences.length !== 0">
+        <ng-container *ngFor="let item of experiences">
+          <div class="col-md-6 col-lg-4">
+            <div class="card mb-3">
+              <div class="card-body p-0">
+                <img
+                  src="{{ item.payload.listingImageUrl }}"
+                  class="img-fluid"
+                />
+                <div
+                  (click)="navigate(item.id, item.payload.listingType)"
+                  class="card-overlay p-2"
+                >
+                  <p class="ng">{{ item.payload.title }}</p>
+                  <button
+                    *ngIf="item.payload.listingType === 'eventListingType'"
+                    type="button"
+                    class="btn btn-primary btn-sm col-12"
+                    (click)="create_ticket(item.id, item.payload.userId)"
+                  >
+                    Create ticket
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div *ngIf="experiences.length === 0" class="empty">
+        No listing
+      </div>
+    </div>
+
+    <div class="tab-pane container fade" id="services">
+      <div class="row" *ngIf="services.length !== 0">
+        <ng-container *ngFor="let item of services">
+          <div class="col-md-6 col-lg-4">
+            <div class="card mb-3">
+              <div class="card-body p-0">
+                <img
+                  src="{{ item.payload.listingImageUrl }}"
+                  class="img-fluid"
+                />
+                <div
+                  (click)="navigate(item.id, item.payload.listingType)"
+                  class="card-overlay p-2"
+                >
+                  <p class="ng">{{ item.payload.title }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div *ngIf="services.length === 0" class="empty">
+        No listing
+      </div>
+    </div>
+
+    <div class="tab-pane container fade" id="spaces">
+      <div class="row" *ngIf="spaces.length !== 0">
+        <ng-container *ngFor="let item of spaces">
+          <div class="col-md-6 col-lg-4">
+            <div class="card mb-3">
+              <div class="card-body p-0">
+                <img
+                  src="{{ item.payload.listingImageUrl }}"
+                  class="img-fluid"
+                />
+                <div
+                  (click)="navigate(item.id, item.payload.listingType)"
+                  class="card-overlay p-2"
+                >
+                  <p class="ng">{{ item.payload.title }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div *ngIf="spaces.length === 0" class="empty">
+        No listing
+      </div>
+    </div>
+  </div>
+</div>

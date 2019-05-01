@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
     emailVerified: false,
     phoneNumber: ""
   };
+  count;
   all_listings;
   user_listings = [];
   constructor(
@@ -79,19 +80,15 @@ export class ProfileComponent implements OnInit {
       .snapshotChanges()
       .subscribe(list => {
         this.all_listings = list;
+        this.count = 0;
         list.forEach((item, i) => {
           if (
             this.all_listings[i].payload.doc.data().userId ===
             this.afAuth.auth.currentUser.uid
           ) {
-            var listing = {
-              id: this.all_listings[i].payload.doc.id,
-              payload: this.all_listings[i].payload.doc.data()
-            };
-            this.user_listings.push(listing);
+            this.count = this.count + 1;
           }
         });
-        console.log(this.user_listings);
       });
 
     const userDoc: AngularFirestoreDocument = this.afs.doc(
@@ -142,15 +139,8 @@ export class ProfileComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  navigate(id, type) {
-    if (type === "eventListingType") {
-      this.router.navigate(["listing/experience", id]);
-    } else if (
-      type === "eventSpaceListingType" ||
-      type === "eventServiceListingType"
-    ) {
-      this.router.navigate(["listing/spaces-and-services", id]);
-    }
+  navigate() {
+    this.router.navigateByUrl("/user/listings");
   }
 
   shareProfile() {

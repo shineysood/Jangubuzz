@@ -9,23 +9,6 @@
             src="{{ user_logged.photoURL }}"
           />
           <img *ngIf="!user_logged.photoURL" src="assets/images/user.png" />
-          <!-- <h4>{{ verifications.name }} Provided</h4>
-          <h5 *ngIf="verifications.emailVerified">
-            <img src="assets/images/tick.png" alt="img" />
-            Email address
-          </h5>
-          <h5 *ngIf="!verifications.emailVerified">
-            <img src="assets/images/cross.png" alt="img" />
-            Email address
-          </h5>
-          <h5 *ngIf="verifications.phoneNumber">
-            <img src="assets/images/tick.png" alt="img" />
-            Phone number
-          </h5>
-          <h5 *ngIf="!verifications.phoneNumber">
-            <img src="assets/images/cross.png" alt="img" />
-            Phone number
-          </h5> -->
           <br /><br />
           <button
             type="button"
@@ -60,7 +43,7 @@
           </h5>
           <!-- Event lists -->
           <h4>{{ verifications.name }} Provided</h4>
-          <h5  *ngIf="verifications.emailVerified">
+          <h5 *ngIf="verifications.emailVerified">
             <img src="assets/images/tick.png" alt="img" />
             <span class="verifi_cont">Email address</span>
           </h5>
@@ -83,21 +66,26 @@
 </div>
 
 <hr />
-<h4 class="heading_border">Events List</h4>
+<h4 class="heading_border">Listings</h4>
 
-<div *ngIf="user_listings.length === 0">
+<div *ngIf="count === 0">
   NO LISTINGS
 </div>
 
-<div *ngIf="user_listings.length !== 0">
+<div *ngIf="count !== 0">
   <div class="event-lists">
-    <div class="row">
-      <ng-container *ngFor="let item of user_listings">
+    <a (click)="navigate()" href="javascript:void(0)">
+      {{ count }} listing(s)
+    </a>
+    <!-- <div class="row">
         <div class="col-md-6 col-lg-4">
           <div class="card mb-3">
             <div class="card-body p-0">
               <img src="{{ item.payload.listingImageUrl }}" class="img-fluid" />
-              <div (click)="navigate(item.id, item.payload.listingType)" class="card-overlay p-2">
+              <div
+                (click)="navigate(item.id, item.payload.listingType)"
+                class="card-overlay p-2"
+              >
                 <p class="ng">{{ item.payload.title }}</p>
                 <button
                   *ngIf="item.payload.listingType === 'eventListingType'"
@@ -111,9 +99,15 @@
             </div>
           </div>
         </div>
-      </ng-container>
-    </div>
+    </div> -->
   </div>
+</div>
+
+<hr />
+
+<div class="user-reviews">
+  <h4 class="heading_border">Reviews</h4>
+  <app-user-reviews></app-user-reviews>
 </div>
 
 <ng-template #template>

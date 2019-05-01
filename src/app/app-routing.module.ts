@@ -19,6 +19,7 @@ import { SpaceBookingComponent } from "./internal/space-booking/space-booking.co
 import { BuyTicketComponent } from "./internal/buy-ticket/buy-ticket.component";
 import { CreateTicketComponent } from "./internal/create-ticket/create-ticket.component";
 import { SearchedItemsComponent } from "./external/searched-items/searched-items.component";
+import { UserListingComponent } from "./internal/user-listing/user-listing.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -34,6 +35,10 @@ const routes: Routes = [
     path: "settings",
     // canActivate: [AuthGuard],
     component: SettingsComponent
+  },
+  {
+    path: "user/listings",
+    component: UserListingComponent
   },
   {
     path: "experiences",
