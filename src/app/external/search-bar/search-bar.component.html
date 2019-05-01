@@ -6,9 +6,9 @@
       <div class="search-bar">
         <form [formGroup]="searchForm" (ngSubmit)="search()">
           <div class="activity-select">
-            <label for="1">What kind of listing?</label>
+            <label for="1">Filter by listing type</label>
             <select formControlName="listingType">
-              <option value="" disabled selected>Select listing</option>
+              <option value="" disabled selected>Select listing...</option>
               <option value="eventListingType">Experiences</option>
               <option value="eventSpaceListingType">Spaces</option>
               <option value="eventServiceListingType">Services</option>

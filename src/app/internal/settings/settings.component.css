@@ -53,7 +53,7 @@ a.nav-link.active span {
   background: #ff5b8c !important;
 }
 a.nav-link.active span img {
-  filter: brightness(500%) !important;
+  filter: brightness(20) !important;
 }
 .tab-content {
   flex: 1;

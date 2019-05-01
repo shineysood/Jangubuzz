@@ -5,6 +5,7 @@ import {
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import * as moment from "moment";
 
 @Component({
   selector: "app-user-bookings",
@@ -35,7 +36,13 @@ export class UserBookingsComponent implements OnInit {
               !this.temp_book[i].payload.doc.data().isIssues &&
               !this.temp_book[i].payload.doc.data().isPaymentError
             ) {
-              this.review_flag = true;
+              if (
+                moment(new Date()).isAfter(
+                  this.temp_book[i].payload.doc.data().endDate.toDate()
+                )
+              ) {
+                this.review_flag = true;
+              }
             } else {
               this.review_flag = false;
             }

@@ -1,4 +1,4 @@
-<div class="main_div">
+<div *ngIf="reviews.length !== 0" class="main_div">
   <ng-container *ngFor="let review of reviews">
     <div class="card review_div">
       <div class="card-body">
@@ -18,4 +18,8 @@
       <pre>{{ review.review.message }}</pre>
     </div>
   </ng-container>
+</div>
+
+<div *ngIf="reviews.length === 0" class="main_div">
+  No reviews
 </div>
