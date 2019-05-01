@@ -46,13 +46,13 @@ export class SpaceAndServiceComponent implements OnInit {
   ) {
     window.scroll(0, 0);
 
-    if (this.afAuth.auth.currentUser) {
-      if (!this.afAuth.auth.currentUser.isAnonymous) {
-        this.job_flag = true;
-      } else {
-        this.job_flag = false;
-      }
-    }
+    // if (this.afAuth.auth.currentUser) {
+    //   if (!this.afAuth.auth.currentUser.isAnonymous) {
+    //     this.job_flag = true;
+    //   } else {
+    //     this.job_flag = false;
+    //   }
+    // }
   }
 
   ngOnInit() {
@@ -62,7 +62,10 @@ export class SpaceAndServiceComponent implements OnInit {
       );
       online_user_doc.snapshotChanges().subscribe(data => {
         this.online_user = data.payload.data();
+        this.online_user.uid = data.payload.id;
+        console.log(this.online_user);
       });
+      
     }
 
     this.route.params.subscribe(data => {

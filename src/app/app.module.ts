@@ -79,6 +79,7 @@ import { NgxInputStarRatingModule } from 'ngx-input-star-rating';
 import { SearchedItemsComponent } from './external/searched-items/searched-items.component';
 import { MessagesComponent } from './internal/messages/messages.component';
 import { ReviewFormComponent } from './internal/review-form/review-form.component';
+import { UserReviewsComponent } from './internal/user-reviews/user-reviews.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +134,8 @@ import { ReviewFormComponent } from './internal/review-form/review-form.componen
     ReviewsComponent,
     SearchedItemsComponent,
     MessagesComponent,
-    ReviewFormComponent
+    ReviewFormComponent,
+    UserReviewsComponent
   ],
   imports: [
     Ng5SliderModule,

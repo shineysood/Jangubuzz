@@ -51,11 +51,19 @@
               Cancel
             </button>
             <button
-              (click)="getReviews(job.job.listingId, job.id)"
+              (click)="
+                review(
+                  reviewForm,
+                  job.job.userId,
+                  job.job.hostId,
+                  job.job.listingId,
+                  job.id
+                )
+              "
               type="button"
               class="pull-right btn btn-sm btn-primary"
             >
-              Reviews
+              Review
             </button>
           </div>
         </div>
@@ -63,3 +71,7 @@
     </div>
   </ng-container>
 </div>
+
+<ng-template #reviewForm>
+  <app-review-form [review_obj]="review_obj" [modalRef]="modalRef"></app-review-form>
+</ng-template>

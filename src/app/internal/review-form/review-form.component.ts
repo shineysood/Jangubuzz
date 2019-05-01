@@ -35,43 +35,81 @@ export class ReviewFormComponent implements OnInit {
   }
 
   review() {
-    var reviewId = this.afs.createId();
-    const review_doc: AngularFirestoreDocument = this.afs.doc(
-      "user/" +
-        this.afAuth.auth.currentUser.uid +
-        "/booking/" +
-        this.review_obj.bookingId +
-        "/review/" +
-        reviewId
-    );
+    if (this.review_obj.type === "user") {
+      var reviewId = this.afs.createId();
+      const review_doc: AngularFirestoreDocument = this.afs.doc(
+        "user/" +
+          this.afAuth.auth.currentUser.uid +
+          "/booking/" +
+          this.review_obj.bookingId +
+          "/review/" +
+          reviewId
+      );
 
-    const doc: AngularFirestoreDocument = this.afs.doc(
-      "user/" +
-        this.afAuth.auth.currentUser.uid +
-        "/booking/" +
-        this.review_obj.bookingId
-    );
+      const doc: AngularFirestoreDocument = this.afs.doc(
+        "user/" +
+          this.afAuth.auth.currentUser.uid +
+          "/booking/" +
+          this.review_obj.bookingId
+      );
 
-    review_doc
-      .set(
-        {
-          message: this.review_form.controls["message"].value,
-          bookingId: this.review_obj.bookingId,
-          listingId: this.review_obj.listingId,
-          forUserId: this.review_obj.hostId,
-          userId: this.afAuth.auth.currentUser.uid,
-          dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
-          rating: parseFloat(this.review_form.controls["rating"].value)
-        },
-        { merge: true }
-      )
-      .then(res => {
-        review_doc.snapshotChanges().subscribe(data => {
-          console.log(data.payload.data());
+      review_doc
+        .set(
+          {
+            message: this.review_form.controls["message"].value,
+            bookingId: this.review_obj.bookingId,
+            listingId: this.review_obj.listingId,
+            forUserId: this.review_obj.hostId,
+            userId: this.afAuth.auth.currentUser.uid,
+            dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+            rating: parseFloat(this.review_form.controls["rating"].value)
+          },
+          { merge: true }
+        )
+        .then(res => {
+          review_doc.snapshotChanges().subscribe(data => {
+            console.log(data.payload.data());
+            this.modalRef.hide();
+          });
         })
-      })
-      .catch(err => {
-        console.log("error: ", err);
-      });
+        .catch(err => {
+          console.log("error: ", err);
+        });
+    } else if (this.review_obj.type === "host") {
+      var reviewId = this.afs.createId();
+      const review_doc: AngularFirestoreDocument = this.afs.doc(
+        "user/" +
+          this.review_obj.hostId +
+          "/listing/" +
+          this.review_obj.listingId +
+          "/job/" +
+          this.review_obj.bookingId +
+          "/review/" +
+          reviewId
+      );
+
+      review_doc
+        .set(
+          {
+            message: this.review_form.controls["message"].value,
+            bookingId: this.review_obj.bookingId,
+            listingId: this.review_obj.listingId,
+            forUserId: this.review_obj.userId,
+            userId: this.afAuth.auth.currentUser.uid,
+            dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+            rating: parseFloat(this.review_form.controls["rating"].value)
+          },
+          { merge: true }
+        )
+        .then(res => {
+          review_doc.snapshotChanges().subscribe(data => {
+            console.log(data.payload.data());
+            this.modalRef.hide();
+          });
+        })
+        .catch(err => {
+          console.log("error: ", err);
+        });
+    }
   }
 }

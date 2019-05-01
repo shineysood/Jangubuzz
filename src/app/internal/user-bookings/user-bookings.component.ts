@@ -89,12 +89,13 @@ export class UserBookingsComponent implements OnInit {
     this.review_obj = {
       bookingId: bookingId,
       listingId: listingId,
-      hostId: hostId
+      hostId: hostId,
+      type: "user"
     };
     this.modalRef = this.modalService.show(template);
   }
 
-  message(userId, hostId) {
-    console.log("--> ", userId, hostId);
+  message(userId, hostId, endDate) {
+    console.log(moment(endDate).isAfter(new Date()));
   }
 }

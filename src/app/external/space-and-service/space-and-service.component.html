@@ -13,7 +13,7 @@
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#info">Info</a>
           </li>
-          <li *ngIf="job_flag" class="nav-item">
+          <li *ngIf="online_user && online_user.uid === listing.userId" class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#jobs">Jobs</a>
           </li>
         </ul>
@@ -251,7 +251,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="job_flag" class="tab-pane container fade" id="jobs">
+      <div *ngIf="online_user && online_user.uid === listing.userId" class="tab-pane container fade" id="jobs">
         <app-jobs [listingId]="listing_id"></app-jobs>
       </div>
     </div>
@@ -274,7 +274,7 @@
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#info">Info</a>
           </li>
-          <li *ngIf="job_flag" class="nav-item">
+          <li *ngIf="online_user && online_user.uid === listing.userId" class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#jobs">Jobs</a>
           </li>
         </ul>
@@ -565,7 +565,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="job_flag" class="tab-pane container fade" id="jobs">
+      <div *ngIf="online_user && online_user.uid === listing.userId" class="tab-pane container fade" id="jobs">
         <app-jobs [listingId]="listing_id"></app-jobs>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, TemplateRef } from "@angular/core";
 import {
   AngularFirestore,
   AngularFirestoreDocument
@@ -6,6 +6,7 @@ import {
 import { AngularFireAuth } from "@angular/fire/auth";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFireFunctions } from "@angular/fire/functions";
+import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 
 @Component({
   selector: "app-jobs",
@@ -13,6 +14,8 @@ import { AngularFireFunctions } from "@angular/fire/functions";
   styleUrls: ["./jobs.component.css"]
 })
 export class JobsComponent implements OnInit {
+  review_obj;
+  modalRef: BsModalRef;
   @Input() listingId;
   jobs = [];
   temp;
@@ -21,7 +24,8 @@ export class JobsComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private route: ActivatedRoute,
     private fns: AngularFireFunctions,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit() {
@@ -88,21 +92,32 @@ export class JobsComponent implements OnInit {
       });
   }
 
-  getReviews(listingId, bookingId) {
-    console.log(bookingId, listingId);
-    this.afs
-      .collection(
-        "user/" +
-          this.afAuth.auth.currentUser.uid +
-          "/listing/" +
-          listingId +
-          "/job/" +
-          bookingId +
-          "/review"
-      )
-      .snapshotChanges()
-      .subscribe(data => {
-        console.log("reviews: ", data);
-      });
+  // getReviews(listingId, bookingId) {
+  //   console.log(bookingId, listingId);
+  //   this.afs
+  //     .collection(
+  //       "user/" +
+  //         this.afAuth.auth.currentUser.uid +
+  //         "/listing/" +
+  //         listingId +
+  //         "/job/" +
+  //         bookingId +
+  //         "/review"
+  //     )
+  //     .snapshotChanges()
+  //     .subscribe(data => {
+  //       console.log("reviews: ", data);
+  //     });
+  // }
+
+  review(template: TemplateRef<any>, userId, hostId, listingId, bookingId) {
+    this.review_obj = {
+      type: "host",
+      bookingId: bookingId,
+      listingId: listingId,
+      hostId: hostId,
+      userId: userId
+    };
+    this.modalRef = this.modalService.show(template);
   }
 }

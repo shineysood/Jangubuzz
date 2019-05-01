@@ -1,0 +1,51 @@
+.review_image img {
+    width: 70px;
+    height: 70px;
+    border-radius: 100px;
+    background: #ddd;
+    margin-right: 20px;
+  }
+  .card-body {
+    display: flex;
+  }
+  .review_content h4 {
+    font-size: 18px;
+    margin: 0px;
+  }
+  ngx-input-star-rating {
+    display: block !important;
+  }
+  .review_content label {
+    font-size: 12px;
+    color: #999;
+  }
+  .card.review_div pre {
+    font-size: 16px;
+    padding: 0px 20px;
+    font-family: "Poppins", sans-serif !important;
+  }
+  .input-rating {
+    left: 0px !important;
+  }
+  .input-rating button {
+    width: 25px !important;
+  }
+  
+  .main_div {
+    margin-bottom: 200px;
+  }
+  
+  /* button.input-rating__btn {
+    width: 20px !important;
+  } */
+  
+  @media (max-width: 767px) {
+    .card-body {
+      display: flex;
+      padding: 20px 0px;
+    }
+    .card.review_div pre {
+      padding: 0px 0px;
+    }
+  }
+  
