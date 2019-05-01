@@ -29,18 +29,16 @@ export class UserBookingsComponent implements OnInit {
         this.getUserBookings().subscribe(data => {
           this.temp_book = data;
           this.temp_book.forEach((item, i) => {
-            // if (
-            //   this.temp_book[i].payload.doc.data().isHostApproved 
-            //   // &&
-            //   // this.temp_book[i].payload.doc.data().isPaid &&
-            //   // !this.temp_book[i].payload.doc.data().isIssues &&
-            //   // !this.temp_book[i].payload.doc.data().isPaymentError &&
-            //   // !this.temp_book[i].payload.doc.data().isDamageError
-            // ) {
-            //   this.review_flag = true;
-            // } else {
-            //   this.review_flag = false;
-            // }
+            if (
+              this.temp_book[i].payload.doc.data().isHostApproved &&
+              this.temp_book[i].payload.doc.data().isPaid &&
+              !this.temp_book[i].payload.doc.data().isIssues &&
+              !this.temp_book[i].payload.doc.data().isPaymentError
+            ) {
+              this.review_flag = true;
+            } else {
+              this.review_flag = false;
+            }
             var obj = {
               id: data[i].payload.doc.id,
               payload: data[i].payload.doc.data()
@@ -87,5 +85,9 @@ export class UserBookingsComponent implements OnInit {
       hostId: hostId
     };
     this.modalRef = this.modalService.show(template);
+  }
+
+  message(userId, hostId) {
+    console.log("--> ", userId, hostId);
   }
 }

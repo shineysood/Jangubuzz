@@ -19,3 +19,15 @@ form.review-form .form-group:nth-of-type(2) label {
   margin: 0 10px 0 0px;
   color: #909090;
 }
+textarea {
+  border: 0;
+  height: 150px;
+  background: #f5eaea;
+}
+textarea:visited,
+textarea:focus,
+textarea:hover {
+  outline: none;
+  box-shadow: none;
+  border: 1px solid #ddd;
+}

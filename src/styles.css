@@ -214,7 +214,13 @@ div#time-picker-wrapper {
 }
 
 .full .star {
-  fill: #ff5b8c !important;
+    fill: gold !important;
+}
+.card.review_div {
+  border: none;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0px;
+  padding: 0px;
 }
 
 @media (max-width: 991px) {

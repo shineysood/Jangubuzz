@@ -34,6 +34,9 @@ export class SpaceAndServiceComponent implements OnInit {
   temp_replies;
   reply;
   temp_reply;
+  temp_reviews;
+  reviews = [];
+  review_obj;
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
@@ -67,7 +70,6 @@ export class SpaceAndServiceComponent implements OnInit {
       // this.getListingBookings(this.listing_id);
       this.getServiceListing(data.id);
       this.getComments(data.id);
-
       // if (this.afAuth.auth.currentUser) {
       //   // this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
       // }
@@ -101,6 +103,12 @@ export class SpaceAndServiceComponent implements OnInit {
         var listing_user: AngularFirestoreDocument = this.afs.doc(
           "user/" + this.listing.userId
         );
+
+        // this.getReviews(, id);
+        this.review_obj = {
+          hostId: this.listing.userId,
+          listingId: id
+        };
         listing_user.snapshotChanges().subscribe(user => {
           this.listing_user = user.payload.data().name;
         });

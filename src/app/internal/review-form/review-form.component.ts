@@ -7,7 +7,7 @@ import {
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import * as firebase from "firebase/app";
-import { Observable } from 'rxjs';
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-review-form",
@@ -45,6 +45,13 @@ export class ReviewFormComponent implements OnInit {
         reviewId
     );
 
+    const doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" +
+        this.afAuth.auth.currentUser.uid +
+        "/booking/" +
+        this.review_obj.bookingId
+    );
+
     review_doc
       .set(
         {
@@ -59,7 +66,6 @@ export class ReviewFormComponent implements OnInit {
         { merge: true }
       )
       .then(res => {
-        console.log("done");
         review_doc.snapshotChanges().subscribe(data => {
           console.log(data.payload.data());
         })

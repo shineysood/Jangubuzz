@@ -1,3 +1,21 @@
-<p>
-  reviews works !!!
-</p>
+<div class="main_div">
+  <ng-container *ngFor="let review of reviews">
+    <div class="card review_div">
+      <div class="card-body">
+        <div class="review_image">
+          <img [src]="review.imageUrl" />
+        </div>
+
+        <div class="review_content">
+          <h4>{{ review.userName }}</h4>
+          <label>{{ review.dateCreated | date: "longDate" }}</label>
+          <ngx-input-star-rating
+            [value]="review.review.rating"
+            [disabled]="true"
+          ></ngx-input-star-rating>
+        </div>
+      </div>
+      <pre>{{ review.review.message }}</pre>
+    </div>
+  </ng-container>
+</div>

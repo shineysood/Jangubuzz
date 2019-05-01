@@ -44,11 +44,30 @@
             </button>
             <button
               *ngIf="review_flag"
-              (click)="review(reviewTemplate, job.id, job.payload.listingId, job.payload.hostId)"
+              (click)="
+                review(
+                  reviewTemplate,
+                  job.id,
+                  job.payload.listingId,
+                  job.payload.hostId
+                )
+              "
               type="button"
               class="pull-right btn btn-sm btn-primary"
             >
               Review
+            </button>
+            <button
+              (click)="
+                message(
+                  job.payload.userId,
+                  job.payload.hostId
+                )
+              "
+              type="button"
+              class="pull-right btn btn-sm btn-primary"
+            >
+              Message
             </button>
           </div>
         </div>

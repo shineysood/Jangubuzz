@@ -13,6 +13,10 @@ span.ticket-logo {
   position: relative;
   z-index: 2;
 }
+button.pull-right.btn.btn-sm.btn-primary {
+  position: relative;
+  z-index: 22;
+}
 .card {
   border: none;
   min-height: 332px;
@@ -116,12 +120,12 @@ span.ticket-logo {
   align-items: center;
 }
 @media screen and (max-width: 767px) {
-  .card-header[_ngcontent-c8]::before {
+  .card-header::before {
     width: 100%;
     height: 68px;
     border-top: 0px solid transparent;
     border-bottom: 48px solid transparent;
-    border-left: 767px solid #ff5b8c;
+    border-left: 767px solid #ff5b8c !important;
     content: "";
     position: absolute;
     top: 0px;
