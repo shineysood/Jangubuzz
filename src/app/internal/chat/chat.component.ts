@@ -19,6 +19,8 @@ export class ChatComponent implements OnInit {
   messages = [];
   message_temp;
   message;
+  listingId;
+  
 
   constructor(
     private afs: AngularFirestore,
@@ -45,8 +47,6 @@ export class ChatComponent implements OnInit {
         console.log("chat user: ", this.chat_receiver);
       });
   }
-
-  // user/{userId}/message/{hostId from booking}/thread/{threadId}
 
   getMessages(hostId, threadId) {
     this.afs
