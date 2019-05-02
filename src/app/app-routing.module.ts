@@ -20,6 +20,8 @@ import { BuyTicketComponent } from "./internal/buy-ticket/buy-ticket.component";
 import { CreateTicketComponent } from "./internal/create-ticket/create-ticket.component";
 import { SearchedItemsComponent } from "./external/searched-items/searched-items.component";
 import { UserListingComponent } from "./internal/user-listing/user-listing.component";
+import { MessagesComponent } from "./internal/messages/messages.component";
+import { ChatComponent } from "./internal/chat/chat.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -53,6 +55,16 @@ const routes: Routes = [
     path: "ticket/buy/:ticketId/:hostId/:listingId",
     // canActivate: [AuthGuard],
     component: BuyTicketComponent
+  },
+  {
+    path: "chat/:hostId",
+    // canActivate: [AuthGuard],
+    component: ChatComponent
+  },
+  {
+    path: "messages",
+    // canActivate: [AuthGuard],
+    component: MessagesComponent
   },
   {
     path: "spaces",

@@ -81,6 +81,7 @@ import { MessagesComponent } from './internal/messages/messages.component';
 import { ReviewFormComponent } from './internal/review-form/review-form.component';
 import { UserReviewsComponent } from './internal/user-reviews/user-reviews.component';
 import { UserListingComponent } from './internal/user-listing/user-listing.component';
+import { ChatComponent } from './internal/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -137,7 +138,8 @@ import { UserListingComponent } from './internal/user-listing/user-listing.compo
     MessagesComponent,
     ReviewFormComponent,
     UserReviewsComponent,
-    UserListingComponent
+    UserListingComponent,
+    ChatComponent
   ],
   imports: [
     Ng5SliderModule,

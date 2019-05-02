@@ -1,20 +1,19 @@
 import { Pipe, PipeTransform } from "@angular/core";
+import * as moment from "moment";
 
 @Pipe({
   name: "sort"
 })
-export class orderByPipe  implements PipeTransform {
+export class orderByPipe implements PipeTransform {
   transform(array: any, field: any): any[] {
     if (!Array.isArray(array)) {
       return;
     }
     array.sort((a: any, b: any) => {
-      if (a[field] < b[field]) {
+      if (moment(a).isAfter(b)) {
         return 1;
-      } else if (a[field] > b[field]) {
+      } else if (!moment(a).isAfter(b)) {
         return -1;
-      } else {
-        return 0;
       }
     });
     return array;

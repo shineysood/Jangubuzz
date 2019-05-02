@@ -6,6 +6,7 @@ import {
 } from "@angular/fire/firestore";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import * as moment from "moment";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-user-bookings",
@@ -21,7 +22,8 @@ export class UserBookingsComponent implements OnInit {
   constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -95,7 +97,7 @@ export class UserBookingsComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  message(userId, hostId, endDate) {
-    console.log(moment(endDate).isAfter(new Date()));
+  message(userId, hostId, bookingId, listingId) {
+    this.router.navigate(["chat", hostId]);
   }
 }

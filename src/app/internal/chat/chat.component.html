@@ -1,0 +1,38 @@
+<div class="container main_div">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex align-items-center">
+      <img
+        *ngIf="chat_receiver && !chat_receiver.profileImageUrl"
+        src="assets/images/user.png"
+      />
+      <img
+        *ngIf="chat_receiver && chat_receiver.profileImageUrl"
+        [src]="chat_receiver.profileImageUrl"
+      />
+      <div>
+        <h4 *ngIf="chat_receiver && chat_receiver.name">
+          {{ chat_receiver.name }}
+        </h4>
+      </div>
+    </div>
+    <h5>Keep all conversations on the platform for safety</h5>
+  </div>
+    <div #scrollMe [scrollTop]="scrollMe.scrollHeight" class="card-body">
+      <ng-container *ngFor="let message of messages">
+        <div
+          [ngClass]="message.message.isHome ? 'chat_body out' : 'chat_body in'"
+        >
+          <span> {{ message.message.message }} </span>
+          <small> {{ message.time | date: "shortTime" }} </small>
+        </div>
+      </ng-container>
+    </div>
+    <div class="card-footer">
+      <input autocomplete="off" type="text" name="message" [(ngModel)]="message">
+      <button [disabled]="!message" class="btn btn-sm btn-primary" (click)="send(message.id)">
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</div>
