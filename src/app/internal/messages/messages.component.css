@@ -1,5 +1,7 @@
 .main_div {
   margin: 100px auto;
+  height: 70vh;
+  overflow-y: auto;
 }
 
 .card-body img {

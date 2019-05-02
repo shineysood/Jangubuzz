@@ -59,9 +59,12 @@ export class ChatComponent implements OnInit {
       )
       .snapshotChanges()
       .subscribe(messages => {
-        messages[0].payload.doc;
         this.message_temp = messages;
         this.message_temp.forEach((item, i) => {
+          if (this.message_temp[i].payload.doc.data().isBooking) {
+            console.log("hello");
+          }
+
           var obj = {
             id: this.message_temp[i].payload.doc.id,
             message: this.message_temp[i].payload.doc.data(),
@@ -111,5 +114,8 @@ export class ChatComponent implements OnInit {
       },
       { merge: true }
     );
+
+    this.message = "";
+    document.getElementById("message_box").focus();
   }
 }
