@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Router } from "@angular/router";
+import { firestore } from "firebase";
 
 @Component({
   selector: "app-user-listing",
@@ -44,18 +45,30 @@ export class UserListingComponent implements OnInit {
             ) {
               var exp_listing = {
                 id: this.all_listings[i].payload.doc.id,
-                payload: this.all_listings[i].payload.doc.data()
+                payload: this.all_listings[i].payload.doc.data(),
+                startDate: this.all_listings[i].payload.doc
+                  .data()
+                  .startDate.toDate(),
+                endDate: this.all_listings[i].payload.doc
+                  .data()
+                  .endDate.toDate()
               };
               this.experiences.push(exp_listing);
+              console.log("====> exp: ", this.experiences);
             } else if (
               this.all_listings[i].payload.doc.data().listingType ===
               "eventServiceListingType"
             ) {
               var service_listing = {
                 id: this.all_listings[i].payload.doc.id,
-                payload: this.all_listings[i].payload.doc.data()
+                payload: this.all_listings[i].payload.doc.data(),
+                startDate: this.all_listings[i].payload.doc
+                  .data()
+                  .startDate.toDate()
+                  .toString()
               };
               this.services.push(service_listing);
+              console.log("====> services ", this.services);
             } else if (
               this.all_listings[i].payload.doc.data().listingType ===
               "eventSpaceListingType"
@@ -64,7 +77,8 @@ export class UserListingComponent implements OnInit {
                 id: this.all_listings[i].payload.doc.id,
                 payload: this.all_listings[i].payload.doc.data()
               };
-              this.services.push(space_listing);
+              this.spaces.push(space_listing);
+              console.log("=====> spaces", this.spaces);
             }
           }
         });
@@ -80,5 +94,9 @@ export class UserListingComponent implements OnInit {
     ) {
       this.router.navigate(["listing/spaces-and-services", id]);
     }
+  }
+
+  create_ticket(listingId, userId) {
+    this.router.navigate(["ticket/create", listingId, userId]);
   }
 }

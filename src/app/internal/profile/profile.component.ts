@@ -127,10 +127,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  create_ticket(listingId, userId) {
-    this.router.navigate(["ticket/create", listingId, userId]);
-  }
-
   openModal(template: TemplateRef<any>) {
     this.name = this.user_logged.displayName;
     this.photoURL = this.user_logged.photoURL;
