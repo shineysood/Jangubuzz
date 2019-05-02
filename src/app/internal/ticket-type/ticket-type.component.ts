@@ -14,7 +14,7 @@ export class TicketTypeComponent implements OnInit {
   @Input() listingId;
   temp_tickets;
   loading = true;
-  tickets;
+  tickets = [];
 
   constructor(
     private modalService: BsModalService,
@@ -32,7 +32,6 @@ export class TicketTypeComponent implements OnInit {
       .collection("user/" + hostId + "/listing/" + listingId + "/ticket")
       .snapshotChanges()
       .subscribe(tickets => {
-        this.tickets = [];
         if (tickets.length !== 0) {
           this.temp_tickets = tickets;
           this.temp_tickets.forEach((item, i) => {

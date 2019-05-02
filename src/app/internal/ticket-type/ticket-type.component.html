@@ -3,7 +3,7 @@
     <h3>Tickets</h3>
     <span class="pull-right" (click)="modalRef.hide()">&times;</span>
   </div>
-  <div *ngIf="!loading" class="modal-content">
+  <div *ngIf="!loading && tickets.length !== 0" class="modal-content">
     <ng-container *ngFor="let ticket of tickets">
       <div (click)="buy_ticket(ticket.id)" class="ticket_inner">
         <span>
@@ -20,6 +20,10 @@
         </span>
       </div>
     </ng-container>
+  </div>
+
+  <div id="no_tickets" *ngIf="!loading && tickets.length === 0" class="modal-content">
+    No Tickets !!!
   </div>
 
   <!-- loader -->
