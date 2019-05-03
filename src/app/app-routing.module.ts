@@ -57,7 +57,12 @@ const routes: Routes = [
     component: BuyTicketComponent
   },
   {
-    path: "chat/:hostId",
+    path: "message/host/:bookingId/:isBooking/:userId",
+    // canActivate: [AuthGuard],
+    component: ChatComponent
+  },
+  {
+    path: "chat/user/:userId/:isBooking",
     // canActivate: [AuthGuard],
     component: ChatComponent
   },

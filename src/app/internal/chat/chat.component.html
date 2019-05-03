@@ -2,36 +2,107 @@
   <div class="card">
     <div class="card-header">
       <div class="d-flex align-items-center">
-      <img
-        *ngIf="chat_receiver && !chat_receiver.profileImageUrl"
-        src="assets/images/user.png"
-      />
-      <img
-        *ngIf="chat_receiver && chat_receiver.profileImageUrl"
-        [src]="chat_receiver.profileImageUrl"
-      />
-      <div>
-        <h4 *ngIf="chat_receiver && chat_receiver.name">
-          {{ chat_receiver.name }}
-        </h4>
+        <img
+          *ngIf="chat_receiver && !chat_receiver.profileImageUrl"
+          src="assets/images/user.png"
+        />
+        <img
+          *ngIf="chat_receiver && chat_receiver.profileImageUrl"
+          [src]="chat_receiver.profileImageUrl"
+        />
+        <div>
+          <h4 *ngIf="chat_receiver && chat_receiver.name">
+            {{ chat_receiver.name }}
+          </h4>
+        </div>
       </div>
+      <h5>Keep all conversations on the platform for safety</h5>
     </div>
-    <h5>Keep all conversations on the platform for safety</h5>
-  </div>
-    <div #scrollMe [scrollTop]="scrollMe.scrollHeight" class="card-body">
+    <div #scrollMe [scrollTop]="scrollMe.scrollHeight" class="chat_card card-body">
       <ng-container *ngFor="let message of messages">
         <div
           [ngClass]="message.message.isHome ? 'chat_body out' : 'chat_body in'"
         >
-          <span> {{ message.message.message }} </span>
+          <span id="message_chat" *ngIf="!message.message.isBooking">
+            {{ message.message.message }}
+          </span>
+          <!-- ================ booking card ======================= -->
+          <span id="booking_card" *ngIf="message.message.isBooking">
+            <div class="card">
+              <div class="card-body">
+                <div class="card-book">
+                  <img
+                    *ngIf="listing_card.listingImageUrl"
+                    [src]="listing_card.listingImageUrl"
+                    alt=""
+                  />
+
+                  <h6>
+                    {{ listing_card.date | date: "fullDate" }}
+                  </h6>
+                </div>
+                <h6>{{ listing_card.title }}</h6>
+                <div class="card-detail">
+                  <label
+                    *ngIf="
+                      listing_card.listingType === 'eventServiceListingType'
+                    "
+                  >
+                    {{ listing_card.name }}
+                  </label>
+                  <div class="line"></div>
+                  <label
+                    *ngIf="listing_card.listingType === 'eventSpaceListingType'"
+                  >
+                    {{ listing_card.name }}
+                  </label>
+                  <label> {{ listing_card.address }} </label>
+                </div>
+                <div class="footer-content">
+                  <span
+                    >Booking at {{ listing_card.perHourPrice }} per hour</span
+                  >
+                  <span><i class="fa fa-circle"></i></span>
+                  <span *ngIf="listing_card && listing_card.policy === 'no'"
+                    >Free cancellation</span
+                  >
+                  <span
+                    *ngIf="listing_card && listing_card.policy === 'sevenDay'"
+                    >7 days cancellation policy</span
+                  >
+                  <span
+                    *ngIf="listing_card && listing_card.policy === 'thirtyDay'"
+                    >30 days cancellation policy</span
+                  >
+                  <span *ngIf="listing_card && listing_card.policy === 'oneDay'"
+                    >24 hours cancellation policy</span
+                  >
+                </div>
+                <div class="footer-bottom">
+                  <span>lorem ispem lorem ispem lorem ispem</span>
+                </div>
+              </div>
+            </div>
+          </span>
+          <!-- ============= booking card end ======================== -->
           <small> {{ message.time | date: "shortTime" }} </small>
         </div>
       </ng-container>
     </div>
     <div class="card-footer">
-      <input autocomplete="off" id="message_box" type="text" name="message" [(ngModel)]="message">
-      <button [disabled]="!message" class="btn btn-sm btn-primary" (click)="send(message.id)">
-          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+      <input
+        autocomplete="off"
+        id="message_box"
+        type="text"
+        name="message"
+        [(ngModel)]="message"
+      />
+      <button
+        [disabled]="!message"
+        class="btn btn-sm btn-primary"
+        (click)="send(message.id)"
+      >
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
       </button>
     </div>
   </div>

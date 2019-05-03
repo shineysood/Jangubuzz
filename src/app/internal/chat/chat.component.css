@@ -66,8 +66,10 @@
   background: #fff;
 }
 .card-body {
-  height: 400px;
-  overflow-y: auto;
+  height: auto;
+}
+span#booking_card {
+  margin-bottom: 10px;
 }
 .card-footer button {
   background: #fa5a8d;
@@ -75,20 +77,25 @@
   width: 40px;
   height: 40px;
   border-radius: 50px !important;
+  
 }
 
 .card-footer input {
-  flex: 1;
+  width: calc(100% - 50px);
   background: #f3f3f3;
   border: none;
   border-radius: 50px;
   margin-right: 10px;
+  height: 40px;
 }
-.card-footer {
+.card-footer{
   background: #fff;
-  display: flex;
+  display: block;
+  width: 100%;
+  position: sticky;
+  bottom: 0px;
 }
-.chat_body.in span {
+.out #message_chat {
   background: #fa5a8d;
   color: #fff;
   border-radius: 20px;
@@ -97,7 +104,7 @@
   margin-bottom: 10px;
   display: inline-block;
 }
-.chat_body.out span {
+.in #message_chat {
   background: #ddd;
   color: #000;
   border-radius: 20px;
@@ -106,6 +113,29 @@
   margin-bottom: 10px;
   display: inline-block;
 }
+.card-book {
+  display: flex;
+}
+.image {
+  flex: 0.5;
+}
+.date_info {
+  flex: 1.5;
+}
+.image img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+/* .out #booking_card {
+  background: #ddd;
+  color: #000;
+  border-radius: 20px;
+  font-size: 14px;
+  padding: 4px 15px;
+  margin-bottom: 10px;
+  display: inline-block;
+} */
 .chat_body.in small {
   display: block;
   margin: 0px;
@@ -122,4 +152,98 @@
   margin-top: -10px;
   padding-right: 10px;
   text-align: right;
+}
+span#booking_card .card {
+  max-width: 380px;
+  display: inline-block;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+}
+.chat_body.in span#booking_card {
+  text-align: left;
+  display: block;
+}
+.chat_body.out span#booking_card {
+  text-align: right;
+  display: block;
+}
+.card-book h6 {
+  font-size: 14px;
+}
+.card-book img {
+  width: 50px;
+  height: 50px;
+  border-radius: 70px;
+  margin-right: 16px;
+}
+.card-book {
+  display: flex;
+  align-items: center;
+}
+span#booking_card .card h6 {
+  margin-top: 10px;
+  display: block;
+  text-align: left;
+}
+.card-detail .line {
+  background: #ddd;
+  flex: 1;
+  height: 1px;
+  margin: 0px 10px;
+}
+.card-detail label {
+  color: #fa5a8d;
+  font-size: 12px;
+}
+
+.card-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-content span i {
+  font-size: 7px;
+  margin: 0px 5px;
+}
+.footer-content span {
+  font-size: 12px;
+  display: inline;
+}
+.footer-content {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.footer-bottom span {
+  font-size: 10px;
+  display: block;
+  text-align: left;
+  color: #f00;
+  margin-top: 5px;
+}
+.chat_card.card-body {
+  height: 400px;
+  overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+.footer-content span {
+  font-size: 10px;
+  display: inline;
+}
+span#booking_card .card {
+  width: 100%;
+
+}
+.card-header img {
+  margin-right: 15px;
+}
+.card-header h4{
+  font-size: 18px;
+  margin: 0px;
+}
+.card-header h5 {
+  font-size: 10px;
+}
 }

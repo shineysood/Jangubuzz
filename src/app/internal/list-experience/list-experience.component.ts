@@ -350,20 +350,22 @@ export class ListExperienceComponent implements OnInit {
 
   updateSpaceImage(event) {
     this.pic_loader = true;
+    var that = this;
     new ImageCompressor(event.target.files[0], {
       quality: 0.6,
       success(result) {
-        this.store.storage
+        var image = <File>result;
+        that.store.storage
           .ref()
           .child("user")
-          .child(this.userId)
-          .child(this.listingId)
+          .child(that.userId)
+          .child(that.listingId)
           .child("image.jpg")
-          .put(result)
+          .put(image)
           .then(uploadSnap => {
             uploadSnap.ref.getDownloadURL().then(downloadURL => {
-              this.listing_event_image_url = downloadURL;
-              this.pic_loader = false;
+              that.listing_event_image_url = downloadURL;
+              that.pic_loader = false;
             });
           });
       },

@@ -23,10 +23,10 @@ export class MessagesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getThreads();
+    this.getMessages();
   }
 
-  getThreads() {
+  getMessages() {
     this.afs
       .collection("user/" + this.afAuth.auth.currentUser.uid + "/message")
       .snapshotChanges()
@@ -57,6 +57,7 @@ export class MessagesComponent implements OnInit {
   }
 
   chat(userId) {
-    this.router.navigate(["chat", userId]);
+    var isBooking = "no";
+    this.router.navigate(["chat/user", userId, isBooking]);
   }
 }

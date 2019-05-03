@@ -162,22 +162,32 @@ export class ListServiceComponent implements OnInit {
     console.log(this.geoPoint);
   }
 
+  blobToFile(theBlob: Blob) {
+    var b: any = theBlob;
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    b.lastModifiedDate = new Date();
+    //Cast to a File() type
+    return <File>theBlob;
+  }
+
   updateSpaceImage(event) {
     this.pic_loader = true;
+    var that = this;
     new ImageCompressor(event.target.files[0], {
       quality: 0.6,
       success(result) {
-        this.store.storage
+        var image = <File>result;
+        that.store.storage
           .ref()
           .child("user")
-          .child(this.userId)
-          .child(this.listingId)
+          .child(that.userId)
+          .child(that.listingId)
           .child("image.jpg")
-          .put(result)
+          .put(image)
           .then(uploadSnap => {
             uploadSnap.ref.getDownloadURL().then(downloadURL => {
-              this.listing_event_image_url = downloadURL;
-              this.pic_loader = false;
+              that.listing_event_image_url = downloadURL;
+              that.pic_loader = false;
             });
           });
       },
@@ -264,9 +274,7 @@ export class ListServiceComponent implements OnInit {
 
       var st, ci;
       for (var i = 0; i < locationBrokenAddress.length; i++) {
-        if (
-          locationBrokenAddress[i].types[0] === "locality"
-        ) {
+        if (locationBrokenAddress[i].types[0] === "locality") {
           ci = locationBrokenAddress[i].long_name;
         } else if (
           locationBrokenAddress[i].types[0] === "administrative_area_level_1"

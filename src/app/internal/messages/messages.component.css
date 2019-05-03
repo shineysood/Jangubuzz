@@ -40,3 +40,12 @@
   border-bottom: 1px solid #ddd;
   border-radius: 0px;
 }
+.card-footer {
+  position: sticky;
+  bottom: 0px;
+}
+@media (max-width: 767px) {
+  .card-body label {
+    position: static;
+  }
+}
