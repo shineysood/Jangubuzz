@@ -2,6 +2,8 @@ import { Component, OnInit, TemplateRef, Input } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Router } from "@angular/router";
+import * as moment from "moment";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-ticket-type",
@@ -49,8 +51,17 @@ export class TicketTypeComponent implements OnInit {
       });
   }
 
-  buy_ticket(ticketId) {
-    this.modalRef.hide();
-    this.router.navigate(["ticket/buy", ticketId, this.hostId, this.listingId]);
+  buy_ticket(ticketId, saleEndDate, ticketsLeft) {
+    if (ticketsLeft > 0 && moment(saleEndDate).isAfter(new Date())) {
+      this.modalRef.hide();
+      this.router.navigate([
+        "ticket/buy",
+        ticketId,
+        this.hostId,
+        this.listingId
+      ]);
+    } else {
+      Swal.fire("", "Something went wrong", "error");
+    }
   }
 }

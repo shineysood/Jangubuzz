@@ -21,10 +21,7 @@ import {
 } from "@angular/fire/firestore";
 import { AmazingTimePickerService } from "amazing-time-picker";
 import Swal from "sweetalert2";
-import {
-  BsDaterangepickerDirective,
-  BsDatepickerConfig
-} from "ngx-bootstrap/datepicker";
+import ImageCompressor from "image-compressor.js";
 
 declare var google: any;
 
@@ -61,13 +58,7 @@ export class ListExperienceComponent implements OnInit {
 
   public experience_form_basic: FormGroup;
   public experience_form_additional: FormGroup;
-
-  // @ViewChild("dp") datepicker: BsDaterangepickerDirective;
-
-  // bsConfig: Partial<BsDatepickerConfig>;
   minDate: Date;
-
-  // bsConfif: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -158,6 +149,8 @@ export class ListExperienceComponent implements OnInit {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+          console.log("place: ", place);
 
           this.experience_form_additional.controls[
             "locationAddress"
@@ -250,7 +243,6 @@ export class ListExperienceComponent implements OnInit {
 
   addExperienceAdditional() {
     if (this.experience_form_additional.valid) {
-      console.log("hello additional methods");
       // get the firestore doc
       const listingDoc: AngularFirestoreDocument = this.afs.doc(
         "user/" + this.userId + "/listing/" + this.listingId
@@ -262,12 +254,16 @@ export class ListExperienceComponent implements OnInit {
       var l = [];
 
       for (var i = 0; i < locationBrokenAddress.length; i++) {
-        l.push(locationBrokenAddress[i].long_name);
+        if (locationBrokenAddress[i].types[0] === "locality") {
+          l.push(locationBrokenAddress[i].long_name);
+        } else if (
+          locationBrokenAddress[i].types[0] === "administrative_area_level_1"
+        ) {
+          l.push(locationBrokenAddress[i].long_name);
+        } else if (locationBrokenAddress[i].types[0] === "country") {
+          l.push(locationBrokenAddress[i].long_name);
+        }
       }
-
-      // this.experience_form_additional.controls[
-      //   "locationBrokenAddress"
-      // ].patchValue(l);
 
       for (var i = 0; i < locationBrokenAddress.length; i++) {
         if (
@@ -279,9 +275,7 @@ export class ListExperienceComponent implements OnInit {
 
       var st, ci, co;
       for (var i = 0; i < locationBrokenAddress.length; i++) {
-        if (
-          locationBrokenAddress[i].types[0] === "administrative_area_level_2"
-        ) {
+        if (locationBrokenAddress[i].types[0] === "locality") {
           ci = locationBrokenAddress[i].long_name;
         } else if (
           locationBrokenAddress[i].types[0] === "administrative_area_level_1"
@@ -313,9 +307,6 @@ export class ListExperienceComponent implements OnInit {
             categories: this.selectedItems,
             dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
             endDate: firebase.firestore.Timestamp.fromDate(endDate),
-            endDay: this.experience_form_additional.controls["endDate"].value
-              .toString()
-              .split(" ")[0],
             geoPoint: this.geoPoint,
             isCanceled: false,
             isDraft: false,
@@ -331,11 +322,6 @@ export class ListExperienceComponent implements OnInit {
             ].value,
             locationShortAddress: short_add,
             startDate: firebase.firestore.Timestamp.fromDate(startDate),
-            startDay: this.experience_form_additional.controls[
-              "startDate"
-            ].value
-              .toString()
-              .split(" ")[0],
             state: state,
             recurrence: this.experience_form_additional.controls["recurrence"]
               .value
@@ -364,25 +350,30 @@ export class ListExperienceComponent implements OnInit {
 
   updateSpaceImage(event) {
     this.pic_loader = true;
-    this.store.storage
-      .ref()
-      .child("user")
-      .child(this.userId)
-      .child(this.listingId)
-      .child("image.jpg")
-      .put(event.target.files[0])
-      .then(uploadSnap => {
-        uploadSnap.ref.getDownloadURL().then(downloadURL => {
-          this.listing_event_image_url = downloadURL;
-          this.pic_loader = false;
-        });
-      });
+    new ImageCompressor(event.target.files[0], {
+      quality: 0.6,
+      success(result) {
+        this.store.storage
+          .ref()
+          .child("user")
+          .child(this.userId)
+          .child(this.listingId)
+          .child("image.jpg")
+          .put(result)
+          .then(uploadSnap => {
+            uploadSnap.ref.getDownloadURL().then(downloadURL => {
+              this.listing_event_image_url = downloadURL;
+              this.pic_loader = false;
+            });
+          });
+      },
+      error(e) {
+        console.log(e.message);
+      }
+    });
   }
 
-  set() {
-    //   var d = firebase.firestore.Timestamp.fromDate(
-    //     this.experience_form.controls["endDate"].value
-    //   );
-    //   console.log(d);
-  }
+  // set(event) {
+  //   console.log("called", event.target.files[0]);
+  // }
 }

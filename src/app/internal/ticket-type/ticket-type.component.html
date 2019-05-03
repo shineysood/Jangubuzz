@@ -5,24 +5,33 @@
   </div>
   <div *ngIf="!loading && tickets.length !== 0" class="modal-content">
     <ng-container *ngFor="let ticket of tickets">
-      <div (click)="buy_ticket(ticket.id)" class="ticket_inner">
+      <div (click)="buy_ticket(ticket.id, ticket.payload.saleEndDate, ticket.payload.ticketsLeft)" class="ticket_inner">
         <span>
           {{ ticket.payload.title }} <br />
           <small>{{ ticket.payload.description }}</small>
         </span>
-        <div>
+        <div *ngIf="!ticket.payload.isClosed">
           <span *ngIf="!ticket.payload.isPriced" class="badge badge-primary">
             Free
           </span>
+
+          <span class="badge badge-primary" *ngIf="ticket.payload.isPriced">
+            {{ ticket.payload.currency }} ${{ ticket.payload.price }}
+          </span>
         </div>
-        <span class="badge badge-primary" *ngIf="ticket.payload.isPriced">
-          {{ ticket.payload.currency }} ${{ ticket.payload.price }}
-        </span>
+
+        <div *ngIf="ticket.payload.isClosed">
+          <span>Closed</span>
+        </div>
       </div>
     </ng-container>
   </div>
 
-  <div id="no_tickets" *ngIf="!loading && tickets.length === 0" class="modal-content">
+  <div
+    id="no_tickets"
+    *ngIf="!loading && tickets.length === 0"
+    class="modal-content"
+  >
     No Tickets !!!
   </div>
 

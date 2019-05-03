@@ -9,6 +9,7 @@ import { AngularFireFunctions } from "@angular/fire/functions";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import * as moment from "moment";
 import Swal from "sweetalert2";
+import * as firebase  from "firebase/app";
 
 @Component({
   selector: "app-space-booking",
@@ -131,12 +132,14 @@ export class SpaceBookingComponent implements OnInit {
                   currency: this.listing.currency,
                   policy: this.listing.policy,
                   description: this.listing.description,
-                  damageChargeDate: this.space_book_form.controls[
-                    "startDate"
-                  ].value.toString(),
+                  damageChargeDate: firebase.firestore.Timestamp.fromDate(
+                    this.space_book_form.controls["startDate"].value.toString()
+                  ),
                   damageDeposit: this.listing.damageDeposit,
                   cleaningFee: this.listing.cleaningFee,
-                  dateCreated: this.listing.dateCreated,
+                  dateCreated: firebase.firestore.Timestamp.fromDate(
+                    new Date()
+                  ),
                   listingType: this.listing.listingType,
                   isHostApproved: false,
                   isPaid: false,

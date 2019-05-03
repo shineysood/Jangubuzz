@@ -72,17 +72,17 @@ import { CreateTicketComponent } from "./internal/create-ticket/create-ticket.co
 import { TicketsComponent } from "./internal/tickets/tickets.component";
 import { TicketTypeComponent } from "./internal/ticket-type/ticket-type.component";
 import { Ng5SliderModule } from "ng5-slider";
-import { CardStripeComponent } from './internal/card-stripe/card-stripe.component';
-import { JobsComponent } from './internal/jobs/jobs.component';
-import { ReviewsComponent } from './external/reviews/reviews.component';
-import { NgxInputStarRatingModule } from 'ngx-input-star-rating';
-import { SearchedItemsComponent } from './external/searched-items/searched-items.component';
-import { MessagesComponent } from './internal/messages/messages.component';
-import { ReviewFormComponent } from './internal/review-form/review-form.component';
-import { UserReviewsComponent } from './internal/user-reviews/user-reviews.component';
-import { UserListingComponent } from './internal/user-listing/user-listing.component';
-import { ChatComponent } from './internal/chat/chat.component';
-
+import { CardStripeComponent } from "./internal/card-stripe/card-stripe.component";
+import { JobsComponent } from "./internal/jobs/jobs.component";
+import { ReviewsComponent } from "./external/reviews/reviews.component";
+import { NgxInputStarRatingModule } from "ngx-input-star-rating";
+import { SearchedItemsComponent } from "./external/searched-items/searched-items.component";
+import { MessagesComponent } from "./internal/messages/messages.component";
+import { ReviewFormComponent } from "./internal/review-form/review-form.component";
+import { UserReviewsComponent } from "./internal/user-reviews/user-reviews.component";
+import { UserListingComponent } from "./internal/user-listing/user-listing.component";
+import { ChatComponent } from "./internal/chat/chat.component";
+import { ChatBookingCardComponent } from "./internal/chat-booking-card/chat-booking-card.component";
 @NgModule({
   declarations: [
     orderByPipe,
@@ -139,7 +139,8 @@ import { ChatComponent } from './internal/chat/chat.component';
     ReviewFormComponent,
     UserReviewsComponent,
     UserListingComponent,
-    ChatComponent
+    ChatComponent,
+    ChatBookingCardComponent
   ],
   imports: [
     Ng5SliderModule,

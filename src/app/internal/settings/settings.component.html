@@ -24,7 +24,7 @@
             <h6 class="link-heading">Tickets purchased</h6></a
           >
         </li>
-        <li class="nav-item">
+        <li *ngIf="user_logged.providerId === 'password'" class="nav-item">
           <a class="nav-link" data-toggle="tab" href="#account"
             ><span><img src="assets/images/account-icon.png" alt="img"/></span>
             <h6 class="link-heading">Account</h6></a
@@ -38,7 +38,7 @@
         <app-profile></app-profile>
       </div>
 
-      <div id="account" class="container tab-pane fade">
+      <div *ngIf="user_logged.providerId === 'password'" id="account" class="container tab-pane fade">
         <br />
         <app-account></app-account>
       </div>

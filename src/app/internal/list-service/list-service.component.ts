@@ -20,6 +20,7 @@ import {
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import { AmazingTimePickerService } from "amazing-time-picker";
+import ImageCompressor from "image-compressor.js";
 
 declare var google: any;
 
@@ -163,20 +164,27 @@ export class ListServiceComponent implements OnInit {
 
   updateSpaceImage(event) {
     this.pic_loader = true;
-    this.store.storage
-      .ref()
-      .child("user")
-      .child(this.userId)
-      .child(this.listingId)
-      .child("image.jpg")
-      .put(event.target.files[0])
-      .then(uploadSnap => {
-        uploadSnap.ref.getDownloadURL().then(downloadURL => {
-          this.listing_event_image_url = downloadURL;
-          this.pic_loader = false;
-          console.log(this.listing_event_image_url, this.listingId);
-        });
-      });
+    new ImageCompressor(event.target.files[0], {
+      quality: 0.6,
+      success(result) {
+        this.store.storage
+          .ref()
+          .child("user")
+          .child(this.userId)
+          .child(this.listingId)
+          .child("image.jpg")
+          .put(result)
+          .then(uploadSnap => {
+            uploadSnap.ref.getDownloadURL().then(downloadURL => {
+              this.listing_event_image_url = downloadURL;
+              this.pic_loader = false;
+            });
+          });
+      },
+      error(e) {
+        console.log(e.message);
+      }
+    });
   }
 
   addServiceBasic() {
@@ -231,7 +239,15 @@ export class ListServiceComponent implements OnInit {
       var l = [];
 
       for (var i = 0; i < locationBrokenAddress.length; i++) {
-        l.push(locationBrokenAddress[i].long_name);
+        if (locationBrokenAddress[i].types[0] === "locality") {
+          l.push(locationBrokenAddress[i].long_name);
+        } else if (
+          locationBrokenAddress[i].types[0] === "administrative_area_level_1"
+        ) {
+          l.push(locationBrokenAddress[i].long_name);
+        } else if (locationBrokenAddress[i].types[0] === "country") {
+          l.push(locationBrokenAddress[i].long_name);
+        }
       }
 
       this.service_form_additional.controls["locationBrokenAddress"].patchValue(
@@ -249,7 +265,7 @@ export class ListServiceComponent implements OnInit {
       var st, ci;
       for (var i = 0; i < locationBrokenAddress.length; i++) {
         if (
-          locationBrokenAddress[i].types[0] === "administrative_area_level_2"
+          locationBrokenAddress[i].types[0] === "locality"
         ) {
           ci = locationBrokenAddress[i].long_name;
         } else if (

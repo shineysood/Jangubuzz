@@ -36,6 +36,7 @@ export class SpaceAndServiceComponent implements OnInit {
   temp_reply;
   temp_reviews;
   reviews = [];
+  book_flag = false;
   review_obj;
   constructor(
     private afs: AngularFirestore,
@@ -45,37 +46,27 @@ export class SpaceAndServiceComponent implements OnInit {
     private router: Router
   ) {
     window.scroll(0, 0);
-
-    // if (this.afAuth.auth.currentUser) {
-    //   if (!this.afAuth.auth.currentUser.isAnonymous) {
-    //     this.job_flag = true;
-    //   } else {
-    //     this.job_flag = false;
-    //   }
-    // }
   }
 
   ngOnInit() {
     if (this.afAuth.auth.currentUser) {
-      var online_user_doc: AngularFirestoreDocument = this.afs.doc(
-        "user/" + this.afAuth.auth.currentUser.uid
-      );
-      online_user_doc.snapshotChanges().subscribe(data => {
-        this.online_user = data.payload.data();
-        this.online_user.uid = data.payload.id;
-        console.log(this.online_user);
-      });
-      
+      if (!this.afAuth.auth.currentUser.isAnonymous) {
+        var online_user_doc: AngularFirestoreDocument = this.afs.doc(
+          "user/" + this.afAuth.auth.currentUser.uid
+        );
+        online_user_doc.snapshotChanges().subscribe(data => {
+          this.online_user = data.payload.data();
+          this.online_user.uid = data.payload.id;
+          this.book_flag = true;
+          console.log(this.online_user);
+        });
+      }
     }
 
     this.route.params.subscribe(data => {
       this.listing_id = data.id;
-      // this.getListingBookings(this.listing_id);
       this.getServiceListing(data.id);
       this.getComments(data.id);
-      // if (this.afAuth.auth.currentUser) {
-      //   // this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
-      // }
     });
   }
 

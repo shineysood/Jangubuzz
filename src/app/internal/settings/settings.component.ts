@@ -10,9 +10,13 @@ export class SettingsComponent implements OnInit {
   user_logged;
   constructor(private afAuth: AngularFireAuth) {
     if (this.afAuth.auth.currentUser) {
-      this.user_logged = this.afAuth.auth.currentUser.providerData[0];
+      if (!this.afAuth.auth.currentUser.isAnonymous) {
+        this.user_logged = this.afAuth.auth.currentUser.providerData[0];
+      }
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log("===> user logged: ", this.user_logged);
+  }
 }

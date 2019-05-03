@@ -91,24 +91,20 @@ export class CardStripeComponent implements OnInit {
 
             callable_subscriber.subscribe(data => {
               this.modalRef.hide();
-              // console.log(data);
               if (data.done) {
-                Swal.fire(
-                  "Success",
-                  "Your ticket id is " + data.done,
-                  "success"
-                );
-                if (this.afAuth.auth.currentUser) {
-                  if (!this.afAuth.auth.currentUser.isAnonymous) {
-                    this.router.navigateByUrl("/settings");
-                  } else {
-                    this.router.navigateByUrl("/");
-                  }
+                Swal.fire("Success", "Your ticket is " + data.done, "success");
+                if (!this.afAuth.auth.currentUser.isAnonymous) {
+                  this.router.navigateByUrl("/settings");
                 } else {
+                  Swal.fire(
+                    "Success",
+                    "Ticket has sent to your email",
+                    "success"
+                  );
                   this.router.navigateByUrl("/");
                 }
               } else if (data.error) {
-                Swal.fire("OOPS !!!", data.error, "error");
+                Swal.fire("OOPS !!!", data.done, "error");
               }
             });
           } else if (result.error) {

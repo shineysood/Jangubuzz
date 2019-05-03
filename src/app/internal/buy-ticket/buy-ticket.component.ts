@@ -136,13 +136,15 @@ export class BuyTicketComponent implements OnInit {
         callable_subscriber.subscribe(data => {
           if (data.done) {
             Swal.fire("Success", "Your ticket is " + data.done, "success");
-            if (this.afAuth.auth.currentUser) {
-              if (!this.afAuth.auth.currentUser.isAnonymous) {
-                this.router.navigateByUrl("/settings");
-              } else {
-                this.router.navigateByUrl("/");
-              }
+            if (!this.afAuth.auth.currentUser.isAnonymous) {
+              this.router.navigateByUrl("/settings");
             } else {
+              Swal.fire(
+                "Success",
+                "Ticket has sent to " +
+                  this.ticket_form.controls["email"].value,
+                "success"
+              );
               this.router.navigateByUrl("/");
             }
           } else if (data.error) {
