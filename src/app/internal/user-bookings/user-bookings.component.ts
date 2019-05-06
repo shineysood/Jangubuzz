@@ -6,7 +6,8 @@ import {
 } from "@angular/fire/firestore";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import * as moment from "moment";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: "app-user-bookings",
@@ -48,11 +49,15 @@ export class UserBookingsComponent implements OnInit {
             } else {
               this.review_flag = false;
             }
-            var obj = {
-              id: data[i].payload.doc.id,
-              payload: data[i].payload.doc.data()
-            };
-            this.user_bookings.push(obj);
+
+            this.user_bookings[i] = this.temp_book[i].payload.doc.data();
+            this.user_bookings[i].id = this.temp_book[i].payload.doc.id;
+
+            // var obj = {
+            //   id: data[i].payload.doc.id,
+            //   payload: data[i].payload.doc.data()
+            // };
+            // this.user_bookings.push(obj);
           });
           console.log(this.user_bookings);
         });
@@ -62,7 +67,10 @@ export class UserBookingsComponent implements OnInit {
 
   getUserBookings() {
     return this.afs
-      .collection("user/" + this.afAuth.auth.currentUser.uid + "/booking")
+      .collection(
+        "user/" + this.afAuth.auth.currentUser.uid + "/booking",
+        ref => ref.orderBy("dateCreated", "desc")
+      )
       .snapshotChanges();
   }
 

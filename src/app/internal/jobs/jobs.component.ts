@@ -78,7 +78,9 @@ export class JobsComponent implements OnInit {
 
   getBookings(userId, listingId) {
     this.afs
-      .collection("user/" + userId + "/listing/" + listingId + "/job")
+      .collection("user/" + userId + "/listing/" + listingId + "/job", ref =>
+        ref.orderBy("dateCreated", "desc")
+      )
       .snapshotChanges()
       .subscribe(data => {
         data.forEach((item, i) => {

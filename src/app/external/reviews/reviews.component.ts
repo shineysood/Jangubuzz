@@ -29,7 +29,9 @@ export class ReviewsComponent implements OnInit {
 
   getReviews(hostId, listingId) {
     this.afs
-      .collection("user/" + hostId + "/listing/" + listingId + "/review")
+      .collection("user/" + hostId + "/listing/" + listingId + "/review", ref =>
+        ref.orderBy("dateCreated", "desc")
+      )
       .snapshotChanges()
       .subscribe(res => {
         this.temp_reviews = res;

@@ -131,7 +131,7 @@ export class SpaceBookingComponent implements OnInit {
                   email: this.space_book_form.controls["email"].value,
                   currency: this.listing.currency,
                   policy: this.listing.policy,
-                  description: this.listing.description,
+                  description: this.space_book_form.controls['bookingDetails'].value,
                   damageChargeDate: firebase.firestore.Timestamp.fromDate(
                     this.space_book_form.controls["startDate"].value.toString()
                   ),

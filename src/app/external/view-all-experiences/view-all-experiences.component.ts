@@ -23,7 +23,7 @@ export class ViewAllExperiencesComponent implements OnInit {
     window.scroll(0, 0);
     this.loading = true;
     this.afs
-      .collection("listing")
+      .collection("listing", ref => ref.orderBy("dateCreated", "desc"))
       .stateChanges() // for realtime updates
       .subscribe(listings => {
         this.listings = listings;

@@ -6,6 +6,8 @@ import {
 import { AngularFireAuth } from "@angular/fire/auth";
 import { Router, ActivatedRoute } from "@angular/router";
 import * as firebase from "firebase/app";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-chat",
@@ -16,21 +18,40 @@ export class ChatComponent implements OnInit {
   chat_receiver;
   user_temp;
   chat_receiver_id;
-  messages = [];
+  messages_obs: Observable<any[]>;
   message_temp;
-  message;
   bookingId;
   book_card = {};
   booking_user_id;
   listing_card = {};
   temp;
+  count;
+  messages = [];
+
+  public chat_form: FormGroup;
+
+  // for jobs
+  job_host_id;
+  job_listingId;
+  job_bookingId;
 
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private fb: FormBuilder
+  ) {
+    this.chat_form = this.fb.group({
+      message: ["", Validators.required]
+    });
+  }
+
+  ngAfterViewChecked(): void {
+    //Called after every check of the component's view. Applies to components only.
+    //Add 'implements AfterViewChecked' to the class.
+    document.getElementById("message_box").focus();
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -75,7 +96,7 @@ export class ChatComponent implements OnInit {
           book_ref_doc1.set(
             {
               message: "",
-              bookingId: this.bookingId,
+              bookingId: params.bookingId,
               listingId: data.payload.data().listingId,
               hostId: data.payload.data().hostId,
               userId: data.payload.data().userId,
@@ -106,48 +127,60 @@ export class ChatComponent implements OnInit {
   }
 
   getMessages(hostId) {
-    this.afs
+    this.messages_obs = this.afs
       .collection(
         "user/" +
           this.afAuth.auth.currentUser.uid +
           "/message/" +
           hostId +
-          "/thread/"
+          "/thread/",
+        ref => ref.orderBy("dateCreated", "asc")
       )
-      .snapshotChanges()
-      .subscribe(messages => {
-        this.message_temp = messages;
-        this.message_temp.forEach((item, i) => {
-          if (this.message_temp[i].payload.doc.data().isBooking) {
-            this.bookingId = this.message_temp[
-              i
-            ].payload.doc.data().bookingId,
-              this.booking_user_id = this.message_temp[
-                i
-              ].payload.doc.data().userId;
-          }
+      .valueChanges();
 
-          var obj = {
-            id: this.message_temp[i].payload.doc.id,
-            message: this.message_temp[i].payload.doc.data(),
-            time: this.message_temp[i].payload.doc
-              .data()
-              .dateCreated.toDate()
-              .toString()
-          };
-          this.messages.push(obj);
-        });
-        this.getBooking(this.booking_user_id, this.bookingId);
-        console.log("====> chat messages: ", this.messages);
+    this.messages_obs.subscribe(messages => {
+      this.count = messages.length;
+      this.message_temp = messages;
+      this.message_temp.forEach((item, i) => {
+        if (this.message_temp[i].isBooking) {
+          this.bookingId = this.message_temp[i].bookingId;
+          this.booking_user_id = this.message_temp[i].userId;
+        }
+
+        var obj = {
+          id: this.message_temp[i].id,
+          message: this.message_temp[i],
+          time: this.message_temp[i].dateCreated.toDate().toString()
+        };
+        this.messages.push(obj);
       });
+
+      if (this.messages[0].message.isBooking) {
+        if (
+          this.messages[0].message.userId === this.afAuth.auth.currentUser.uid
+        ) {
+          console.log("userrrrrrrr");
+          this.getBooking(this.booking_user_id, this.bookingId);
+        } else if (
+          this.messages[0].message.hostId === this.afAuth.auth.currentUser.uid
+        ) {
+          console.log("hostttttttttt");
+          this.getHostJob(
+            this.messages[0].message.hostId,
+            this.messages[0].message.listingId,
+            this.messages[0].message.bookingId
+          );
+        }
+      }
+    });
   }
 
-  send(id) {
+  send() {
     const doc1: AngularFirestoreDocument = this.afs.doc(
       "user/" +
         this.afAuth.auth.currentUser.uid +
         "/message/" +
-        this.chat_receiver_id
+        this.chat_receiver.uid
     );
 
     const threadId = this.afs.createId();
@@ -155,14 +188,14 @@ export class ChatComponent implements OnInit {
       "user/" +
         this.afAuth.auth.currentUser.uid +
         "/message/" +
-        this.chat_receiver_id +
+        this.chat_receiver.uid +
         "/thread/" +
         threadId
     );
 
     doc1.set(
       {
-        userId: this.chat_receiver_id,
+        userId: this.chat_receiver.uid,
         dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
         dateModified: firebase.firestore.Timestamp.fromDate(new Date())
       },
@@ -171,15 +204,52 @@ export class ChatComponent implements OnInit {
 
     doc2.set(
       {
-        message: this.message,
+        message: this.chat_form.controls["message"].value,
         dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
         isHome: true
       },
       { merge: true }
     );
 
-    this.message = "";
+    this.chat_form.reset();
     document.getElementById("message_box").focus();
+  }
+
+  getHostJob(hostId, listingId, bookingId) {
+    const doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + hostId + "/listing/" + listingId + "/job/" + bookingId
+    );
+
+    doc.snapshotChanges().subscribe(res => {
+      this.book_card = res.payload.data();
+      console.log("=====> job book card: ", this.book_card);
+      this.afs
+        .doc(
+          "user/" +
+            res.payload.data().hostId +
+            "/listing/" +
+            res.payload.data().listingId
+        )
+        .snapshotChanges()
+        .subscribe(data => {
+          console.log("listing card: ", data.payload.data());
+          this.temp = data.payload.data();
+          this.listing_card = {
+            title: this.temp.title,
+            date: this.temp.dateCreated.toDate().toString(),
+            policy: this.temp.policy,
+            service: this.temp.service,
+            perHourPrice: this.temp.perHourPrice,
+            listingImageUrl: this.temp.listingImageUrl,
+            address: this.temp.locationShortAddress,
+            listingType: this.temp.listingType,
+            name:
+              this.temp.listingType === "eventServiceListingType"
+                ? this.temp.service
+                : this.temp.locationName
+          };
+        });
+    });
   }
 
   getBooking(userId, bookingId) {

@@ -144,7 +144,8 @@ export class SpaceAndServiceComponent implements OnInit {
         this.temp = data.payload.data();
         this.afs
           .collection(
-            "user/" + this.temp.userId + "/listing/" + id + "/comment"
+            "user/" + this.temp.userId + "/listing/" + id + "/comment",
+            ref => ref.orderBy("dateCreated", "desc")
           )
           .snapshotChanges()
           .subscribe(comments => {
@@ -241,7 +242,8 @@ export class SpaceAndServiceComponent implements OnInit {
           this.listing_id +
           "/comment/" +
           commentId +
-          "/reply"
+          "/reply",
+        ref => ref.orderBy("dateCreated", "desc")
       )
       .snapshotChanges()
       .subscribe(replies => {

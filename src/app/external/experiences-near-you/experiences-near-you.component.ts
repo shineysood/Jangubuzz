@@ -21,7 +21,7 @@ export class ExperiencesNearYouComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.afs
-      .collection("listing")
+      .collection("listing", ref => ref.orderBy("dateCreated", "asc"))
       .stateChanges() // for realtime updates
       .subscribe(listings => {
         this.listings = listings;

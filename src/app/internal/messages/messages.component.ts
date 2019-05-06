@@ -28,7 +28,10 @@ export class MessagesComponent implements OnInit {
 
   getMessages() {
     this.afs
-      .collection("user/" + this.afAuth.auth.currentUser.uid + "/message")
+      .collection(
+        "user/" + this.afAuth.auth.currentUser.uid + "/message",
+        ref => ref.orderBy("dateModified", "desc")
+      )
       .snapshotChanges()
       .subscribe(data => {
         this.thread_temp = data;

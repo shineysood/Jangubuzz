@@ -23,7 +23,7 @@ export class UserReviewsComponent implements OnInit {
 
   getReviews() {
     this.afs
-      .collection("user/" + this.afAuth.auth.currentUser.uid + "/review")
+      .collection("user/" + this.afAuth.auth.currentUser.uid + "/review", ref => ref.orderBy("dateCreated", "desc"))
       .snapshotChanges()
       .subscribe(data => {
         this.user_rev_temp = data;

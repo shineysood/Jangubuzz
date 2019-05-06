@@ -6,10 +6,10 @@
   <ng-container *ngFor="let job of user_bookings">
     <div class="col-12 col-md-6 col-lg-4 mb-3">
       <div class="card">
-        <div *ngIf="job.payload.isCanceled" class="cancel_div">
+        <div *ngIf="job.isCanceled" class="cancel_div">
           <img src="assets/images/cancel.png" />
         </div>
-        <div *ngIf="job.payload.isHostApproved" class="cancel_div">
+        <div *ngIf="job.isHostApproved" class="cancel_div">
           <img src="assets/images/approved.png" />
         </div>
         <div class="card-header">
@@ -18,25 +18,25 @@
           </span>
         </div>
         <div class="card-body">
-          <h4>{{ job.id }}</h4>
-          <h2>${{ job.payload.perHourPrice }} <small>per hour</small></h2>
+          <h4>{{ job.id | async }}</h4>
+          <h2>${{ job.perHourPrice }} <small>per hour</small></h2>
 
           <ul>
             <li>
               <i class="fa fa-calendar" aria-hidden="true"></i>
-              {{ job.payload.startDate }} -
-              {{ job.payload.endDate }}
+              {{ job.startDate }} -
+              {{ job.endDate }}
             </li>
             <li>
               <i class="fa fa-clock-o" aria-hidden="true"></i>
-              {{ job.payload.hours }} hours
+              {{ job.hours }} hours
             </li>
           </ul>
 
           <div class="refund-btn">
             <button
-              *ngIf="!job.payload.isCanceled && !job.payload.isHostApproved"
-              (click)="cancel_booking(job.id, job.payload.userId)"
+              *ngIf="!job.isCanceled && !job.isHostApproved"
+              (click)="cancel_booking(job.id, job.userId)"
               type="button"
               class="pull-right btn btn-sm btn-primary"
             >
@@ -48,8 +48,8 @@
                 review(
                   reviewTemplate,
                   job.id,
-                  job.payload.listingId,
-                  job.payload.hostId
+                  job.listingId,
+                  job.hostId
                 )
               "
               type="button"
@@ -60,13 +60,13 @@
             <button
               (click)="
                 message(
-                  job.payload.userId,
-                  job.payload.hostId,
+                  job.userId,
+                  job.hostId,
                   job.id,
-                  job.payload.listingId
+                  job.listingId
                 )
               "
-              type="button"
+              tyIe="button"
               class="pull-right btn btn-sm btn-primary"
             >
               Message

@@ -22,7 +22,7 @@ export class ServiceBookingComponent implements OnInit {
   hostId;
   listing;
 
-  minDate:Date;
+  minDate: Date;
 
   EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -152,8 +152,10 @@ export class ServiceBookingComponent implements OnInit {
                     email: this.service_book_form.controls["email"].value,
                     currency: this.listing.currency,
                     policy: this.listing.policy,
-                    description: this.listing.description,
-                    dateCreated: this.listing.dateCreated,
+                    description: this.service_book_form.controls['bookingDetails'].value,
+                    dateCreated: firebase.firestore.Timestamp.fromDate(
+                      new Date()
+                    ),
                     listingType: this.listing.listingType,
                     isHostApproved: false,
                     isPaid: false,

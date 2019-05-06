@@ -148,7 +148,8 @@ export class ExperienceComponent implements OnInit {
         this.temp = data.payload.data();
         this.afs
           .collection(
-            "user/" + this.temp.userId + "/listing/" + id + "/comment"
+            "user/" + this.temp.userId + "/listing/" + id + "/comment",
+            ref => ref.orderBy("dateCreated", "desc")
           )
           .snapshotChanges()
           .subscribe(comments => {
@@ -244,7 +245,8 @@ export class ExperienceComponent implements OnInit {
           this.listingId +
           "/comment/" +
           commentId +
-          "/reply"
+          "/reply",
+        ref => ref.orderBy("dateCreated", "desc")
       )
       .snapshotChanges()
       .subscribe(replies => {
@@ -272,7 +274,10 @@ export class ExperienceComponent implements OnInit {
 
   getJobs(userId, listingId) {
     this.afs
-      .collection("user/" + userId + "/listing/" + listingId + "/purchase")
+      .collection(
+        "user/" + userId + "/listing/" + listingId + "/purchase",
+        ref => ref.orderBy("dateCreated", "desc")
+      )
       .snapshotChanges()
       .subscribe(data => {
         data.forEach((item, i) => {

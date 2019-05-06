@@ -23,7 +23,7 @@ export class TicketsComponent implements OnInit {
 
   getUserTickets() {
     this.afs
-      .collection("user/" + this.afAuth.auth.currentUser.uid + "/ticket")
+      .collection("user/" + this.afAuth.auth.currentUser.uid + "/ticket", ref => ref.orderBy("dateCreated", "desc"))
       .snapshotChanges()
       .subscribe(data => {
         data.forEach((item, i) => {

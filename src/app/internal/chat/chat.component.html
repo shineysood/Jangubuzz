@@ -18,16 +18,18 @@
       </div>
       <h5>Keep all conversations on the platform for safety</h5>
     </div>
-    <div #scrollMe [scrollTop]="scrollMe.scrollHeight" class="chat_card card-body">
-      <ng-container *ngFor="let message of messages">
-        <div
-          [ngClass]="message.message.isHome ? 'chat_body out' : 'chat_body in'"
-        >
-          <span id="message_chat" *ngIf="!message.message.isBooking">
-            {{ message.message.message }}
+    <div
+      #scrollMe
+      [scrollTop]="scrollMe.scrollHeight"
+      class="chat_card card-body"
+    >
+      <ng-container *ngFor="let message of messages_obs | async; let i = index">
+        <div [ngClass]="message.isHome ? 'chat_body out' : 'chat_body in'">
+          <span id="message_chat" *ngIf="!message.isBooking">
+            {{ message.message }}
           </span>
           <!-- ================ booking card ======================= -->
-          <span id="booking_card" *ngIf="message.message.isBooking">
+          <span id="booking_card" *ngIf="message.isBooking">
             <div class="card">
               <div class="card-body">
                 <div class="card-book">
@@ -85,25 +87,36 @@
             </div>
           </span>
           <!-- ============= booking card end ======================== -->
-          <small> {{ message.time | date: "shortTime" }} </small>
+          <small *ngIf="i === count - 1">
+          <!-- <small> -->
+            {{ message.dateCreated.seconds * 1000 | date: "shortTime" }}
+          </small>
         </div>
       </ng-container>
     </div>
     <div class="card-footer">
-      <input
+      <form
+        [formGroup]="chat_form"
         autocomplete="off"
-        id="message_box"
-        type="text"
-        name="message"
-        [(ngModel)]="message"
-      />
-      <button
-        [disabled]="!message"
-        class="btn btn-sm btn-primary"
-        (click)="send(message.id)"
+        autocapitalize="sentences"
+        (ngSubmit)="send()"
       >
-        <i class="fa fa-paper-plane" aria-hidden="true"></i>
-      </button>
+        <input
+          placeholder="Enter message..."
+          autocomplete="off"
+          id="message_box"
+          type="text"
+          name="message"
+          formControlName="message"
+        />
+        <button
+          type="submit"
+          [disabled]="chat_form.controls['message'].hasError('required')"
+          class="btn btn-sm btn-primary"
+        >
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        </button>
+      </form>
     </div>
   </div>
 </div>
