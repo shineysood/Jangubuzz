@@ -28,6 +28,8 @@ export class ChatComponent implements OnInit {
   count;
   messages = [];
 
+  chat_class;
+
   public chat_form: FormGroup;
 
   // for jobs
@@ -55,8 +57,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      console.log("params: ", params);
-      if (params.isBooking === "yes") {
+      if (params.isBooking === "yes" && params.type === "user") {
         console.log("creating card", params.bookingId);
 
         const doc: AngularFirestoreDocument = this.afs.doc(
@@ -108,6 +109,61 @@ export class ChatComponent implements OnInit {
             { merge: true }
           );
         });
+      } else if (params.isBooking === "yes" && params.type === "host") {
+        console.log("host message to user: ", params);
+
+        /////////////////////////////////////////////
+        const doc_job: AngularFirestoreDocument = this.afs.doc(
+          "user/" +
+            this.afAuth.auth.currentUser.uid +
+            "/listing/" +
+            params.listingId +
+            "/job/" +
+            params.bookingId
+        );
+
+        doc_job.valueChanges().subscribe(booking => {
+          const host_book_reference1: AngularFirestoreDocument = this.afs.doc(
+            "user/" + booking.hostId + "/message/" + booking.userId
+          );
+
+          host_book_reference1.set(
+            {
+              userId: booking.userId,
+              dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+              dateModified: firebase.firestore.Timestamp.fromDate(new Date())
+            },
+            { merge: true }
+          );
+
+          const threadId = this.afs.createId();
+          const host_book_reference2: AngularFirestoreDocument = this.afs.doc(
+            "user/" +
+              booking.hostId +
+              "/message/" +
+              booking.userId +
+              "/thread/" +
+              threadId
+          );
+
+          host_book_reference2.set(
+            {
+              message: "",
+              dateCreated: firebase.firestore.Timestamp.fromDate(new Date()),
+              bookingId: params.bookingId,
+              listingId: params.listingId,
+              userId: booking.userId,
+              hostId: booking.hostId,
+              isBooking: true,
+              isHome: true
+            },
+            { merge: true }
+          );
+
+          this.getUser(booking.userId);
+          this.getMessages(booking.userId);
+        });
+        //////////////////////////////
       } else if (params.isBooking === "no") {
         this.getUser(params.userId);
         this.getMessages(params.userId);
@@ -133,7 +189,7 @@ export class ChatComponent implements OnInit {
           this.afAuth.auth.currentUser.uid +
           "/message/" +
           hostId +
-          "/thread/",
+          "/thread",
         ref => ref.orderBy("dateCreated", "asc")
       )
       .valueChanges();
@@ -160,6 +216,7 @@ export class ChatComponent implements OnInit {
           this.messages[0].message.userId === this.afAuth.auth.currentUser.uid
         ) {
           console.log("userrrrrrrr");
+
           this.getBooking(this.booking_user_id, this.bookingId);
         } else if (
           this.messages[0].message.hostId === this.afAuth.auth.currentUser.uid

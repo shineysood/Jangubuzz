@@ -20,6 +20,7 @@ export class NavbarComponent implements OnInit {
   modalRef_categories: BsModalRef;
   isPhotoExist;
   modalRef: BsModalRef;
+
   constructor(
     private modalService: BsModalService,
     private router: Router,
@@ -29,6 +30,14 @@ export class NavbarComponent implements OnInit {
   ) {
     this.router.events.subscribe(path => {
       if (path instanceof NavigationEnd) {
+
+        if (
+          document.getElementsByClassName("navbar-collapse collapse show")
+            .length !== 0
+        ) {
+          $("#toggler-btn").click();
+        }
+
         if (this.afAuth.auth.currentUser) {
           if (!this.afAuth.auth.currentUser.isAnonymous) {
             const userDoc: AngularFirestoreDocument = this.afs.doc(
@@ -46,6 +55,7 @@ export class NavbarComponent implements OnInit {
             });
           }
         }
+
         if (path.url.indexOf("home") > 0) {
           this.class = "";
         } else if (path.url !== "/") {
@@ -75,5 +85,14 @@ export class NavbarComponent implements OnInit {
     this.afAuth.auth.signOut().then(res => {
       window.location.href = "/";
     });
+  }
+
+  onClickedOutside(e: Event) {
+    if (
+      document.getElementsByClassName("navbar-collapse collapse show")
+        .length !== 0
+    ) {
+      $("#toggler-btn").click();
+    }
   }
 }

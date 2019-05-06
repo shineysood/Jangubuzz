@@ -107,6 +107,7 @@ export class UserBookingsComponent implements OnInit {
 
   message(userId, hostId, bookingId, listingId) {
     var isBooking = "yes";
-    this.router.navigate(["message/host", bookingId, isBooking, userId]);
+    var type = "user";
+    this.router.navigate(["message/booking", type, bookingId, isBooking, userId]);
   }
 }

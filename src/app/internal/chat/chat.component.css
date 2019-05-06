@@ -77,7 +77,6 @@ span#booking_card {
   width: 40px;
   height: 40px;
   border-radius: 50px !important;
-  
 }
 
 .card-footer input {
@@ -88,7 +87,7 @@ span#booking_card {
   margin-right: 10px;
   height: 40px;
 }
-.card-footer{
+.card-footer {
   background: #fff;
   display: block;
   width: 100%;
@@ -139,6 +138,7 @@ span#booking_card {
 .chat_body.in small {
   display: block;
   margin: 0px;
+  font-size: 10px;
   color: #999;
   margin-bottom: 15px;
   margin-top: -10px;
@@ -148,6 +148,7 @@ span#booking_card {
   display: block;
   margin: 0px;
   color: #999;
+  font-size: 10px;
   margin-bottom: 15px;
   margin-top: -10px;
   padding-right: 10px;
@@ -228,22 +229,28 @@ span#booking_card .card h6 {
 }
 
 @media (max-width: 767px) {
-.footer-content span {
-  font-size: 10px;
-  display: inline;
+  .footer-content span {
+    font-size: 10px;
+    display: inline;
+  }
+  span#booking_card .card {
+    width: 100%;
+  }
+  .card-header img {
+    margin-right: 15px;
+  }
+  .card-header h4 {
+    font-size: 18px;
+    margin: 0px;
+  }
+  .card-header h5 {
+    font-size: 10px;
+  }
 }
-span#booking_card .card {
-  width: 100%;
 
-}
-.card-header img {
-  margin-right: 15px;
-}
-.card-header h4{
-  font-size: 18px;
-  margin: 0px;
-}
-.card-header h5 {
-  font-size: 10px;
-}
+@media (min-width: 1900px) {
+  .chat_card.card-body {
+    height: 75vh;
+    overflow-y: auto;
+  }
 }

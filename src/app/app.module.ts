@@ -83,6 +83,8 @@ import { UserReviewsComponent } from "./internal/user-reviews/user-reviews.compo
 import { UserListingComponent } from "./internal/user-listing/user-listing.component";
 import { ChatComponent } from "./internal/chat/chat.component";
 import { ChatBookingCardComponent } from "./internal/chat-booking-card/chat-booking-card.component";
+import { ClickOutsideModule } from 'ng4-click-outside';
+
 @NgModule({
   declarations: [
     orderByPipe,
@@ -143,6 +145,7 @@ import { ChatBookingCardComponent } from "./internal/chat-booking-card/chat-book
     ChatBookingCardComponent
   ],
   imports: [
+    ClickOutsideModule,
     Ng5SliderModule,
     Ng2OrderModule,
     NgxInputStarRatingModule,

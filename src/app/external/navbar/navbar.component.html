@@ -7,6 +7,7 @@
         src="assets/images/logo.png"
       />
       <button
+        id="toggler-btn"
         class="navbar-toggler"
         type="button"
         data-toggle="collapse"
@@ -19,9 +20,13 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav">
+        <ul (clickOutside)="onClickedOutside($event)" class="navbar-nav">
           <li class="nav-item">
-            <button class="nav-link" *ngIf="user_logged" (click)="host_modal(categories)">
+            <button
+              class="nav-link"
+              *ngIf="user_logged"
+              (click)="host_modal(categories)"
+            >
               Become a Host
             </button>
           </li>

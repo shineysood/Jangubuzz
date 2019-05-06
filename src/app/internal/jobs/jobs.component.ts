@@ -7,6 +7,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFireFunctions } from "@angular/fire/functions";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: "app-jobs",
@@ -19,6 +20,7 @@ export class JobsComponent implements OnInit {
   @Input() listingId;
   jobs = [];
   temp;
+  jobs_obs: Observable<any[]>;
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
@@ -77,21 +79,23 @@ export class JobsComponent implements OnInit {
   }
 
   getBookings(userId, listingId) {
-    this.afs
+    this.jobs_obs = this.afs
       .collection("user/" + userId + "/listing/" + listingId + "/job", ref =>
         ref.orderBy("dateCreated", "desc")
       )
-      .snapshotChanges()
-      .subscribe(data => {
-        data.forEach((item, i) => {
-          var obj = {
-            id: item.payload.doc.id,
-            job: item.payload.doc.data()
-          };
-          this.jobs.push(obj);
-        });
-        console.log("jobs: ===>", this.jobs);
+      .stateChanges();
+
+      this.jobs_obs.subscribe(data => {
+      console.log("======---==--===-=>: ", data);
+      data.forEach((item, i) => {
+        var obj = {
+          id: item.payload.doc.id,
+          job: item.payload.doc.data()
+        };
+        this.jobs.push(obj);
       });
+      console.log("jobs: ===>", this.jobs);
+    });
   }
 
   // getReviews(listingId, bookingId) {
@@ -121,5 +125,11 @@ export class JobsComponent implements OnInit {
       userId: userId
     };
     this.modalRef = this.modalService.show(template);
+  }
+
+  message(bookingId, listingId) {
+    var isBooking = "yes";
+    var type = "host";
+    this.router.navigate(["message/host/booking", type, isBooking, bookingId, listingId]);
   }
 }

@@ -191,6 +191,15 @@ div#time-picker-wrapper {
   transform: translate(-50%, -50%);
 }
 
+.modal-dialog {
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  position: absolute;
+  width: 90%;
+  margin: 15px auto;
+}
+
 .time-picker-footer button {
   background: #ff5b8d !important;
   color: #fff !important;
@@ -214,7 +223,7 @@ div#time-picker-wrapper {
 }
 
 .full .star {
-    fill: gold !important;
+  fill: gold !important;
 }
 .card.review_div {
   border: none;
@@ -258,28 +267,25 @@ div#time-picker-wrapper {
   font-size: 14px !important;
 }
 
-
-
 .heading_border {
-    position: relative;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
+  position: relative;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
 }
 .heading_border:after {
-    position: absolute;
-    content: '';
-    left: 0;
-    height: 4px;
-    background: #ff5b8c;
-    bottom: 0;
-    width: 96px;
-    border-radius: 0 50px 50px 0;
+  position: absolute;
+  content: "";
+  left: 0;
+  height: 4px;
+  background: #ff5b8c;
+  bottom: 0;
+  width: 96px;
+  border-radius: 0 50px 50px 0;
 }
 
-
 .show-read-more .more-text,
-  .show-read-more .read-less{
-    display: none;
+.show-read-more .read-less {
+  display: none;
 }
 /* .show-read-more a{
   color: #ff5b8c; 
