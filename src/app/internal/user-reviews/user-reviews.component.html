@@ -1,25 +1,29 @@
-<div *ngIf="reviews.length !== 0" class="main_div">
-  <ng-container *ngFor="let review of reviews">
+<div *ngIf="(reviews | async)?.length !== 0" class="main_div">
+  <ng-container *ngFor="let review of reviews | async">
+    <!-- {{ review | json }} -->
     <div class="card review_div">
       <div class="card-body">
         <div class="review_image">
-          <img [src]="review.imageUrl" />
+          <!-- <img [src]="review.imageUrl" /> -->
+          <img src="assets/images/user.png" />
         </div>
 
         <div class="review_content">
-          <h4>{{ review.userName }}</h4>
-          <label>{{ review.dateCreated | date: "longDate" }}</label>
+          <!-- <h4>{{ getUser(review.userId) }}</h4> -->
+          <label>{{
+            review.dateCreated.seconds * 1000 | date: "longDate"
+          }}</label>
           <ngx-input-star-rating
-            [value]="review.review.rating"
+            [value]="review.rating"
             [disabled]="true"
           ></ngx-input-star-rating>
         </div>
       </div>
-      <pre>{{ review.review.message }}</pre>
+      <pre>{{ review.message }}</pre>
     </div>
   </ng-container>
 </div>
 
-<div *ngIf="reviews.length === 0" class="main_div">
+<div *ngIf="(reviews | async)?.length === 0" class="main_div">
   No reviews
 </div>

@@ -111,8 +111,6 @@ export class ChatComponent implements OnInit {
         });
       } else if (params.isBooking === "yes" && params.type === "host") {
         console.log("host message to user: ", params);
-
-        /////////////////////////////////////////////
         const doc_job: AngularFirestoreDocument = this.afs.doc(
           "user/" +
             this.afAuth.auth.currentUser.uid +
@@ -163,7 +161,6 @@ export class ChatComponent implements OnInit {
           this.getUser(booking.userId);
           this.getMessages(booking.userId);
         });
-        //////////////////////////////
       } else if (params.isBooking === "no") {
         this.getUser(params.userId);
         this.getMessages(params.userId);

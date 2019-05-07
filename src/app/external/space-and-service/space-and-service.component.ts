@@ -5,10 +5,8 @@ import {
 } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { ActivatedRoute, Router } from "@angular/router";
-import * as moment from "moment";
 import { AngularFireFunctions } from "@angular/fire/functions";
 import * as firebase from "firebase/app";
-import { Subject } from "rxjs";
 
 @Component({
   selector: "app-space-and-service",
@@ -65,7 +63,7 @@ export class SpaceAndServiceComponent implements OnInit {
 
     this.route.params.subscribe(data => {
       this.listing_id = data.id;
-      this.getServiceListing(data.id);
+      this.getListing(data.id);
       this.getComments(data.id);
     });
   }
@@ -82,14 +80,13 @@ export class SpaceAndServiceComponent implements OnInit {
     this.router.navigate(["space/book", userId, listingId]);
   }
 
-  getServiceListing(id) {
+  getListing(id) {
     this.afs
       .doc("listing/" + id)
       .snapshotChanges()
       .subscribe(res => {
         this.listing = res.payload.data();
         this.loading = false;
-        console.log(this.listing);
         this.listing.startDate = this.listing.startDate.toDate();
         this.listing.endDate = this.listing.endDate.toDate();
 

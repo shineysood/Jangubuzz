@@ -139,10 +139,10 @@
     <h3>Service</h3>
     <div class="form-group">
       <select formControlName="service">
-        <ng-container *ngFor="let item of services">
-          <option value="">Select service...</option>
-          <option value="{{ item.payload.doc.id }}">
-            {{ item.payload.doc.id }}
+        <option value="">Select service...</option>
+        <ng-container *ngFor="let item of services | async">
+          <option value="{{ item.id }}">
+            {{ item.id }}
           </option>
         </ng-container>
       </select>

@@ -21,6 +21,8 @@ import {
 } from "@angular/fire/firestore";
 import { AmazingTimePickerService } from "amazing-time-picker";
 import ImageCompressor from "image-compressor.js";
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 declare var google: any;
 
@@ -47,7 +49,7 @@ export class ListServiceComponent implements OnInit {
   listing_event_image_url;
   locationBrokenAddess_temp;
   temp;
-  services;
+  services: Observable<any[]>;
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -64,13 +66,6 @@ export class ListServiceComponent implements OnInit {
     private atp: AmazingTimePickerService,
     private router: Router
   ) {
-    this.afs
-      .collection("services")
-      .snapshotChanges()
-      .subscribe(data => {
-        this.services = data;
-      });
-
     this.service_form_additional = this.fb.group({
       service: [""],
       endDate: ["", Validators.required],
@@ -93,14 +88,20 @@ export class ListServiceComponent implements OnInit {
   }
 
   ngOnInit() {
+    var servicesCollection = this.afs.collection("services");
+
+    this.services = servicesCollection.stateChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const id = a.payload.doc.id;
+          const data = a.payload.doc.data();
+          return { id, ...data };
+        })
+      )
+    );
+
     this.service_form_basic.controls["policy"].patchValue("no");
     this.service_form_basic.controls["currency"].patchValue("cad");
-    this.afs
-      .collection("amenities")
-      .snapshotChanges()
-      .subscribe(data => {
-        this.amenities = data;
-      });
 
     this.route.params.subscribe(data => {
       this.userId = data.userId;
@@ -142,6 +143,8 @@ export class ListServiceComponent implements OnInit {
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
           this.zoom = 12;
+
+          console.log("location: ", this.latitude, this.longitude);
         });
       });
     });
@@ -162,13 +165,13 @@ export class ListServiceComponent implements OnInit {
     console.log(this.geoPoint);
   }
 
-  blobToFile(theBlob: Blob) {
-    var b: any = theBlob;
-    //A Blob() is almost a File() - it's just missing the two properties below which we will add
-    b.lastModifiedDate = new Date();
-    //Cast to a File() type
-    return <File>theBlob;
-  }
+  // blobToFile(theBlob: Blob) {
+  //   var b: any = theBlob;
+  //   //A Blob() is almost a File() - it's just missing the two properties below which we will add
+  //   b.lastModifiedDate = new Date();
+  //   //Cast to a File() type
+  //   return <File>theBlob;
+  // }
 
   updateSpaceImage(event) {
     this.pic_loader = true;
@@ -248,15 +251,17 @@ export class ListServiceComponent implements OnInit {
 
       var l = [];
 
-      for (var i = 0; i < locationBrokenAddress.length; i++) {
-        if (locationBrokenAddress[i].types[0] === "locality") {
-          l.push(locationBrokenAddress[i].long_name);
-        } else if (
-          locationBrokenAddress[i].types[0] === "administrative_area_level_1"
-        ) {
-          l.push(locationBrokenAddress[i].long_name);
-        } else if (locationBrokenAddress[i].types[0] === "country") {
-          l.push(locationBrokenAddress[i].long_name);
+      if (locationBrokenAddress.length > 1) {
+        for (var i = 0; i < locationBrokenAddress.length; i++) {
+          if (locationBrokenAddress[i].types[0] === "locality") {
+            l.push(locationBrokenAddress[i].long_name);
+          } else if (
+            locationBrokenAddress[i].types[0] === "administrative_area_level_1"
+          ) {
+            l.push(locationBrokenAddress[i].long_name);
+          } else if (locationBrokenAddress[i].types[0] === "country") {
+            l.push(locationBrokenAddress[i].long_name);
+          }
         }
       }
 

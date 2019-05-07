@@ -14,7 +14,7 @@
       <ng-container *ngIf="!loading">
         <div class="content-box row">
           <div
-            *ngFor="let item of experiences | sort:'time'; let i = index"
+            *ngFor="let item of experiences; let i = index"
             class="col-md-4 exp-box"
           >
             <ng-container *ngIf="i < 3">

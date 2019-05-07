@@ -4,6 +4,8 @@ import {
   AngularFirestore,
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-user-reviews",
@@ -11,8 +13,9 @@ import {
   styleUrls: ["./user-reviews.component.css"]
 })
 export class UserReviewsComponent implements OnInit {
-  reviews = [];
+  reviews: Observable<any[]>;
   user_rev_temp;
+  user: any;
   loading = true;
 
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {}
@@ -22,31 +25,28 @@ export class UserReviewsComponent implements OnInit {
   }
 
   getReviews() {
-    this.afs
-      .collection("user/" + this.afAuth.auth.currentUser.uid + "/review", ref => ref.orderBy("dateCreated", "desc"))
-      .snapshotChanges()
-      .subscribe(data => {
-        this.user_rev_temp = data;
-        this.user_rev_temp.forEach((item, i) => {
-          var user: AngularFirestoreDocument = this.afs.doc(
-            "user/" + this.user_rev_temp[i].payload.doc.data().userId
-          );
-          user.snapshotChanges().subscribe(data => {
-            var obj = {
-              userName: data.payload.data().name,
-              imageUrl: data.payload.data().profileImageUrl,
-              id: this.user_rev_temp[i].payload.doc.id,
-              review: this.user_rev_temp[i].payload.doc.data(),
-              dateCreated: this.user_rev_temp[i].payload.doc
-                .data()
-                .dateCreated.toDate()
-                .toString()
-            };
-            this.reviews.push(obj);
-          });
-        });
-        console.log(this.reviews);
-        this.loading = false;
+    var reviewsCollection = this.afs.collection(
+      "user/" + this.afAuth.auth.currentUser.uid + "/review",
+      ref => ref.orderBy("dateCreated", "desc")
+    );
+    this.reviews = reviewsCollection.stateChanges(["added"]).pipe(
+      map(actions =>
+        actions.map(a => {
+          var data: any = a.payload.doc.data();
+          var id = a.payload.doc.id;
+          console.log(this.getUser(data.userId));
+          return { id, ...data };
+        })
+      )
+    );
+  }
+
+  getUser(uid) {
+    return this.afs
+      .doc("user/" + uid)
+      .valueChanges()
+      .subscribe(res => {
+        return res;
       });
   }
 }

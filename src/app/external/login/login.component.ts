@@ -10,6 +10,7 @@ import {
 } from "@angular/fire/firestore";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
+import * as firebase from "firebase/app";
 
 @Component({
   selector: "app-login",
@@ -134,9 +135,23 @@ export class LoginComponent implements OnInit {
       var email = this.loginForm.controls["email"].value;
       var password = this.loginForm.controls["password"].value;
 
+      var that = this;
+
       this.afAuth.auth
         .signInWithEmailAndPassword(email, password)
         .then(result => {
+          firebase
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(function() {
+              return firebase
+                .auth()
+                .signInWithEmailAndPassword(
+                  that.loginForm.controls["email"].value,
+                  that.loginForm.controls["password"].value
+                );
+            });
+
           this.modalRef.hide();
           this.router.navigateByUrl("/");
           this.loggingIn = false;

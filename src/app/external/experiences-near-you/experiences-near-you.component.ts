@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { Router } from "@angular/router";
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-experiences-near-you",
@@ -10,7 +12,8 @@ import { Router } from "@angular/router";
 })
 export class ExperiencesNearYouComponent implements OnInit {
   experiences: Array<any> = [];
-  listings;
+  // listings: Observable<any[]>;
+  listings= [];
   loading = true;
   constructor(
     private afs: AngularFirestore,
@@ -20,8 +23,11 @@ export class ExperiencesNearYouComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.afs
-      .collection("listing", ref => ref.orderBy("dateCreated", "asc"))
+    var listingCollection = this.afs.collection("listing", ref =>
+      ref.where("listingType", "==", "eventListingType")
+    );
+
+    listingCollection
       .stateChanges() // for realtime updates
       .subscribe(listings => {
         this.listings = listings;
@@ -39,6 +45,17 @@ export class ExperiencesNearYouComponent implements OnInit {
           this.loading = false;
         });
       });
+
+    // this.listings = listingCollection.stateChanges(["added"]).pipe(
+    //   map(actions =>
+    //     actions.map(a => {
+    //       console.log(a)
+    //       const data = a.payload.doc.data();
+    //       const id = a.payload.doc.id;
+    //       return { id, ...data };
+    //     })
+    //   )
+    // );
   }
 
   open_experience(id) {

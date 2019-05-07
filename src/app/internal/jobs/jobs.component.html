@@ -1,15 +1,15 @@
-<div *ngIf="jobs.length === 0">
+<div *ngIf="(jobs | async)?.length === 0">
   No Jobs
 </div>
 
-<div *ngIf="jobs.length !== 0" class="row">
-  <ng-container *ngFor="let job of jobs">
+<div *ngIf="(jobs | async)?.length !== 0" class="row">
+  <ng-container *ngFor="let job of jobs | async">
     <div class="col-12 col-md-6 col-lg-4 mb-3">
       <div class="card">
-        <div *ngIf="job.job.isCanceled" class="cancel_div">
+        <div *ngIf="job.isCanceled" class="cancel_div">
           <img src="assets/images/cancel.png" />
         </div>
-        <div *ngIf="job.job.isHostApproved" class="cancel_div">
+        <div *ngIf="job.isHostApproved" class="cancel_div">
           <img src="assets/images/approved.png" />
         </div>
         <div class="card-header">
@@ -19,32 +19,32 @@
         </div>
         <div class="card-body">
           <h4>{{ job.id }}</h4>
-          <h2>${{ job.job.perHourPrice }} <small>per hour</small></h2>
+          <h2>${{ job.perHourPrice }} <small>per hour</small></h2>
 
           <ul>
             <li>
               <i class="fa fa-calendar" aria-hidden="true"></i>
-              {{ job.job.startDate }} -
-              {{ job.job.endDate }}
+              {{ job.startDate }} -
+              {{ job.endDate }}
             </li>
             <li>
               <i class="fa fa-clock-o" aria-hidden="true"></i>
-              {{ job.job.hours }} hours
+              {{ job.hours }} hours
             </li>
           </ul>
 
           <div class="refund-btn">
             <button
-              *ngIf="!job.job.isCanceled && !job.job.isHostApproved"
+              *ngIf="!job.isCanceled && !job.isHostApproved"
               type="button"
-              (click)="approve(job.id, job.job.hostId, job.job.listingId)"
+              (click)="approve(job.id, job.hostId, job.listingId)"
               class="pull-right btn btn-sm btn-primary"
             >
               Approve
             </button>
             <button
-              *ngIf="!job.job.isCanceled && !job.job.isHostApproved"
-              (click)="cancel(job.id, job.job.hostId, job.job.listingId)"
+              *ngIf="!job.isCanceled && !job.isHostApproved"
+              (click)="cancel(job.id, job.hostId, job.listingId)"
               type="button"
               class="pull-right btn btn-sm btn-primary"
             >
@@ -54,9 +54,9 @@
               (click)="
                 review(
                   reviewForm,
-                  job.job.userId,
-                  job.job.hostId,
-                  job.job.listingId,
+                  job.userId,
+                  job.hostId,
+                  job.listingId,
                   job.id
                 )
               "
@@ -69,7 +69,7 @@
               (click)="
                 message(
                   job.id,
-                  job.job.listingId
+                  job.listingId
                 )
               "
               type="button"
