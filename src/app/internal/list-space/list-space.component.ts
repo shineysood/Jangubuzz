@@ -34,6 +34,7 @@ export class ListSpaceComponent implements OnInit {
   expanded = false;
   ar = [];
   geoPoint: any;
+  place_changed = false;
   amenities;
   public latitude: number;
   public longitude: number;
@@ -193,6 +194,14 @@ export class ListSpaceComponent implements OnInit {
   //end
 
   setCurrentPosition() {
+    if (
+      !this.place_changed &&
+      this.space_form_additional.controls["locationAddress"].value
+    ) {
+      alert("please select valid location");
+      document.getElementById("location_address").focus();
+      return false;
+    }
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
         this.latitude = position.coords.latitude;

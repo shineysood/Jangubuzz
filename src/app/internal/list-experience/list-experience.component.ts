@@ -35,6 +35,7 @@ export class ListExperienceComponent implements OnInit {
   @Input() listingType;
 
   expanded = false;
+  place_changed = false;
   ar = [];
   geoPoint: any;
   public latitude: number;
@@ -146,11 +147,16 @@ export class ListExperienceComponent implements OnInit {
         }
       );
       autocomplete.addListener("place_changed", () => {
+        this.place_changed = true;
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
           console.log("place: ", place);
+
+          // this.experience_form_additional.controls[
+          //   "locationAddress"
+          // ].patchValue("");
 
           this.experience_form_additional.controls[
             "locationAddress"
@@ -227,6 +233,14 @@ export class ListExperienceComponent implements OnInit {
   // end of dropdown methods
 
   setCurrentPosition() {
+    if (
+      !this.place_changed &&
+      this.experience_form_additional.controls["locationAddress"].value
+    ) {
+      alert("please select valid location");
+      document.getElementById("location_address").focus();
+      return false;
+    }
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
         this.latitude = position.coords.latitude;
@@ -243,6 +257,10 @@ export class ListExperienceComponent implements OnInit {
 
   addExperienceAdditional() {
     if (this.experience_form_additional.valid) {
+      if (!this.place_changed) {
+        alert("please enter valid location");
+        return false;
+      }
       // get the firestore doc
       const listingDoc: AngularFirestoreDocument = this.afs.doc(
         "user/" + this.userId + "/listing/" + this.listingId
@@ -342,7 +360,6 @@ export class ListExperienceComponent implements OnInit {
           console.log(err);
         });
     } else {
-      console.log("else part og this ksdmlkdsm");
       Object.keys(this.experience_form_additional.controls).forEach(i =>
         this.experience_form_additional.controls[i].markAsTouched()
       );
@@ -376,7 +393,7 @@ export class ListExperienceComponent implements OnInit {
     });
   }
 
-  // set(event) {
-  //   console.log("called", event.target.files[0]);
-  // }
+  set(event) {
+    console.log("heloooooo location", event);
+  }
 }

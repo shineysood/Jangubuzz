@@ -7,6 +7,7 @@ import {
   AngularFirestore,
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
+import { LoginService } from "../login/login.service";
 
 @Component({
   selector: "app-navbar",
@@ -26,18 +27,11 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private afAuth: AngularFireAuth,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private loginService: LoginService
   ) {
-    this.router.events.subscribe(path => {
-      if (path instanceof NavigationEnd) {
-
-        if (
-          document.getElementsByClassName("navbar-collapse collapse show")
-            .length !== 0
-        ) {
-          $("#toggler-btn").click();
-        }
-
+    this.loginService.loggedInObs().subscribe(res => {
+      if (res.login_flag) {
         if (this.afAuth.auth.currentUser) {
           if (!this.afAuth.auth.currentUser.isAnonymous) {
             const userDoc: AngularFirestoreDocument = this.afs.doc(
@@ -54,6 +48,17 @@ export class NavbarComponent implements OnInit {
               };
             });
           }
+        }
+      }
+    });
+
+    this.router.events.subscribe(path => {
+      if (path instanceof NavigationEnd) {
+        if (
+          document.getElementsByClassName("navbar-collapse collapse show")
+            .length !== 0
+        ) {
+          $("#toggler-btn").click();
         }
 
         if (path.url.indexOf("home") > 0) {

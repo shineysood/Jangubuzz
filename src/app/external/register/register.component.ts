@@ -20,6 +20,8 @@ import {
   BsDaterangepickerDirective,
   BsDatepickerConfig
 } from "ngx-bootstrap/datepicker";
+import { Router } from "@angular/router";
+import { LoginService } from '../login/login.service';
 
 @Component({
   selector: "app-register",
@@ -41,7 +43,9 @@ export class RegisterComponent implements OnInit {
   constructor(
     public afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router,
+    private loginService: LoginService
   ) {
     this.registerForm = this.fb.group({
       email: [
@@ -107,7 +111,16 @@ export class RegisterComponent implements OnInit {
               }
             )
             .then(data => {
-              Swal.fire("", "Registered successfully", "success");
+              that.afAuth.auth
+                .signInWithEmailAndPassword(
+                  that.registerForm.controls["email"].value,
+                  that.registerForm.controls["password"].value
+                )
+                .then(result => {
+                  that.modalRef.hide();
+                  that.loginService.loggedIn();
+                  Swal.fire("", "Registered successfully", "success");
+                });
             });
 
           // Update user provider data
@@ -119,7 +132,8 @@ export class RegisterComponent implements OnInit {
           // send verification email
           that.afAuth.auth.currentUser.sendEmailVerification();
           // Send them into the app
-          that.cancel();
+
+          // that.cancel();
         })
         .catch(function(error) {
           Swal.fire(error.code, error.message, "error");

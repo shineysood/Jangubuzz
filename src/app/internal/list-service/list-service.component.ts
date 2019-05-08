@@ -33,6 +33,7 @@ declare var google: any;
 })
 export class ListServiceComponent implements OnInit {
   @Input() userId;
+  place_changed = false;
   @Input() listingType;
   expanded = false;
   ar = [];
@@ -151,6 +152,14 @@ export class ListServiceComponent implements OnInit {
   }
 
   setCurrentPosition() {
+    if (
+      !this.place_changed &&
+      this.service_form_additional.controls["locationAddress"].value
+    ) {
+      alert("please select valid location");
+      document.getElementById("location_address").focus();
+      return false;
+    }
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
         this.latitude = position.coords.latitude;

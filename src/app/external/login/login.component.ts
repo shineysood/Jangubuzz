@@ -11,6 +11,8 @@ import {
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import * as firebase from "firebase/app";
+import { Subject } from 'rxjs';
+import { LoginService } from './login.service';
 
 @Component({
   selector: "app-login",
@@ -30,7 +32,8 @@ export class LoginComponent implements OnInit {
     public afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private router: Router,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private loginService: LoginService
   ) {
     this.loginForm = this.fb.group({
       email: [
@@ -116,7 +119,7 @@ export class LoginComponent implements OnInit {
               );
             }
             this.modalRef.hide();
-            this.router.navigateByUrl("/");
+            this.loginService.loggedIn();
           });
       })
       .catch(err => {
@@ -140,20 +143,11 @@ export class LoginComponent implements OnInit {
       this.afAuth.auth
         .signInWithEmailAndPassword(email, password)
         .then(result => {
-          firebase
-            .auth()
-            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-            .then(function() {
-              return firebase
-                .auth()
-                .signInWithEmailAndPassword(
-                  that.loginForm.controls["email"].value,
-                  that.loginForm.controls["password"].value
-                );
-            });
-
           this.modalRef.hide();
-          this.router.navigateByUrl("/");
+          //////////////////
+          this.loginService.loggedIn();
+
+          //////////////////
           this.loggingIn = false;
         })
         .catch(err => {
