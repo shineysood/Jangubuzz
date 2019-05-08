@@ -198,6 +198,7 @@ div#time-picker-wrapper {
   position: absolute;
   width: 90%;
   margin: 15px auto;
+  height: 90%;
 }
 
 .time-picker-footer button {

@@ -34,20 +34,17 @@
               {{ user_logged.dob.seconds * 1000 | date }}
             </h6>
           </div>
-          <h4 *ngIf="user_logged.bio">About</h4>
-          <h5 *ngIf="user_logged.bio" class="pre_tag">
-            <pre class="show-read-more">
+          <h4>About</h4>
+          <h5 class="pre_tag">
+            <pre *ngIf="user_logged.bio" class="show-read-more">
                 {{ user_logged.bio }}
               </pre
             >
-          </h5>
 
-          <!-- <h5 *ngIf="!user_logged.bio" class="pre_tag">
-            <pre class="show-read-more">
-                No information available
-              </pre
-            >
-          </h5> -->
+            <pre *ngIf="!user_logged.bio" class="show-read-more">
+No bio
+            </pre>
+          </h5>
           <!-- Event lists -->
           <h4>{{ verifications.name }} Provided</h4>
           <h5 *ngIf="verifications.emailVerified">

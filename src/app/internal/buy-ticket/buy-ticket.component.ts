@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ViewChild,
-  TemplateRef
-} from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import {
   AngularFirestore,
   AngularFirestoreDocument
@@ -15,12 +9,6 @@ import { AngularFireFunctions } from "@angular/fire/functions";
 import { Options } from "ng5-slider";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import Swal from "sweetalert2";
-import {
-  StripeCardComponent,
-  ElementOptions,
-  ElementsOptions,
-  StripeService
-} from "ngx-stripe";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from "ngx-bootstrap/modal";
 
@@ -36,17 +24,10 @@ export class BuyTicketComponent implements OnInit {
   listingid;
   ticket;
   loading;
-  value: number = 0;
+  value: number = 1;
   options: Options;
-
-  paid_obj = {
-    userId: "",
-    hostId: "",
-    listingId: "",
-    ticketId: "",
-    totalTickets: 0,
-    email: ""
-  };
+  card_brand;
+  card_last4;
 
   EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -76,11 +57,25 @@ export class BuyTicketComponent implements OnInit {
     });
   }
 
+  getPaymentInfo() {
+    const doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + this.afAuth.auth.currentUser.uid + "/private/payment"
+    );
+
+    doc.valueChanges().subscribe(card => {
+      this.card_brand = card.paymentBrand;
+      this.card_last4 = card.paymentLastFour;
+    });
+  }
+
   ngOnInit() {
     if (this.afAuth.auth.currentUser) {
-      this.ticket_form.controls["email"].patchValue(
-        this.afAuth.auth.currentUser.email
-      );
+      if (!this.afAuth.auth.currentUser.isAnonymous) {
+        this.getPaymentInfo();
+        this.ticket_form.controls["email"].patchValue(
+          this.afAuth.auth.currentUser.email
+        );
+      }
     }
 
     this.loading = true;
@@ -117,61 +112,107 @@ export class BuyTicketComponent implements OnInit {
     });
   }
 
-  get_ticket(template: TemplateRef<any>) {
-    if (!this.ticket.ticket.isPriced) {
-      if (this.ticket_form.valid) {
-        var obj = {
-          userId: this.afAuth.auth.currentUser.uid,
-          hostId: this.hostId,
-          listingId: this.listingid,
-          ticketId: this.ticketId,
-          totalTickets: this.value,
-          email: this.ticket_form.controls["email"].value
-        };
-        console.log(obj);
+  get_ticket() {
+    if (this.ticket_form.valid) {
+      if (!this.ticket.ticket.isPriced) {
+        if (this.ticket_form.valid) {
+          var obj = {
+            userId: this.afAuth.auth.currentUser.uid,
+            hostId: this.hostId,
+            listingId: this.listingid,
+            ticketId: this.ticketId,
+            totalTickets: this.value,
+            email: this.ticket_form.controls["email"].value
+          };
+          console.log(obj);
 
-        const callable = this.fns.httpsCallable("on_ticket_get");
-        const callable_subscriber = callable(obj);
+          const callable = this.fns.httpsCallable("on_ticket_get");
+          const callable_subscriber = callable(obj);
 
-        callable_subscriber.subscribe(data => {
-          if (data.done) {
-            Swal.fire("Success", "Your ticket is " + data.done, "success");
-            if (!this.afAuth.auth.currentUser.isAnonymous) {
-              this.router.navigateByUrl("/settings");
-            } else {
-              Swal.fire(
-                "Success",
-                "Ticket has sent to " +
-                  this.ticket_form.controls["email"].value,
-                "success"
-              );
-              this.router.navigateByUrl("/");
+          callable_subscriber.subscribe(data => {
+            if (data.done) {
+              Swal.fire("Success", "Your ticket is " + data.done, "success");
+              if (!this.afAuth.auth.currentUser.isAnonymous) {
+                this.router.navigateByUrl("/settings");
+              } else {
+                Swal.fire(
+                  "Success",
+                  "Ticket has sent to " +
+                    this.ticket_form.controls["email"].value,
+                  "success"
+                );
+                this.router.navigateByUrl("/");
+              }
+            } else if (data.error) {
+              Swal.fire("OOPS !!!", data.done, "error");
             }
-          } else if (data.error) {
-            Swal.fire("OOPS !!!", data.done, "error");
-          }
-        });
+          });
+        } else {
+          Object.keys(this.ticket_form.controls).forEach(i =>
+            this.ticket_form.controls[i].markAsTouched()
+          );
+        }
       } else {
-        Object.keys(this.ticket_form.controls).forEach(i =>
-          this.ticket_form.controls[i].markAsTouched()
-        );
+        this.payment();
       }
     } else {
-      if (this.ticket_form.valid) {
-        this.paid_obj = {
-          userId: this.afAuth.auth.currentUser.uid,
-          hostId: this.hostId,
-          listingId: this.listingid,
-          ticketId: this.ticketId,
-          totalTickets: this.value,
-          email: this.ticket_form.controls["email"].value
-        };
-        this.modalRef = this.modalService.show(template);
-      } else {
-        Object.keys(this.ticket_form.controls).forEach(i =>
-          this.ticket_form.controls[i].markAsTouched()
-        );
-      }
+      Object.keys(this.ticket_form.controls).forEach(i =>
+        this.ticket_form.controls[i].markAsTouched()
+      );
     }
+  }
+
+  payment() {
+    const doc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + this.afAuth.auth.currentUser.uid + "/private/payment"
+    );
+
+    doc.valueChanges().subscribe(card => {
+      var obj = {
+        name: card.paymentName,
+        number: card.paymentNumber,
+        exp_month: card.paymentExpMonth,
+        exp_year: card.paymentExpYear,
+        cvc: card.paymentCVC
+      };
+      (<any>window).Stripe.card.createToken(obj, (status: number, res: any) => {
+        console.log(res);
+        if (status === 200) {
+          var obj = {
+            userId: this.afAuth.auth.currentUser.uid,
+            hostId: this.hostId,
+            listingId: this.listingid,
+            ticketId: this.ticketId,
+            totalTickets: this.value,
+            email: this.ticket_form.controls["email"].value,
+            token: res.id.toString()
+          };
+          const callable = this.fns.httpsCallable("on_ticket_test_purchase");
+          const callable_subscriber = callable(obj);
+          callable_subscriber.subscribe(data => {
+            if (data.done) {
+              Swal.fire("Success", "Your ticket is " + data.done, "success");
+              if (!this.afAuth.auth.currentUser.isAnonymous) {
+                this.router.navigateByUrl("/settings");
+              } else {
+                Swal.fire(
+                  "Success",
+                  "Ticket has sent to your email",
+                  "success"
+                );
+              }
+            } else if (data.error) {
+              Swal.fire("OOPS !!!", data.done, "error");
+            }
+          });
+        } else {
+          Swal.fire(res.error.type, res.error.message, "error");
+        }
+      });
+    });
+  }
+
+  edit_payment(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 }

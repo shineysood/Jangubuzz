@@ -1,28 +1,33 @@
 .card_div {
   padding: 20px 20px;
 }
-.card_div .form-group input#name {
-  background-color: #cccccc75;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 100px;
-  font-size: 13px;
-}
-.card_div .form-group.save {
-  margin-bottom: 0;
-}
-.card_div .form-group.save button {
-  background-color: #ff5b8d;
-  border: none;
-}
 .card_div h2 {
-  font-size: 22px;
-  margin: 0 0 20px;
-  border-bottom: 1px solid #cccccc70;
-  padding: 0 0 15px;
+  font-size: 18px;
+  margin-bottom: 30px;
 }
-
-.text-danger {
-  margin: -13px 0 15px 0;
+.card_div label {
   font-size: 12px;
+  color: #999;
+  margin: 0px;
+}
+.card_div input {
+  background: #ddd;
+  border-radius: 30px;
+  border: none;
+  font-size: 13px;
+  font-weight: 300;
+  margin-bottom: 0px;
+}
+.card_div p {
+  color: #999;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 25px;
+  display: block;
+}
+.form-group.save button {
+  background: #ff5b8d;
+  text-transform: uppercase;
+  padding: 8px 26px !important;
+  border: none;
 }

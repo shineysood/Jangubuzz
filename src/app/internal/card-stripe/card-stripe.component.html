@@ -1,40 +1,64 @@
 <div class="card_div container">
-  <form [formGroup]="payment_form" (ngSubmit)="payment()">
-    <h2>Payment information</h2>
+  <form [formGroup]="payment_form" (ngSubmit)="save_card()">
+    <h2>Edit payment information</h2>
+
     <div class="form-group">
-      <label for="name">Name</label>
+      <label>Name</label>
       <input
-        id="name"
         type="text"
-        formControlName="name"
         class="form-control"
-        placeholder="e.g. John Doe"
+        placeholder="card number"
+        formControlName="name"
       />
     </div>
-    <div
-      *ngIf="
-        payment_form.controls['name'].hasError('required') &&
-        payment_form.controls['name'].touched
-      "
-      class="text-danger"
-    >
-      Please enter name
+
+    <div class="form-group">
+      <label>Number</label>
+      <input
+        type="text"
+        placeholder="card number"
+        data-stripe="number"
+        class="form-control"
+        formControlName="number"
+      />
+    </div>
+    <div class="form-group">
+      <label>CVC</label>
+      <input
+        type="text"
+        placeholder="card number"
+        data-stripe="cvc"
+        class="form-control"
+        formControlName="cvc"
+      />
     </div>
 
     <div class="form-group">
-      <label>Card Details</label>
-      <ngx-stripe-card
-        id="card-details"
-        [options]="cardOptions"
-        [elementsOptions]="elementsOptions"
-      ></ngx-stripe-card>
-      <hr />
+      <label>Exp. month</label>
+      <input
+        class="form-control"
+        type="text"
+        placeholder="card number"
+        data-stripe="exp_month"
+        formControlName="month"
+      />
     </div>
 
-    <!-- <p>
+    <div class="form-group">
+      <label>Exp. year</label>
+      <input
+        class="form-control"
+        type="text"
+        placeholder="card number"
+        formControlName="year"
+        data-stripe="exp_year"
+      />
+    </div>
+
+    <p>
       Payment information you provide above will be saved as your default future
       payment method fot tickets and services.
-    </p> -->
+    </p>
 
     <div class="form-group save">
       <button class="btn btn-primary btn-sm" type="submit">Save</button>

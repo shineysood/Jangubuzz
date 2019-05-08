@@ -4,6 +4,8 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { Router } from "@angular/router";
 import * as moment from "moment";
 import Swal from "sweetalert2";
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-ticket-type",
@@ -15,8 +17,7 @@ export class TicketTypeComponent implements OnInit {
   @Input() hostId;
   @Input() listingId;
   temp_tickets;
-  loading = true;
-  tickets = [];
+  tickets: Observable<any[]>;
 
   constructor(
     private modalService: BsModalService,
@@ -25,34 +26,27 @@ export class TicketTypeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loading = true;
     this.getTickets(this.hostId, this.listingId);
   }
 
   getTickets(hostId, listingId) {
-    this.afs
-      .collection("user/" + hostId + "/listing/" + listingId + "/ticket")
-      .snapshotChanges()
-      .subscribe(tickets => {
-        if (tickets.length !== 0) {
-          this.temp_tickets = tickets;
-          this.temp_tickets.forEach((item, i) => {
-            var t = item.payload.doc.data();
-            t.saleEndDate = t.saleEndDate.toDate().toString();
-            var ticket = {
-              id: item.payload.doc.id,
-              payload: t
-            };
-            this.tickets.push(ticket);
-          });
-        }
-        console.log(this.tickets);
-        this.loading = false;
-      });
+    var ticketCollection = this.afs.collection(
+      "user/" + hostId + "/listing/" + listingId + "/ticket"
+    );
+
+    this.tickets = ticketCollection.stateChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        })
+      )
+    );
   }
 
   buy_ticket(ticketId, saleEndDate, ticketsLeft) {
-    if (ticketsLeft > 0 && moment(saleEndDate).isAfter(new Date())) {
+    if (ticketsLeft > 0 && moment(saleEndDate.toDate().toString()).isAfter(new Date())) {
       this.modalRef.hide();
       this.router.navigate([
         "ticket/buy",

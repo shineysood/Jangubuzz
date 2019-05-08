@@ -49,7 +49,6 @@ import { AngularFireDatabaseModule } from "@angular/fire/database";
 import { AngularFireStorageModule } from "@angular/fire/storage";
 import { ExperienceComponent } from "./external/experience/experience.component";
 import { HttpClientModule } from "@angular/common/http";
-import { NgxStripeModule } from "ngx-stripe";
 import { BuyTicketComponent } from "./internal/buy-ticket/buy-ticket.component";
 import { ViewAllExperiencesComponent } from "./external/view-all-experiences/view-all-experiences.component";
 import { orderByPipe } from "./services/orderBy.pipe";
@@ -151,7 +150,6 @@ import { ClickOutsideModule } from 'ng4-click-outside';
     NgxInputStarRatingModule,
     AngularFireFunctionsModule,
     AmazingTimePickerModule,
-    NgxStripeModule.forRoot("pk_test_oJupeugAVMirroj6zdxZct70"),
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyDURY1Pw5y-NxzrbNzp98hD_h0WWoKN8sI",
       libraries: ["places"]

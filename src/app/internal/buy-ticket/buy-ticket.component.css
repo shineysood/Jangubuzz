@@ -8,95 +8,105 @@
   text-align: center;
   height: 50%;
 }
+.payment_info {
+  padding: 10px 0;
+}
 
+.inner_pay {
+  margin: 0px 0 5px 0;
+}
+
+.card_info {
+  color: #999;
+  font-size: 12px;
+}
 .loader img {
   filter: brightness(4);
 }
 .ticket_div_buy {
-	background-color: #f5f5f5;
-    padding: 0;
-    box-shadow: 0 5px 15px 0 rgba(00,0,0,0.2);
-    max-width: none;
-    width: 60%;
+  background-color: #f5f5f5;
+  padding: 0;
+  box-shadow: 0 5px 15px 0 rgba(00, 0, 0, 0.2);
+  max-width: none;
+  width: 60%;
 }
 .ticket_div_buy form .form-group div {
-    color: #909090;
-    font-size: 13px;
+  color: #909090;
+  font-size: 13px;
 }
 .ticket_div_buy form .form-group {
-    margin: 0 0 20px;
+  margin: 0 0 20px;
 }
 .ticket_div_buy h2 {
-    padding: 20px 25px 15px;
-    border-bottom: 1px solid #cccccc70;
-    margin: 0 0 30px;
-    font-size: 30px;
-    font-weight: 600;
+  padding: 20px 25px 15px;
+  border-bottom: 1px solid #cccccc70;
+  margin: 0 0 30px;
+  font-size: 30px;
+  font-weight: 600;
 }
 .ticket_div_buy form .form-group span {
-    display: block;
-    color: #000000;
-    font-size: 15px;
+  display: block;
+  color: #000000;
+  font-size: 15px;
 }
 .ticket_div_buy form .form-group label {
-    color: #909090;
-    font-size: 12px;
-    margin: 0;
-    padding: 0 0 5px;
+  color: #909090;
+  font-size: 12px;
+  margin: 0;
+  padding: 0 0 5px;
 }
 .ticket_div_buy form input {
-    outline: none;
-    background-color: #cccccc75;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 100px;
-    width: 50%;
+  outline: none;
+  background-color: #cccccc75;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 100px;
+  width: 50%;
 }
 .ticket_div_buy form {
-    padding: 0 25px 0;
-    display: inline-block;
-    width: 100%;
+  padding: 0 25px 0;
+  display: inline-block;
+  width: 100%;
 }
 .ticket_div_buy form .form-group .seven_day label {
-    color: #000000;
-    font-size: 15px;
-    padding: 0 0 5px;
+  color: #000000;
+  font-size: 15px;
+  padding: 0 0 5px;
 }
 .price_info .price_info_inner {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #cccccc9c;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #cccccc9c;
 }
 .price_info .price_info_inner p {
-    margin: 0;
-    padding: 15px 0;
+  margin: 0;
+  padding: 15px 0;
 }
 .price_info .price_info_inner.processing {
-	border: none;
+  border: none;
 }
 .price_info .price_info_inner.processing p {
-    color: #909090;
-    font-size: 12px;
+  color: #909090;
+  font-size: 12px;
 }
 .ticket_div_buy form .price_info {
-    padding: 0 0 15px;
+  padding: 0 0 15px;
 }
 .ticket_div_buy form .form-group.buy_ticket_button {
-    text-align: right;
+  text-align: right;
 }
 .ticket_div_buy form .form-group.buy_ticket_button button {
-	background-color: #ff5b8d;
-	border: none;
+  background-color: #ff5b8d;
+  border: none;
 }
-
 
 @media screen and (max-width: 991px) {
-.ticket_div_buy {
+  .ticket_div_buy {
     width: 80%;
-}
+  }
 }
 @media screen and (max-width: 767px) {
-.ticket_div_buy form input{
-    width: 100%
-}
+  .ticket_div_buy form input {
+    width: 100%;
+  }
 }

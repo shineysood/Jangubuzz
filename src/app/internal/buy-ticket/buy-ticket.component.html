@@ -1,6 +1,6 @@
 <div *ngIf="!loading" class="container ticket_div_buy">
   <h2>{{ ticket.ticket.title }}</h2>
-  <form [formGroup]="ticket_form" (ngSubmit)="get_ticket(payment_template)">
+  <form [formGroup]="ticket_form" (ngSubmit)="get_ticket()">
     <div class="form-group">
       <label>Price</label>
       <span> ${{ ticket.ticket.price }} </span>
@@ -95,8 +95,8 @@
     </div>
 
     <div class="form-group">
-      <label
-        >Select the amount of tickets - Max purchasable:
+      <label>
+        Select the amount of tickets - Max purchasable:
         {{ ticket.ticket.perOrderMax }}
       </label>
       <ng5-slider [(value)]="value" [options]="options"></ng5-slider>
@@ -110,28 +110,32 @@
         <p>${{ value * ticket.ticket.price }}</p>
       </div>
       <div class="price_info_inner processing">
-          <p>
-            Processing fees
-          </p>
-          <p>
-            $0.30
-          </p>
+        <p>
+          Processing fees
+        </p>
+        <p>
+          $0.30
+        </p>
       </div>
       <div class="price_info_inner total">
         <p>Total</p>
         <p>Total fees</p>
       </div>
-    </div>
 
-    <!-- <div *ngIf="ticket.ticket.isPriced" class="form-group">
-      <button
-        type="button"
-        class="btn btn-secondary btn-sm"
-        (click)="open_payment(payment_template)"
-      >
-        Payment
-      </button>
-    </div> -->
+      <div class="payment_info">
+        <div class="inner_pay">
+          <span>Payment</span>
+          <span (click)="edit_payment(payment_template)" class="pull-right">
+            <i class="fa fa-credit-card"> </i>
+          </span>
+        </div>
+        <div class="card_info">
+          <span>{{ card_brand }}</span>
+          <span class="pull-right">{{ card_last4 }}</span>
+        </div>
+      </div>
+      <hr />
+    </div>
 
     <div class="form-group buy_ticket_button">
       <button class="btn btn-primary" type="submit">Buy ticket</button>
@@ -146,5 +150,5 @@
 
 <!-- payment template -->
 <ng-template #payment_template>
-  <app-card-stripe [paid_obj]="paid_obj" [modalRef]="modalRef"></app-card-stripe>
+  <app-card-stripe [modalRef]="modalRef"></app-card-stripe>
 </ng-template>
