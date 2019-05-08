@@ -116,7 +116,7 @@
                     </span>
                   </p>
                 </div>
-                <div *ngIf="!listing.isCanceled || !listing.isFree" class="right">
+                <div *ngIf="!listing.isCanceled && !listing.isFree" class="right">
                   <!-- booking button -->
                   <button
                     class="btn btn-primary btn-sm"
