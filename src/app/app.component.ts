@@ -24,7 +24,16 @@ export class AppComponent {
       this.guestLogin();
     }
 
-    this.locate();
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        console.log("user logged: ", user);
+        console.log("user is there");
+      } else {
+        console.log("user is not there");
+      }
+    });
+
+    // this.locate();
   }
 
   guestLogin() {

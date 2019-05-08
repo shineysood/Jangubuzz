@@ -83,6 +83,8 @@ import { UserListingComponent } from "./internal/user-listing/user-listing.compo
 import { ChatComponent } from "./internal/chat/chat.component";
 import { ChatBookingCardComponent } from "./internal/chat-booking-card/chat-booking-card.component";
 import { ClickOutsideModule } from 'ng4-click-outside';
+import { AppService } from './app.service';
+import { LoginService } from './external/login/login.service';
 
 @NgModule({
   declarations: [
@@ -177,7 +179,9 @@ import { ClickOutsideModule } from 'ng4-click-outside';
     { provide: FunctionsRegionToken, useValue: "us-central1" },
     AuthGuardService,
     AngularFireAuth,
-    AngularFirestore
+    AngularFirestore,
+    LoginService,
+    AppService
   ],
   bootstrap: [AppComponent]
 })
