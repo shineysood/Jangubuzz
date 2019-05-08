@@ -334,7 +334,8 @@ export class ListExperienceComponent implements OnInit {
           listingDoc.snapshotChanges().subscribe(data => {
             console.log(data.payload.data());
             Swal.fire("", "Listed successfully", "success");
-            this.router.navigateByUrl("/");
+            const id = data.payload.id;
+            this.router.navigate(["listing/experience", id]);
           });
         })
         .catch(err => {

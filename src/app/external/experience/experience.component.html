@@ -102,15 +102,21 @@
                       Free
                     </span>
                     <span
-                      *ngIf="!listing.isFree"
+                      *ngIf="!listing.isFree && listing.topPrice !== 0"
                       style="text-transform:uppercase"
                     >
                       {{ listing.currency }}$ {{ listing.bottomPrice }} -
                       {{ listing.currency }}$ {{ listing.topPrice }}
                     </span>
+                    <span
+                      *ngIf="!listing.isFree && listing.topPrice === 0"
+                      style="text-transform:uppercase"
+                    >
+                      {{ listing.currency }}$ {{ listing.bottomPrice }}
+                    </span>
                   </p>
                 </div>
-                <div *ngIf="!listing.isCanceled" class="right">
+                <div *ngIf="!listing.isCanceled || !listing.isFree" class="right">
                   <!-- booking button -->
                   <button
                     class="btn btn-primary btn-sm"
