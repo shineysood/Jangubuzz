@@ -8,6 +8,7 @@ import {
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import { LoginService } from "../login/login.service";
+import { AppService } from "src/app/app.service";
 
 @Component({
   selector: "app-navbar",
@@ -26,27 +27,20 @@ export class NavbarComponent implements OnInit {
     private modalService: BsModalService,
     private router: Router,
     private route: ActivatedRoute,
+    private appService: AppService,
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private loginService: LoginService
   ) {
+    this.appService.userLoggedObs().subscribe(res => {
+      console.log("=====> user logged navbar: ", res);
+    });
+
     this.loginService.loggedInObs().subscribe(res => {
       if (res.login_flag) {
         if (this.afAuth.auth.currentUser) {
           if (!this.afAuth.auth.currentUser.isAnonymous) {
-            const userDoc: AngularFirestoreDocument = this.afs.doc(
-              "user/" + this.afAuth.auth.currentUser.uid
-            );
-            userDoc.snapshotChanges().subscribe(data => {
-              var user = data.payload.data();
-              this.user_logged = {
-                displayName: user.name,
-                photoURL: user.profileImageUrl,
-                providerId: this.afAuth.auth.currentUser.providerId,
-                emailVerified: this.afAuth.auth.currentUser.emailVerified,
-                isAnonymous: this.afAuth.auth.currentUser.isAnonymous
-              };
-            });
+            this.user_logged_fun(this.afAuth.auth.currentUser.uid);
           }
         }
       }
@@ -89,6 +83,23 @@ export class NavbarComponent implements OnInit {
   signout() {
     this.afAuth.auth.signOut().then(res => {
       window.location.href = "/";
+    });
+  }
+
+  user_logged_fun(id){
+    const userDoc: AngularFirestoreDocument = this.afs.doc(
+      "user/" + id
+    );
+    userDoc.snapshotChanges().subscribe(data => {
+      var user = data.payload.data();
+      console.log("===> doc user: ", user);
+      this.user_logged = {
+        displayName: user.name,
+        photoURL: user.profileImageUrl,
+        providerId: this.afAuth.auth.currentUser.providerId,
+        emailVerified: this.afAuth.auth.currentUser.emailVerified,
+        isAnonymous: this.afAuth.auth.currentUser.isAnonymous
+      };
     });
   }
 

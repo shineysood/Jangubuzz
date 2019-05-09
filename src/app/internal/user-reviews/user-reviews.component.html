@@ -5,11 +5,11 @@
       <div class="card-body">
         <div class="review_image">
           <!-- <img [src]="review.imageUrl" /> -->
-          <img src="assets/images/user.png" />
+          <img [src]="getUser(review.userId).imageUrl" />
         </div>
 
         <div class="review_content">
-          <!-- <h4>{{ getUser(review.userId) }}</h4> -->
+          <h4>{{ getUser(review.userId).name }}</h4>
           <label>{{
             review.dateCreated.seconds * 1000 | date: "longDate"
           }}</label>

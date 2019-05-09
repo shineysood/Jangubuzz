@@ -14,14 +14,31 @@ import { Observable } from "rxjs";
 })
 export class UserReviewsComponent implements OnInit {
   reviews: Observable<any[]>;
-  user_rev_temp;
-  user: any;
   loading = true;
+  users = [];
 
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {}
 
   ngOnInit() {
+    this.getUserList();
     this.getReviews();
+  }
+
+  getUserList() {
+    this.afs
+      .collection("user")
+      .stateChanges(["added"])
+      .subscribe(users => {
+        users.forEach(item => {
+          var d: any = item;
+          var user = {
+            id: d.payload.doc.id,
+            name: d.payload.doc.data().name,
+            imageUrl: d.payload.doc.data().profileImageUrl
+          };
+          this.users.push(user);
+        });
+      });
   }
 
   getReviews() {
@@ -34,7 +51,6 @@ export class UserReviewsComponent implements OnInit {
         actions.map(a => {
           var data: any = a.payload.doc.data();
           var id = a.payload.doc.id;
-          console.log(this.getUser(data.userId));
           return { id, ...data };
         })
       )
@@ -42,11 +58,9 @@ export class UserReviewsComponent implements OnInit {
   }
 
   getUser(uid) {
-    return this.afs
-      .doc("user/" + uid)
-      .valueChanges()
-      .subscribe(res => {
-        return res;
-      });
+    var user = this.users.filter((item, i) => {
+      return item.id === uid;
+    });
+    return user[0];
   }
 }

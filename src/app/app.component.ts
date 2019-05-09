@@ -1,6 +1,7 @@
 import { Component, NgZone } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { Router } from "@angular/router";
+import { AppService } from "./app.service";
 
 declare const google: any;
 
@@ -16,35 +17,27 @@ export class AppComponent {
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private appService: AppService
   ) {}
 
   ngOnInit() {
-    if (!this.afAuth.auth.currentUser) {
-      this.guestLogin();
-    }
+    // if (!this.afAuth.auth.currentUser) {
+
+    // }
 
     this.afAuth.authState.subscribe(user => {
-      if (user) {
-        console.log("user logged: ", user);
+      if (!user.isAnonymous) {
         console.log("user is there");
+        this.appService.loggedIn(user);
       } else {
         console.log("user is not there");
+        this.afAuth.auth.signInAnonymously();
+        this.appService.loggedIn(this.afAuth.auth.currentUser);
       }
     });
 
     // this.locate();
-  }
-
-  guestLogin() {
-    this.afAuth.auth
-      .signInAnonymously()
-      .then(result => {
-        console.log("current_User: ", this.afAuth.auth.currentUser);
-      })
-      .catch(error => {
-        console.log("error: ", error);
-      });
   }
 
   locate() {

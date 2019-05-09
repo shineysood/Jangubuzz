@@ -198,7 +198,7 @@ div#time-picker-wrapper {
   position: absolute;
   width: 90%;
   margin: 15px auto;
-  height: 90%;
+  /* height: 90%; */
 }
 
 .time-picker-footer button {
@@ -242,6 +242,10 @@ div#time-picker-wrapper {
 @media (max-width: 767px) {
   .explore-section .slick-slide h3 {
     font-size: 20px;
+  }
+
+  .modal-dialog {
+    height: 90%;
   }
 
   .explore-section .slick-arrow {
