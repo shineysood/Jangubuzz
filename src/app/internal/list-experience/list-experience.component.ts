@@ -35,7 +35,6 @@ export class ListExperienceComponent implements OnInit {
   @Input() listingType;
 
   expanded = false;
-  place_changed = false;
   ar = [];
   geoPoint: any;
   public latitude: number;
@@ -147,7 +146,6 @@ export class ListExperienceComponent implements OnInit {
         }
       );
       autocomplete.addListener("place_changed", () => {
-        this.place_changed = true;
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
@@ -166,13 +164,18 @@ export class ListExperienceComponent implements OnInit {
 
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
+            alert("please select valid location");
+            this.experience_form_additional.controls["locationAddress"].reset();
+            return false;
+          } else {
+            //set latitude, longitude and zoom
+            this.latitude = place.geometry.location.lat();
+            this.longitude = place.geometry.location.lng();
+            this.zoom = 12;
 
-          //set latitude, longitude and zoom
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.zoom = 12;
+            console.log("location: ", this.latitude, this.longitude);
+            this.setCurrentPosition();
+          }
         });
       });
     });
@@ -233,21 +236,6 @@ export class ListExperienceComponent implements OnInit {
   // end of dropdown methods
 
   setCurrentPosition() {
-    if (
-      !this.place_changed &&
-      this.experience_form_additional.controls["locationAddress"].value
-    ) {
-      alert("please select valid location");
-      document.getElementById("location_address").focus();
-      return false;
-    }
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.zoom = 12;
-      });
-    }
     this.geoPoint = new firebase.firestore.GeoPoint(
       this.latitude,
       this.longitude
@@ -257,10 +245,6 @@ export class ListExperienceComponent implements OnInit {
 
   addExperienceAdditional() {
     if (this.experience_form_additional.valid) {
-      if (!this.place_changed) {
-        alert("please enter valid location");
-        return false;
-      }
       // get the firestore doc
       const listingDoc: AngularFirestoreDocument = this.afs.doc(
         "user/" + this.userId + "/listing/" + this.listingId

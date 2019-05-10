@@ -34,7 +34,6 @@ export class ListSpaceComponent implements OnInit {
   expanded = false;
   ar = [];
   geoPoint: any;
-  place_changed = false;
   amenities;
   public latitude: number;
   public longitude: number;
@@ -168,13 +167,18 @@ export class ListSpaceComponent implements OnInit {
 
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
+            alert("please select valid location");
+            this.space_form_additional.controls["locationAddress"].reset();
+            return false;
+          } else {
+            //set latitude, longitude and zoom
+            this.latitude = place.geometry.location.lat();
+            this.longitude = place.geometry.location.lng();
+            this.zoom = 12;
 
-          //set latitude, longitude and zoom
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.zoom = 12;
+            console.log("location: ", this.latitude, this.longitude);
+            this.setCurrentPosition();
+          }
         });
       });
     });
@@ -194,21 +198,6 @@ export class ListSpaceComponent implements OnInit {
   //end
 
   setCurrentPosition() {
-    if (
-      !this.place_changed &&
-      this.space_form_additional.controls["locationAddress"].value
-    ) {
-      alert("please select valid location");
-      document.getElementById("location_address").focus();
-      return false;
-    }
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.zoom = 12;
-      });
-    }
     this.geoPoint = new firebase.firestore.GeoPoint(
       this.latitude,
       this.longitude

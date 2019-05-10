@@ -32,9 +32,10 @@ export class NavbarComponent implements OnInit {
     private afs: AngularFirestore,
     private loginService: LoginService
   ) {
-    this.appService.userLoggedObs().subscribe(res => {
-      console.log("=====> user logged navbar: ", res);
-    });
+    // this.appService.userLoggedObs().subscribe(res => {
+    //   console.log("=====> user logged navbar: ", res);
+    //   this.user_logged_fun(res.uid);
+    // });
 
     this.loginService.loggedInObs().subscribe(res => {
       if (res.login_flag) {
@@ -96,9 +97,7 @@ export class NavbarComponent implements OnInit {
       this.user_logged = {
         displayName: user.name,
         photoURL: user.profileImageUrl,
-        providerId: this.afAuth.auth.currentUser.providerId,
-        emailVerified: this.afAuth.auth.currentUser.emailVerified,
-        isAnonymous: this.afAuth.auth.currentUser.isAnonymous
+        emailVerified: user.emailVerified
       };
     });
   }

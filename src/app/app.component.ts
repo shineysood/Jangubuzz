@@ -26,16 +26,20 @@ export class AppComponent {
 
     // }
 
-    this.afAuth.authState.subscribe(user => {
-      if (!user.isAnonymous) {
-        console.log("user is there");
-        this.appService.loggedIn(user);
-      } else {
-        console.log("user is not there");
-        this.afAuth.auth.signInAnonymously();
-        this.appService.loggedIn(this.afAuth.auth.currentUser);
-      }
-    });
+    // this.afAuth.authState.subscribe(user => {
+    //   if (user) {
+    //     if (!user.isAnonymous) {
+    //       this.appService.loggedIn(user);
+    //       console.log("if", user);
+    //     }
+    //   } else {
+        // console.log("else", user);
+        this.afAuth.auth.signInAnonymously().then(res => {
+          console.log("signed in anonymously: ", res);
+        });
+        // this.appService.loggedIn(this.afAuth.auth.currentUser);
+      // }
+    // });
 
     // this.locate();
   }

@@ -6,6 +6,9 @@ import {
   AngularFirestore,
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
+import { SharedService } from "src/app/services/shared.service";
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-reviews",
@@ -14,13 +17,14 @@ import {
 })
 export class ReviewsComponent implements OnInit {
   @Input() review_obj;
-  temp_reviews;
-  reviews = [];
+  // temp_reviews;
+  reviews: Observable<any>;
 
   constructor(
     private fb: FormBuilder,
     private afAuth: AngularFireAuth,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private shared: SharedService
   ) {}
 
   ngOnInit() {
@@ -28,32 +32,23 @@ export class ReviewsComponent implements OnInit {
   }
 
   getReviews(hostId, listingId) {
-    this.afs
-      .collection("user/" + hostId + "/listing/" + listingId + "/review", ref =>
-        ref.orderBy("dateCreated", "desc")
+    var reviewsCollections = this.afs.collection(
+      "user/" + hostId + "/listing/" + listingId + "/review",
+      ref => ref.orderBy("dateCreated", "desc")
+    );
+
+    this.reviews = reviewsCollections.snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const id = a.payload.doc.id;
+          const data = a.payload.doc.data();
+          return { id, ...data };
+        })
       )
-      .snapshotChanges()
-      .subscribe(res => {
-        this.temp_reviews = res;
-        this.temp_reviews.forEach((item, i) => {
-          var user: AngularFirestoreDocument = this.afs.doc(
-            "user/" + this.temp_reviews[i].payload.doc.data().userId
-          );
-          user.snapshotChanges().subscribe(data => {
-            var obj = {
-              userName: data.payload.data().name,
-              imageUrl: data.payload.data().profileImageUrl,
-              id: this.temp_reviews[i].payload.doc.id,
-              review: this.temp_reviews[i].payload.doc.data(),
-              dateCreated: this.temp_reviews[i].payload.doc
-                .data()
-                .dateCreated.toDate()
-                .toString()
-            };
-            this.reviews.push(obj);
-          });
-        });
-        console.log(this.reviews);
-      });
+    );
+  }
+
+  getUser(uid) {
+    return this.shared.getUser(uid);
   }
 }

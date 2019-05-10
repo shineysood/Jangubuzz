@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import * as firebase from "firebase/app";
 import { HttpClient } from "@angular/common/http";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import { LoginService } from '../login/login.service';
 
 @Component({
   selector: "app-experience",
@@ -46,9 +47,12 @@ export class ExperienceComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private route: ActivatedRoute,
     private router: Router,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private loginService: LoginService
   ) {
     window.scroll(0, 0);
+
+    
   }
 
   ngOnInit() {
@@ -71,10 +75,26 @@ export class ExperienceComponent implements OnInit {
       if (this.afAuth.auth.currentUser) {
         if (!this.afAuth.auth.currentUser.isAnonymous) {
           this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
+          this.loginService.loggedInObs().subscribe(res => {
+            if (res.login_flag) {
+              this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
+            }
+          });
         }
       }
     });
   }
+
+  setUser(uid) {
+    var online_user_doc: AngularFirestoreDocument = this.afs.doc("user/" + uid);
+    online_user_doc.snapshotChanges().subscribe(data => {
+      console.log("data: SSC: ", data);
+      this.online_user = data.payload.data();
+      this.online_user.uid = data.payload.id;
+      this.book_flag = true;
+    });
+  }
+
 
   getServiceListing(id) {
     this.afs

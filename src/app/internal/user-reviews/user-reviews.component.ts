@@ -6,6 +6,7 @@ import {
 } from "@angular/fire/firestore";
 import { map } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { SharedService } from "src/app/services/shared.service";
 
 @Component({
   selector: "app-user-reviews",
@@ -15,30 +16,17 @@ import { Observable } from "rxjs";
 export class UserReviewsComponent implements OnInit {
   reviews: Observable<any[]>;
   loading = true;
-  users = [];
+  users: Array<any> = [];
 
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {}
+  constructor(
+    private afAuth: AngularFireAuth,
+    private afs: AngularFirestore,
+    private shared: SharedService
+  ) {}
 
   ngOnInit() {
-    this.getUserList();
+    this.users = this.shared.getUserList();
     this.getReviews();
-  }
-
-  getUserList() {
-    this.afs
-      .collection("user")
-      .stateChanges(["added"])
-      .subscribe(users => {
-        users.forEach(item => {
-          var d: any = item;
-          var user = {
-            id: d.payload.doc.id,
-            name: d.payload.doc.data().name,
-            imageUrl: d.payload.doc.data().profileImageUrl
-          };
-          this.users.push(user);
-        });
-      });
   }
 
   getReviews() {
@@ -58,9 +46,6 @@ export class UserReviewsComponent implements OnInit {
   }
 
   getUser(uid) {
-    var user = this.users.filter((item, i) => {
-      return item.id === uid;
-    });
-    return user[0];
+    return this.shared.getUser(uid);
   }
 }

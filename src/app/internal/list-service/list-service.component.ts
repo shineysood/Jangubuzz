@@ -35,8 +35,6 @@ export class ListServiceComponent implements OnInit {
   @Input() userId;
   place_changed = false;
   @Input() listingType;
-  expanded = false;
-  ar = [];
   geoPoint: any;
   amenities;
   step = "basic";
@@ -112,9 +110,9 @@ export class ListServiceComponent implements OnInit {
 
   loadGoogleMaps() {
     //set google maps defaults
-    this.zoom = 4;
-    this.latitude = 39.8282;
-    this.longitude = -98.5795;
+    // this.zoom = 4;
+    // this.latitude = 39.8282;
+    // this.longitude = -98.5795;
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -128,7 +126,7 @@ export class ListServiceComponent implements OnInit {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
+          // this.place_changed = true;
           this.service_form_additional.controls["locationAddress"].patchValue(
             place.formatted_address
           );
@@ -137,36 +135,28 @@ export class ListServiceComponent implements OnInit {
 
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
-            return;
+            alert("please select valid location");
+            this.service_form_additional.controls["locationAddress"].reset();
+            return false;
+          } else {
+            //set latitude, longitude and zoom
+            this.latitude = place.geometry.location.lat();
+            this.longitude = place.geometry.location.lng();
+            this.zoom = 12;
+
+            console.log("location: ", this.latitude, this.longitude);
+            this.setCurrentPosition();
           }
-
-          //set latitude, longitude and zoom
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.zoom = 12;
-
-          console.log("location: ", this.latitude, this.longitude);
         });
       });
     });
   }
 
+  invalid() {
+    console.log("invalid location");
+  }
+
   setCurrentPosition() {
-    if (
-      !this.place_changed &&
-      this.service_form_additional.controls["locationAddress"].value
-    ) {
-      alert("please select valid location");
-      document.getElementById("location_address").focus();
-      return false;
-    }
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.zoom = 12;
-      });
-    }
     this.geoPoint = new firebase.firestore.GeoPoint(
       this.latitude,
       this.longitude
