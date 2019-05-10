@@ -12,8 +12,7 @@ import { Observable } from "rxjs";
 })
 export class ExperiencesNearYouComponent implements OnInit {
   experiences: Array<any> = [];
-  // listings: Observable<any[]>;
-  listings= [];
+  listings: Observable<any[]>;
   loading = true;
   constructor(
     private afs: AngularFirestore,
@@ -27,35 +26,19 @@ export class ExperiencesNearYouComponent implements OnInit {
       ref.where("listingType", "==", "eventListingType")
     );
 
-    listingCollection
-      .stateChanges() // for realtime updates
-      .subscribe(listings => {
-        this.listings = listings;
-        this.listings.forEach((item, i) => {
-          if (
-            this.listings[i].payload.doc.data().listingType ===
-            "eventListingType"
-          ) {
-            this.experiences.push({
-              id: this.listings[i].payload.doc.id,
-              payload: this.listings[i].payload.doc.data(),
-              time: this.listings[i].payload.doc.data().dateCreated
-            });
-          }
-          this.loading = false;
-        });
-      });
+    this.listings = listingCollection.stateChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        })
+      )
+    );
 
-    // this.listings = listingCollection.stateChanges(["added"]).pipe(
-    //   map(actions =>
-    //     actions.map(a => {
-    //       console.log(a)
-    //       const data = a.payload.doc.data();
-    //       const id = a.payload.doc.id;
-    //       return { id, ...data };
-    //     })
-    //   )
-    // );
+    setTimeout(() => {
+      this.loading = false;
+    }, 3000);
   }
 
   open_experience(id) {

@@ -33,7 +33,7 @@ declare var google: any;
 export class ListExperienceComponent implements OnInit {
   @Input() userId;
   @Input() listingType;
-
+  start_date: Date;
   expanded = false;
   ar = [];
   geoPoint: any;
@@ -243,6 +243,10 @@ export class ListExperienceComponent implements OnInit {
     console.log(this.geoPoint);
   }
 
+  onValueChange(value: Date) {
+    this.start_date = value;
+  }
+
   addExperienceAdditional() {
     if (this.experience_form_additional.valid) {
       // get the firestore doc
@@ -335,7 +339,7 @@ export class ListExperienceComponent implements OnInit {
         .then(data => {
           listingDoc.snapshotChanges().subscribe(data => {
             console.log(data.payload.data());
-            Swal.fire("", "Listed successfully", "success");
+            // Swal.fire("", "Listed successfully", "success");
             const id = data.payload.id;
             this.router.navigate(["listing/experience", id]);
           });

@@ -1,10 +1,10 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
-import { firebase } from "@firebase/app";
+import * as firebase from "firebase/app";
 import { FormGroup } from "@angular/forms";
 import { FormBuilder } from "@angular/forms";
 import { Validators } from "@angular/forms";
-import { EmailAuthProvider } from "@firebase/auth-types";
+// import { EmailAuthProvider } from "@firebase/auth-types";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { Router } from "@angular/router";
 
@@ -123,9 +123,11 @@ export class AccountComponent implements OnInit {
   }
 
   authenticateUser(email, password) {
-    return this.afAuth.auth.currentUser.reauthenticateWithCredential(
-      firebase.auth.EmailAuthProvider.credential(email, password)
+    var cred = firebase.auth.EmailAuthProvider.credential(
+      email.toString(),
+      password.toString()
     );
+    return firebase.auth().currentUser.reauthenticateWithCredential(cred);
   }
 
   confirmPass() {

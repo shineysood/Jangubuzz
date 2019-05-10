@@ -11,35 +11,31 @@
         class="carousel"
         #slickModal="slick-carousel"
         [config]="slideConfig"
-        (init)="slickInit($event)"
-        (breakpoint)="breakpoint($event)"
-        (afterChange)="afterChange($event)"
-        (beforeChange)="beforeChange($event)"
       >
         <div
           ngxSlickItem
-          *ngFor="let slide of spacesAndServices | sort:'time'; let i = index"
+          *ngFor="let slide of listings | async; let i = index"
           class="slide"
         >
           <img
             class="clickable"
-            (click)="open_listing(slide)"
-            src="{{ slide.payload.listingImageUrl }}"
+            (click)="open_listing(slide.id)"
+            src="{{ slide.listingImageUrl }}"
             alt=""
             width="100%"
             height="100%"
           />
           <h3
-            *ngIf="slide.payload.listingType === 'eventServiceListingType'"
+            *ngIf="slide.listingType === 'eventServiceListingType'"
             class="clickable"
           >
-            {{ slide.payload.title }}
+            {{ slide.title }}
           </h3>
           <h3
-            *ngIf="slide.payload.listingType === 'eventSpaceListingType'"
+            *ngIf="slide.listingType === 'eventSpaceListingType'"
             class="clickable"
           >
-            {{ slide.payload.locationName }}
+            {{ slide.locationName }}
           </h3>
         </div>
       </ngx-slick-carousel>

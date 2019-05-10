@@ -92,6 +92,11 @@ const routes: Routes = [
     component: ServiceBookingComponent
   },
   {
+    path: "space/book/:hostId/:listingId",
+    // canActivate: [AuthGuard],
+    component: ServiceBookingComponent
+  },
+  {
     path: "ticket/create/:listingId/:userId",
     // canActivate: [AuthGuard],
     component: CreateTicketComponent

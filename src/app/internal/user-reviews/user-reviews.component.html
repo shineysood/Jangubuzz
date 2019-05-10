@@ -1,15 +1,15 @@
 <div *ngIf="(reviews | async)?.length !== 0" class="main_div">
   <ng-container *ngFor="let review of reviews | async">
-    <!-- {{ review | json }} -->
+    <!-- {{ review | json }} <br><br><br> -->
     <div class="card review_div">
       <div class="card-body">
         <div class="review_image">
-         <!-- <img *ngIf="!getUser(review.userId).imageUrl" [src]="assets/image/user.png" /> -->
-          <!-- <img *ngIf="getUser(review.userId).imageUrl" [src]="getUser(review.userId).imageUrl" /> -->
+         <!-- <img *ngIf="!review.user.imageUrl | async" [src]="assets/image/user.png" />
+          <img *ngIf="review.user.imageUrl | async" [src]="review.user.imageUrl | async" /> -->
         </div>
 
         <div class="review_content">
-          <!-- <h4>{{ getUser(review.userId).name }}</h4> -->
+          <!-- <h4>{{ review.user.payload.data().name | async }}</h4> -->
           <label>{{
             review.dateCreated.seconds * 1000 | date: "longDate"
           }}</label>

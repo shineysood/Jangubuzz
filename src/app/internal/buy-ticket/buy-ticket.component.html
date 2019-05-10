@@ -113,13 +113,11 @@
         <p>
           Processing fees
         </p>
-        <p>
-          $0.30
-        </p>
+        <p>${{ (0.065 * value * ticket.ticket.price) + 0.3 | number:'1.2-3' }}</p>
       </div>
       <div class="price_info_inner total">
         <p>Total</p>
-        <p>Total fees</p>
+        <p>${{ ((0.065 * value * ticket.ticket.price) + 0.3) + (value * ticket.ticket.price) | number:'1.2-3' }}</p>
       </div>
 
       <div class="payment_info">

@@ -9,6 +9,7 @@ import { AngularFireFunctions } from "@angular/fire/functions";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { LoginService } from "../../external/login/login.service";
 
 @Component({
   selector: "app-jobs",
@@ -26,8 +27,15 @@ export class JobsComponent implements OnInit {
     private route: ActivatedRoute,
     private fns: AngularFireFunctions,
     private router: Router,
-    private modalService: BsModalService
-  ) {}
+    private modalService: BsModalService,
+    private loginService: LoginService
+  ) {
+    this.loginService.loggedInObs().subscribe(res => {
+      if (res.login_flag) {
+        this.getBookings(this.afAuth.auth.currentUser.uid, this.listingId);
+      }
+    });
+  }
 
   ngOnInit() {
     this.getBookings(this.afAuth.auth.currentUser.uid, this.listingId);

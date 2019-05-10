@@ -34,18 +34,31 @@ export class UserReviewsComponent implements OnInit {
       "user/" + this.afAuth.auth.currentUser.uid + "/review",
       ref => ref.orderBy("dateCreated", "desc")
     );
-    this.reviews = reviewsCollection.stateChanges(["added"]).pipe(
+    this.reviews = reviewsCollection.snapshotChanges().pipe(
       map(actions =>
         actions.map(a => {
           var data: any = a.payload.doc.data();
           var id = a.payload.doc.id;
-          return { id, ...data };
+          var user = this.afs
+            .doc("user/" + data.userId)
+            .snapshotChanges()
+            .pipe(
+              map(actions => {
+                const ids = actions.payload.id;
+                const user_doc = actions.payload.data();
+                console.log("user in map: ", user_doc);
+                return { ids, ...user_doc };
+              })
+            );
+
+          return { id, ...data, user };
         })
       )
     );
   }
 
-  getUser(uid) {
-    return this.shared.getUser(uid);
-  }
+  // getUser(uid) {
+  //   return this.shared.getUser(uid);
+  //   console.log("id: ", uid)
+  // }
 }

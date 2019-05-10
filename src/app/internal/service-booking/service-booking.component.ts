@@ -21,7 +21,7 @@ export class ServiceBookingComponent implements OnInit {
   listingId;
   hostId;
   listing;
-
+start_date: Date;
   minDate: Date;
 
   EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -66,6 +66,11 @@ export class ServiceBookingComponent implements OnInit {
         this.afAuth.auth.currentUser.providerData[0].email
       );
     }
+  }
+
+
+  onValueChange(value: Date) {
+    this.start_date = value;
   }
 
   request_booking() {

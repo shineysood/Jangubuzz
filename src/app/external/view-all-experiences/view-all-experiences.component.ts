@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { Router } from "@angular/router";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: "app-view-all-experiences",
@@ -9,7 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./view-all-experiences.component.css"]
 })
 export class ViewAllExperiencesComponent implements OnInit {
-  experiences: Array<any> = [];
+  experiences: Observable<any>;
   listings;
   loading = true;
 
@@ -17,30 +19,46 @@ export class ViewAllExperiencesComponent implements OnInit {
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
     private router: Router
-  ) {}
+  ) {
+    window.scroll(0, 0);
+  }
 
   ngOnInit() {
-    window.scroll(0, 0);
-    this.loading = true;
-    this.afs
-      .collection("listing", ref => ref.orderBy("dateCreated", "desc"))
+    var experienceCollection = this.afs.collection("listing", ref =>
+      ref.where("listingType", "==", "eventListingType").orderBy("dateCreated", "desc")
+    );
+
+    this.experiences = experienceCollection
       .stateChanges() // for realtime updates
-      .subscribe(listings => {
-        this.listings = listings;
-        this.listings.forEach((item, i) => {
-          if (
-            this.listings[i].payload.doc.data().listingType ===
-            "eventListingType"
-          ) {
-            this.experiences.push({
-              id: this.listings[i].payload.doc.id,
-              payload: this.listings[i].payload.doc.data(),
-              time: this.listings[i].payload.doc.data().dateCreated
-            });
-          }
-          this.loading = false;
-        });
-      });
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const id = a.payload.doc.id;
+            const data = a.payload.doc.data();
+            return { id, ...data };
+          })
+        )
+      );
+
+    setTimeout(() => {
+      this.loading = false;
+    }, 1500);
+    // .subscribe(listings => {
+    //   this.listings = listings;
+    //   this.listings.forEach((item, i) => {
+    //     if (
+    //       this.listings[i].payload.doc.data().listingType ===
+    //       "eventListingType"
+    //     ) {
+    //       this.experiences.push({
+    //         id: this.listings[i].payload.doc.id,
+    //         payload: this.listings[i].payload.doc.data(),
+    //         time: this.listings[i].payload.doc.data().dateCreated
+    //       });
+    //     }
+    //     this.loading = false;
+    //   });
+    // });
   }
 
   open_experience(id) {

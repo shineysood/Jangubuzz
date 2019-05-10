@@ -10,6 +10,8 @@
           #dp="bsDatepicker"
           bsDatepicker
           [bsValue]="bsValue"
+          [minDate]="minDate"
+          (bsValueChange)="onValueChange($event)"
           id="startDate"
           formControlName="startDate"
           placeholder="Enter start date..."
@@ -61,9 +63,11 @@
         <input
           id="endDate"
           type="text"
+          [minDate]="minDate"
           class="form-control"
           #dp="bsDatepicker"
           bsDatepicker
+          [minDate]="start_date"
           [bsValue]="bsValue"
           formControlName="endDate"
           placeholder="Enter end date..."

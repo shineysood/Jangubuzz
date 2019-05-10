@@ -9,7 +9,7 @@ import { AngularFireFunctions } from "@angular/fire/functions";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import * as moment from "moment";
 import Swal from "sweetalert2";
-import * as firebase  from "firebase/app";
+import * as firebase from "firebase/app";
 
 @Component({
   selector: "app-space-booking",
@@ -21,6 +21,7 @@ export class SpaceBookingComponent implements OnInit {
   listingId;
   userId;
   listing;
+  start_date: Date;
 
   minDate: Date;
 
@@ -131,7 +132,8 @@ export class SpaceBookingComponent implements OnInit {
                   email: this.space_book_form.controls["email"].value,
                   currency: this.listing.currency,
                   policy: this.listing.policy,
-                  description: this.space_book_form.controls['bookingDetails'].value,
+                  description: this.space_book_form.controls["bookingDetails"]
+                    .value,
                   damageChargeDate: firebase.firestore.Timestamp.fromDate(
                     this.space_book_form.controls["startDate"].value.toString()
                   ),
@@ -186,5 +188,9 @@ export class SpaceBookingComponent implements OnInit {
   set_temp() {
     var t = this.space_book_form.controls["startDate"].value;
     console.log(t.toString());
+  }
+
+  onValueChange(value: Date) {
+    this.start_date = value;
   }
 }

@@ -14,16 +14,16 @@
       <ng-container *ngIf="!loading">
         <div class="content-box row">
           <div
-            *ngFor="let item of experiences; let i = index"
+            *ngFor="let item of listings | async; let i = index"
             class="col-md-4 exp-box"
           >
             <ng-container *ngIf="i < 3">
               <img
                 (click)="open_experience(item.id)"
                 class="list_images"
-                src="{{ item.payload.listingImageUrl }}"
+                src="{{ item.listingImageUrl }}"
               />
-              <h4>{{ item.payload.title }}</h4>
+              <h4>{{ item.title }}</h4>
             </ng-container>
           </div>
         </div>

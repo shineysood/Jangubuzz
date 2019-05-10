@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import * as firebase from "firebase/app";
 import { HttpClient } from "@angular/common/http";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
-import { LoginService } from '../login/login.service';
+import { LoginService } from "../login/login.service";
 
 @Component({
   selector: "app-experience",
@@ -51,20 +51,31 @@ export class ExperienceComponent implements OnInit {
     private loginService: LoginService
   ) {
     window.scroll(0, 0);
+    this.loginService.loggedInObs().subscribe(res => {
+      if (res.login_flag) {
+        this.setUser(this.afAuth.auth.currentUser.uid);
 
-    
+        this.route.params.subscribe(data => {
+          this.getJobs(this.afAuth.auth.currentUser.uid, data.id);
+        });
+      }
+    });
+  }
+
+  setUser(uid) {
+    var online_user_doc: AngularFirestoreDocument = this.afs.doc("user/" + uid);
+    online_user_doc.snapshotChanges().subscribe(data => {
+      this.online_user = data.payload.data();
+    });
+    if (!this.afAuth.auth.currentUser.isAnonymous) {
+      this.book_flag = true;
+    }
   }
 
   ngOnInit() {
     if (this.afAuth.auth.currentUser) {
-      var online_user_doc: AngularFirestoreDocument = this.afs.doc(
-        "user/" + this.afAuth.auth.currentUser.uid
-      );
-      online_user_doc.snapshotChanges().subscribe(data => {
-        this.online_user = data.payload.data();
-      });
       if (!this.afAuth.auth.currentUser.isAnonymous) {
-        this.book_flag = true;
+        this.setUser(this.afAuth.auth.currentUser.uid);
       }
     }
 
@@ -85,24 +96,23 @@ export class ExperienceComponent implements OnInit {
     });
   }
 
-  setUser(uid) {
-    var online_user_doc: AngularFirestoreDocument = this.afs.doc("user/" + uid);
-    online_user_doc.snapshotChanges().subscribe(data => {
-      console.log("data: SSC: ", data);
-      this.online_user = data.payload.data();
-      this.online_user.uid = data.payload.id;
-      this.book_flag = true;
-    });
-  }
-
+  // setUser(uid) {
+  //   var online_user_doc: AngularFirestoreDocument = this.afs.doc("user/" + uid);
+  //   online_user_doc.snapshotChanges().subscribe(data => {
+  //     console.log("data: SSC: ", data);
+  //     this.online_user = data.payload.data();
+  //     this.online_user.uid = data.payload.id;
+  //     this.book_flag = true;
+  //   });
+  // }
 
   getServiceListing(id) {
     this.afs
       .doc("listing/" + id)
-      .get()
+      .snapshotChanges()
       .subscribe(res => {
-        this.listing = res.data();
-        this.ticket_host = res.data().userId;
+        this.listing = res.payload.data();
+        this.ticket_host = this.listing.userId;
         if (
           this.afAuth.auth.currentUser &&
           !this.afAuth.auth.currentUser.isAnonymous &&
@@ -111,7 +121,7 @@ export class ExperienceComponent implements OnInit {
           this.jobs_flag = true;
         }
 
-        this.ticket_listing = res.id;
+        this.ticket_listing = res.payload.id;
         this.loading = false;
         this.listing.startDate = this.listing.startDate.toDate().toString();
         this.listing.endDate = this.listing.endDate.toDate().toString();
