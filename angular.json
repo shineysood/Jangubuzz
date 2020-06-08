@@ -32,8 +32,7 @@
               "src/assets/js/bootstrap.min.js",
               "src/assets/js/popper.min.js",
               "node_modules/slick-carousel/slick/slick.min.js"
-            ],
-            "es5BrowserSupport": true
+            ]
           },
           "configurations": {
             "production": {
